@@ -50,9 +50,11 @@ export default function PortfolioGrid({
                     </div>
                   )}
 
-                  {/* Camera Frame Corners - Top Right & Bottom Left */}
+                  {/* Camera Frame Corners - All 4 corners with animation */}
                   <div className="project-card-top-right" />
                   <div className="project-card-bottom-left" />
+                  <div className="project-card-top-left" />
+                  <div className="project-card-bottom-right" />
 
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-500" />

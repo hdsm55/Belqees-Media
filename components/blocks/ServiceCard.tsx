@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import CornerBrackets from '@/components/atoms/CornerBrackets';
 
 interface ServiceCardProps {
   title: string;
@@ -17,9 +18,11 @@ export default function ServiceCard({
   slug,
 }: ServiceCardProps) {
   const content = (
-    <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-gray-700 group h-full flex flex-col hover:border-primary-200 dark:hover:border-primary-800">
+    <div className="relative bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 group h-full flex flex-col hover:border-dark dark:hover:border-gray-500">
+      {/* Corner Brackets */}
+      <CornerBrackets />
       {icon && (
-        <div className="text-4xl md:text-5xl mb-4 md:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+        <div className="text-4xl md:text-5xl mb-4 md:mb-6 group-hover:scale-105 transition-transform duration-300">
           {icon}
         </div>
       )}
@@ -29,7 +32,7 @@ export default function ServiceCard({
             src={image}
             alt={title}
             fill
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
       )}

@@ -130,6 +130,28 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, [role="button"] {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Hero Section Scroll Indicator Animation - حركة سلسة وخفيفة */
 @keyframes scrollIndicator {
   0%, 100% {
@@ -158,7 +180,7 @@ html {
   }
 
   .partner-logo:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
   }
 
   /* 2. Camera Frame Effect for Portfolio Items */
@@ -169,7 +191,7 @@ html {
 
   .project-card img {
     @apply w-full h-full object-cover block;
-    transition: transform 0.4s ease-out;
+    transition: transform 0.3s ease-out;
   }
 
   .project-card:hover img {
@@ -220,16 +242,26 @@ html {
   }
 
   .project-card-top-right,
-  .project-card-bottom-left {
+  .project-card-bottom-left,
+  .project-card-top-left,
+  .project-card-bottom-right {
     position: absolute;
     width: 30px;
     height: 30px;
     border-color: white;
     border-style: solid;
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
     opacity: 0;
     z-index: 10;
     pointer-events: none;
+  }
+
+  .project-card-top-left {
+    top: 20px;
+    left: 20px;
+    border-width: 2px 0 0 2px;
+    transform: translate(-5px, -5px);
+    transition-delay: 0ms;
   }
 
   .project-card-top-right {
@@ -237,6 +269,7 @@ html {
     right: 20px;
     border-width: 2px 2px 0 0;
     transform: translate(5px, -5px);
+    transition-delay: 50ms;
   }
 
   .project-card-bottom-left {
@@ -244,10 +277,21 @@ html {
     left: 20px;
     border-width: 0 0 2px 2px;
     transform: translate(-5px, 5px);
+    transition-delay: 100ms;
   }
 
+  .project-card-bottom-right {
+    bottom: 20px;
+    right: 20px;
+    border-width: 0 2px 2px 0;
+    transform: translate(5px, 5px);
+    transition-delay: 150ms;
+  }
+
+  .project-card:hover .project-card-top-left,
   .project-card:hover .project-card-top-right,
-  .project-card:hover .project-card-bottom-left {
+  .project-card:hover .project-card-bottom-left,
+  .project-card:hover .project-card-bottom-right {
     opacity: 1;
     transform: translate(0, 0);
   }

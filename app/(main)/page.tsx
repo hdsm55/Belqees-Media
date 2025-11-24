@@ -9,6 +9,7 @@ import PortfolioGrid from '@/components/blocks/PortfolioGrid';
 import ApproachSection from '@/components/blocks/ApproachSection';
 import ClientsCarousel from '@/components/blocks/ClientsCarousel';
 import Button from '@/components/atoms/Button';
+import CornerBrackets from '@/components/atoms/CornerBrackets';
 
 export const metadata: Metadata = {
   title: 'Belqees Media - شركة إنتاج إعلامي متكاملة الخدمات',
@@ -175,11 +176,12 @@ export default function HomePage() {
 
       {/* Contact CTA Section */}
       <ScrollReveal animation="fadeInUp">
-        <section className="py-16 md:py-20 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 transition-colors">
+        <section className="py-16 md:py-20 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 transition-colors">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-                <div>
+                <div className="relative bg-white dark:bg-gray-800 p-8 border border-gray-200 dark:border-gray-700 group">
+                  <CornerBrackets showOnHover={true} />
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-dark dark:text-gray-100">تواصل معنا</h2>
                   <p className="text-sm sm:text-base md:text-lg text-dark-light dark:text-gray-300 mb-6 md:mb-8 leading-relaxed">
                     دعنا نفهم كيف يمكن للمحتوى الإعلامي أن يساعد في تواصلك
@@ -191,7 +193,8 @@ export default function HomePage() {
                   </Link>
                 </div>
                 <div className="space-y-4">
-                  <div>
+                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group">
+                    <CornerBrackets showOnHover={true} />
                     <h3 className="text-base md:text-lg font-semibold text-dark dark:text-gray-100 mb-2">البريد الإلكتروني</h3>
                     <a
                       href="mailto:Contact@belqeesmedia.com"
@@ -200,7 +203,8 @@ export default function HomePage() {
                       Contact@belqeesmedia.com
                     </a>
                   </div>
-                  <div>
+                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group">
+                    <CornerBrackets showOnHover={true} />
                     <h3 className="text-base md:text-lg font-semibold text-dark dark:text-gray-100 mb-2">الهاتف</h3>
                     <div className="space-y-1">
                       <a
