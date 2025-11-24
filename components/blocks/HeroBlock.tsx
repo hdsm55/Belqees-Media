@@ -31,6 +31,7 @@ export default function HeroBlock({
   videoLoop = true,
   videoMuted = true,
 }: HeroBlockProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const companyNameRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -55,121 +56,71 @@ export default function HeroBlock({
     // Set initial state immediately
     gsap.set(elements, { opacity: 0 });
 
+    // Simplified, fast, cinematic animation
     // Check if mobile
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
-    // على Mobile: حركة سريعة جداً
-    if (isMobile) {
-      gsap.to(elements, {
-        opacity: 1,
-        y: 0,
-        duration: 0.25,
-        stagger: 0.03,
-        ease: 'power1.out',
-        delay: 0.1,
-      });
-      return;
-    }
-
-    // Desktop: حركة احترافية وسلسة
-    const tl = gsap.timeline({
-      defaults: {
-        ease: 'power2.out',
-      }
+    // Simple fade-in for all devices - سريع وسلس
+    gsap.to(elements, {
+      opacity: 1,
+      duration: 0.4,
+      stagger: 0.05,
+      ease: 'power1.out',
+      delay: 0.1,
     });
-
-    // Company Name first - اسم الشركة أولاً
-    if (companyNameRef.current) {
-      tl.fromTo(
-        companyNameRef.current,
-        {
-          opacity: 0,
-          y: 20,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power2.out',
-        },
-        0
-      );
-    }
-
-    // Title second - العنوان
-    if (titleRef.current) {
-      tl.fromTo(
-        titleRef.current,
-        {
-          opacity: 0,
-          y: 30,
-          scale: 0.95,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-        },
-        0.2
-      );
-    }
-
-    // Subtitle بعد العنوان مباشرة
-    if (subtitleRef.current) {
-      tl.fromTo(
-        subtitleRef.current,
-        {
-          opacity: 0,
-          y: 20,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-        },
-        0.3 // تتداخل مع العنوان
-      );
-    }
-
-    // Description
-    if (descriptionRef.current) {
-      tl.fromTo(
-        descriptionRef.current,
-        {
-          opacity: 0,
-          y: 20,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-        },
-        0.6 // بعد العنوان والفرعي
-      );
-    }
-
-    // CTA Button - آخر شيء
-    if (ctaRef.current) {
-      tl.fromTo(
-        ctaRef.current,
-        {
-          opacity: 0,
-          y: 20,
-          scale: 0.9,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.5,
-          ease: 'back.out(1.2)',
-        },
-        1.0 // بعد كل شيء
-      );
-    }
   }, []);
+
+  // Ensure video plays dynamically
+  useEffect(() => {
+    if (videoRef.current && backgroundVideo) {
+      const video = videoRef.current;
+
+      // Force play
+      const playPromise = video.play();
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            // Video is playing
+          })
+          .catch((error) => {
+            // Auto-play was prevented
+            // Try to play on user interaction
+            const handleUserInteraction = () => {
+              video.play();
+              document.removeEventListener('click', handleUserInteraction);
+              document.removeEventListener('touchstart', handleUserInteraction);
+            };
+            document.addEventListener('click', handleUserInteraction);
+            document.addEventListener('touchstart', handleUserInteraction);
+          });
+      }
+
+      // Ensure video loops
+      video.loop = videoLoop !== false;
+      video.muted = videoMuted !== false;
+
+      // Handle video events
+      video.addEventListener('loadeddata', () => {
+        video.play().catch(() => {
+          // Silent fail if autoplay is blocked
+        });
+      });
+
+      // Ensure video continues playing if paused
+      const checkPlaying = setInterval(() => {
+        if (video.paused && !video.ended) {
+          video.play().catch(() => {
+            // Silent fail
+          });
+        }
+      }, 1000);
+
+      return () => {
+        clearInterval(checkPlaying);
+      };
+    }
+  }, [backgroundVideo, videoLoop, videoMuted]);
 
   return (
     <section className="relative min-h-[90vh] md:min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors">
@@ -177,12 +128,33 @@ export default function HeroBlock({
       {backgroundVideo && (
         <div className="absolute inset-0 z-0">
           <video
+            ref={videoRef}
             autoPlay
             loop={videoLoop}
             muted={videoMuted}
             playsInline
+            preload="auto"
             className="absolute inset-0 w-full h-full object-cover scale-105"
             style={{ filter: 'brightness(0.75) contrast(1.1)' }}
+            onLoadedData={(e) => {
+              const video = e.currentTarget;
+              video.play().catch(() => {
+                // Silent fail if autoplay is blocked
+              });
+            }}
+            onPlay={() => {
+              // Video is playing
+            }}
+            onPause={() => {
+              // Try to resume if paused unexpectedly
+              if (videoRef.current && !videoRef.current.ended) {
+                setTimeout(() => {
+                  videoRef.current?.play().catch(() => {
+                    // Silent fail
+                  });
+                }, 100);
+              }
+            }}
           >
             <source src={backgroundVideo} type="video/mp4" />
             <source src={backgroundVideo.replace('.mp4', '.webm')} type="video/webm" />
@@ -303,11 +275,13 @@ export default function HeroBlock({
           </div>
         </div>
 
-        {/* Scroll Indicator - محاذاة في المنتصف تماماً */}
+        {/* Scroll Indicator - محاذاة في المنتصف تماماً - حركة سلسة */}
         {(backgroundVideo || youtubeVideoId || backgroundImage) && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
-              <div className="w-1 h-3 bg-white/70 rounded-full animate-pulse" />
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex justify-center items-center">
+            <div className="w-5 h-8 border border-white/60 rounded-full flex items-start justify-center pt-1.5">
+              <div className="w-1 h-2 bg-white/80 rounded-full" style={{
+                animation: 'scrollIndicator 2s ease-in-out infinite'
+              }} />
             </div>
           </div>
         )}

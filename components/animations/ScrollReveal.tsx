@@ -45,14 +45,16 @@ export default function ScrollReveal({
     const element = ref.current;
     const childElements = Array.from(element.children);
 
-    // Check if mobile - تبسيط animations على Mobile
+    // Simplified animation for all devices - سريع وسلس
+    // Check if mobile
     const isMobile = window.innerWidth < 768;
+
+    // Simple fade for mobile - بدون ScrollTrigger لتوفير الأداء
     if (isMobile) {
-      // على Mobile: fade بسيط لكن سريع
       gsap.fromTo(
         element,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3, ease: 'power1.out' }
       );
       return;
     }
@@ -62,12 +64,14 @@ export default function ScrollReveal({
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: element,
-          start: 'top 85%', // تقليل من 80% إلى 85% (أسرع)
-          end: 'bottom 15%',
+          start: 'top 90%', // أسرع trigger
+          end: 'bottom 10%',
           toggleActions: once ? 'play none none none' : 'play none none reverse',
           // تحسينات الأداء
           markers: false,
-          refreshPriority: -1, // أقل أولوية
+          refreshPriority: -1,
+          // تحسينات إضافية للأداء
+          fastScrollEnd: true,
         },
       });
 
@@ -81,8 +85,8 @@ export default function ScrollReveal({
             x: 0,
             y: 0,
             scale: 1,
-            duration: duration * 0.8, // تقليل المدة
-            ease: 'power2.out',
+            duration: duration * 0.5, // تقليل المدة أكثر
+            ease: 'power1.out', // أسرع easing
           },
           index * stagger
         );
@@ -91,8 +95,8 @@ export default function ScrollReveal({
       // Single element animation
       const trigger = ScrollTrigger.create({
         trigger: element,
-        start: 'top 85%',
-        end: 'bottom 15%',
+        start: 'top 90%',
+        end: 'bottom 10%',
         toggleActions: once ? 'play none none none' : 'play none none reverse',
         animation: gsap.fromTo(
           element,
@@ -103,12 +107,13 @@ export default function ScrollReveal({
             x: 0,
             y: 0,
             scale: 1,
-            duration: duration * 0.8, // تقليل المدة
+            duration: duration * 0.5, // تقليل المدة أكثر
             delay,
-            ease: 'power2.out',
+            ease: 'power1.out', // أسرع easing
           }
         ),
         refreshPriority: -1,
+        fastScrollEnd: true,
       });
       scrollTriggerRef.current = trigger;
     }
