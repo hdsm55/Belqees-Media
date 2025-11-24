@@ -123,7 +123,7 @@ export default function HeroBlock({
   }, [backgroundVideo, videoLoop, videoMuted]);
 
   return (
-    <section className="relative min-h-[90vh] md:min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors">
+    <section className="relative min-h-[90vh] md:min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors pt-16 md:pt-20">
       {/* Background Video or Image */}
       {backgroundVideo && (
         <div className="absolute inset-0 z-0">
@@ -197,7 +197,7 @@ export default function HeroBlock({
       )}
 
       {/* Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col items-center justify-center min-h-[90vh] md:min-h-screen">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col items-center justify-center min-h-[calc(90vh-4rem)] md:min-h-[calc(100vh-5rem)]">
         <div className="max-w-5xl mx-auto w-full">
           <div className="text-center space-y-5 md:space-y-6 lg:space-y-8 flex flex-col items-center">
             {/* Company Name - بلقيس ميديا */}
