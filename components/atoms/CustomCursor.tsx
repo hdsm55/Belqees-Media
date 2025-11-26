@@ -34,19 +34,19 @@ export default function CustomCursor() {
         setMousePosition({ x: e.clientX, y: e.clientY });
       });
 
-      // Smooth delay للدائرة الخارجية فقط
+      // الدائرة الخارجية تتحرك مباشرة بدون أي تأخير
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
 
       animationFrameRef.current = requestAnimationFrame(() => {
-        setOuterPosition(prev => {
-          const dx = e.clientX - prev.x;
-          const dy = e.clientY - prev.y;
-          return {
-            x: prev.x + dx * 0.2, // تأخير أقل للدائرة الخارجية
-            y: prev.y + dy * 0.2,
-          };
+        if (outerRingRef.current) {
+          outerRingRef.current.style.left = `${e.clientX}px`;
+          outerRingRef.current.style.top = `${e.clientY}px`;
+        }
+        setOuterPosition({
+          x: e.clientX,
+          y: e.clientY,
         });
       });
     };
@@ -136,23 +136,28 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* الدائرة الداخلية - النقطة الحمراء */}
+      {/* الدائرة الداخلية - نقطة حمراء تلمع باستمرار (إيحاء حالة تسجيل) */}
       <div
         ref={innerCircleRef}
-        className={`fixed pointer-events-none z-[999999] ${!isHovering ? 'cursor-recording-dot' : ''}`}
+        className={`fixed pointer-events-none z-[999999] ${!isHovering ? 'recording-dot-pulse' : ''}`}
         style={{
           left: mousePosition.x,
           top: mousePosition.y,
-          width: isClicking ? '6px' : isHovering ? '24px' : '10px',
-          height: isClicking ? '6px' : isHovering ? '24px' : '10px',
+          width: isClicking ? '10px' : isHovering ? '26px' : isDragging ? '12px' : '12px',
+          // الحفاظ على الشكل دائري دائماً حتى في حالة السحب
+          height: isClicking ? '10px' : isHovering ? '26px' : isDragging ? '12px' : '12px',
           borderRadius: '50%',
           backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.9)' : '#D90000',
           transform: 'translate(-50%, -50%)',
           mixBlendMode: isHovering ? 'difference' : 'normal',
-          transition: 'width 0.3s cubic-bezier(0.23, 1, 0.32, 1), height 0.3s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1)',
-          willChange: 'transform',
-          opacity: isOnImage ? 0 : 1,
-          boxShadow: isHovering ? 'none' : '0 0 8px rgba(217, 0, 0, 0.8), 0 0 16px rgba(217, 0, 0, 0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition:
+            'width 0.3s cubic-bezier(0.23, 1, 0.32, 1), height 0.3s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1)',
+          willChange: 'transform, opacity',
+          opacity: isOnImage ? 0 : undefined,
+          boxShadow: 'none',
         }}
       />
 
@@ -161,8 +166,8 @@ export default function CustomCursor() {
         ref={outerRingRef}
         className="fixed pointer-events-none z-[999998]"
         style={{
-          left: outerPosition.x,
-          top: outerPosition.y,
+          left: mousePosition.x,
+          top: mousePosition.y,
           width: isClicking ? '30px' : isHovering ? '60px' : '45px',
           height: isClicking ? '30px' : isHovering ? '60px' : '45px',
           borderRadius: '50%',
@@ -189,23 +194,6 @@ export default function CustomCursor() {
         >
           View
         </div>
-      )}
-
-      {/* I-beam للسحب */}
-      {isDragging && (
-        <div
-          className="fixed pointer-events-none z-[999999]"
-          style={{
-            left: mousePosition.x,
-            top: mousePosition.y,
-            width: '2px',
-            height: '20px',
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            transform: 'translate(-50%, -50%)',
-            transition: 'opacity 0.2s',
-            willChange: 'transform',
-          }}
-        />
       )}
     </>
   );

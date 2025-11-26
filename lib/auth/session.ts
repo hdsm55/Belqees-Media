@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
 
@@ -13,6 +14,46 @@ export interface UserSession {
  */
 export async function getCurrentUser(): Promise<UserSession | null> {
     try {
+        // أولاً: نحاول قراءة المستخدم مباشرة من كوكي Supabase بدون استدعاء الشبكة
+        const cookieStore = cookies();
+        const allCookies = cookieStore.getAll();
+        const authCookie = allCookies.find((c) =>
+            c.name.startsWith('sb-') && c.name.endsWith('-auth-token')
+        );
+
+        if (authCookie) {
+            try {
+                const decoded = decodeURIComponent(authCookie.value);
+                const session = JSON.parse(decoded) as {
+                    user?: { id: string; email?: string | null };
+                };
+
+                if (session.user?.id) {
+                    const prismaUser = await prisma.user.findUnique({
+                        where: { supabaseUserId: session.user.id },
+                    });
+
+                    if (prismaUser) {
+                        return {
+                            id: prismaUser.id,
+                            email: prismaUser.email,
+                            role: prismaUser.role,
+                            supabaseUserId: prismaUser.supabaseUserId || null,
+                        };
+                    }
+
+                    console.log('[auth] Cookie user found but no Prisma user', {
+                        supabaseUserId: session.user.id,
+                    });
+                }
+            } catch (cookieError) {
+                console.warn('[auth] Failed to parse Supabase auth cookie', {
+                    error: cookieError,
+                });
+            }
+        }
+
+        // في حال فشلنا في القراءة من الكوكي، نرجع للطريقة الكلاسيكية مع Supabase
         const supabase = await createClient();
         const {
             data: { user: supabaseUser },
@@ -20,6 +61,7 @@ export async function getCurrentUser(): Promise<UserSession | null> {
         } = await supabase.auth.getUser();
 
         if (supabaseError || !supabaseUser) {
+            console.log('[auth] No Supabase user in session', { supabaseError });
             return null;
         }
 
@@ -31,6 +73,9 @@ export async function getCurrentUser(): Promise<UserSession | null> {
         });
 
         if (!user) {
+            console.log('[auth] Supabase user found but no Prisma user', {
+                supabaseUserId: supabaseUser.id,
+            });
             return null;
         }
 

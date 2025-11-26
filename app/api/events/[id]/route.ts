@@ -65,6 +65,31 @@ export const PUT = withErrorHandler(async (
   });
 });
 
+export const PATCH = withErrorHandler(async (
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) => {
+  // Rate limiting
+  const { response: rateLimitResponse } = await rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
+  await requireAuth();
+  const { id } = await params;
+  const body = await request.json();
+  const data = updateEventSchema.parse(body);
+
+  const event = await prisma.event.update({
+    where: { id },
+    data,
+  });
+
+  return NextResponse.json({
+    success: true,
+    data: event,
+    message: 'تم تحديث الفعالية بنجاح',
+  });
+});
+
 export const DELETE = withErrorHandler(async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

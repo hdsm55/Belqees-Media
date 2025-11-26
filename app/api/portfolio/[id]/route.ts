@@ -98,6 +98,45 @@ export async function PUT(
     }
 }
 
+export async function PATCH(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
+
+    try {
+        await requireAuth();
+        const { id } = await params;
+        const body = await request.json();
+        const data = updatePortfolioSchema.parse(body);
+
+        const item = await prisma.portfolio.update({
+            where: { id },
+            data,
+        });
+
+        return NextResponse.json({
+            success: true,
+            data: item,
+            message: 'تم تحديث العمل بنجاح',
+        });
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            return NextResponse.json(
+                { error: error.errors[0].message },
+                { status: 400 }
+            );
+        }
+        console.error('Error updating portfolio item:', error);
+        return NextResponse.json(
+            { error: 'حدث خطأ أثناء تحديث العمل' },
+            { status: 500 }
+        );
+    }
+}
+
 export async function DELETE(
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }

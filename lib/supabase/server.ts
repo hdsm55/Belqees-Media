@@ -14,6 +14,20 @@ export const createClient = async () => {
         },
         setAll(cookiesToSet) {
           try {
+            // لوج للتشخيص: التأكد أن Supabase يحاول فعلاً تعيين الكوكيز
+            console.log(
+              '[Supabase][setAll] setting cookies:',
+              cookiesToSet.map((c) => ({
+                name: c.name,
+                // لا نطبع القيمة الكاملة لأسباب أمنية
+                valuePreview: c.value?.slice(0, 10) ?? '',
+                options: {
+                  ...c.options,
+                  secure: process.env.NODE_ENV === 'production',
+                },
+              }))
+            );
+
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(
                 name,
@@ -25,7 +39,8 @@ export const createClient = async () => {
                 } satisfies CookieOptions
               )
             );
-          } catch {
+          } catch (error) {
+            console.error('[Supabase][setAll] Error setting cookies:', error);
             // The `setAll` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.

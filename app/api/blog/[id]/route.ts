@@ -100,6 +100,54 @@ export async function PUT(
   }
 }
 
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  // Rate limiting
+  const { response: rateLimitResponse } = await rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
+  try {
+    await requireAuth();
+    const { id } = await params;
+    const body = await request.json();
+    const data = updateBlogPostSchema.parse(body);
+
+    const post = await prisma.blogPost.update({
+      where: { id },
+      data,
+      include: {
+        author: {
+          select: {
+            id: true,
+            email: true,
+          },
+        },
+        category: true,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: post,
+      message: 'تم تحديث المقال بنجاح',
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: error.errors[0].message },
+        { status: 400 }
+      );
+    }
+    console.error('Error updating blog post:', error);
+    return NextResponse.json(
+      { error: 'حدث خطأ أثناء تحديث المقال' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

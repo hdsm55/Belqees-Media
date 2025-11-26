@@ -35,7 +35,7 @@ export const AdvertisingIcon: React.FC<IconProps> = ({
         strokeWidth="2"
         strokeLinecap="round"
       />
-      <circle cx="6" cy="22.5" r="6" fill={redDotColor} />
+      <circle cx="6" cy="22.5" r="6" fill={redDotColor} className="recording-dot" />
       <path
         d="M18 17.5L18 27.5"
         stroke={stroke}
@@ -80,9 +80,9 @@ export const CorporateContentIcon: React.FC<IconProps> = ({
         d="M2 2.95376L57 2.95377V36.7959L51.2262 36.7959H48.5C47.9477 36.7959 47.5 37.2436 47.5 37.7959C47.5 38.3482 47.9477 38.7959 48.5 38.7959H51.2262H57C58.1046 38.7959 59 37.9004 59 36.7959V2.95377C59 1.8492 58.1046 0.953766 57 0.953766H2C0.895431 0.953766 0 1.84919 0 2.95376V38.7959V46.0427C0 47.6742 1.84816 48.6192 3.17083 47.6642L14.9282 39.1744C15.269 38.9283 15.6786 38.7959 16.099 38.7959H43.5C44.0523 38.7959 44.5 38.3482 44.5 37.7959C44.5 37.2436 44.0523 36.7959 43.5 36.7959H16.099C15.2583 36.7959 14.4389 37.0608 13.7573 37.5529L2 46.0427V38.7959V2.95376Z"
         fill={fill}
       />
-      <ellipse cx="15" cy="19.9538" rx="6" ry="6" fill={redDotColor} />
-      <ellipse cx="30" cy="19.9538" rx="6" ry="6" fill={redDotColor} />
-      <ellipse cx="45" cy="19.9538" rx="6" ry="6" fill={redDotColor} />
+      <ellipse cx="15" cy="19.9538" rx="6" ry="6" fill={redDotColor} className="recording-dot" />
+      <ellipse cx="30" cy="19.9538" rx="6" ry="6" fill={redDotColor} className="recording-dot" />
+      <ellipse cx="45" cy="19.9538" rx="6" ry="6" fill={redDotColor} className="recording-dot" />
     </svg>
   );
 };
@@ -139,7 +139,7 @@ export const DocumentariesIcon: React.FC<IconProps> = ({
         strokeWidth="2"
         strokeLinecap="round"
       />
-      <ellipse cx="21" cy="32" rx="6" ry="6" fill={redDotColor} />
+      <ellipse cx="21" cy="32" rx="6" ry="6" fill={redDotColor} className="recording-dot" />
     </svg>
   );
 };
@@ -160,7 +160,7 @@ export const MicroproductionsIcon: React.FC<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <ellipse cx="31.5476" cy="31.5" rx="6" ry="6" fill={redDotColor} />
+      <ellipse cx="31.5476" cy="31.5" rx="6" ry="6" fill={redDotColor} className="recording-dot" />
       <path
         d="M20.6523 11.0733V19.7524C20.6523 20.3047 20.2046 20.7524 19.6523 20.7524H10.9733"
         stroke={stroke}
@@ -240,7 +240,7 @@ export const InnovativeEfficiencyIcon: React.FC<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <ellipse cx="33.5" cy="33.5002" rx="6" ry="6" fill={redDotColor} className="dot-inner" />
+      <ellipse cx="33.5" cy="33.5002" rx="6" ry="6" fill={redDotColor} className="dot-inner recording-dot" />
       <path d="M28.5 49.5002H38.5" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
       <path d="M26.5 55.5002H40.5" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
       <path d="M28.5 61.5002H38.5" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
@@ -275,8 +275,8 @@ export const BuildingConnectionsIcon: React.FC<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <ellipse className="dot-inner" cx="55.75" cy="11.5002" rx="6" ry="6" fill={redDotColor} />
-      <ellipse className="dot-inner" cx="6.25" cy="43.5002" rx="6" ry="6" fill={redDotColor} />
+      <ellipse className="dot-inner recording-dot" cx="55.75" cy="11.5002" rx="6" ry="6" fill={redDotColor} />
+      <ellipse className="dot-inner recording-dot" cx="6.25" cy="43.5002" rx="6" ry="6" fill={redDotColor} />
       <path
         d="M31.25 16.5002L31.25 14.0002C31.25 7.09668 25.584 1.50024 18.6804 1.50024V1.50024C11.8533 1.50024 6.25 7.03472 6.25 13.8618V13.8618"
         stroke={stroke}
@@ -291,7 +291,7 @@ export const BuildingConnectionsIcon: React.FC<IconProps> = ({
       />
       <path d="M6.25 32L6.25 20" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
       <path d="M55.916 34L55.916 22" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
-      <ellipse cx="31.25" cy="27.5" rx="6" ry="6" fill={redDotColor} className="dot-inner" />
+      <ellipse cx="31.25" cy="27.5" rx="6" ry="6" fill={redDotColor} className="dot-inner recording-dot" />
     </svg>
   );
 };
@@ -326,7 +326,7 @@ export const ForwardVisionIcon: React.FC<IconProps> = ({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <ellipse cx="73.1143" cy="30.5002" rx="7" ry="7" fill={redDotColor} className="dot-inner" />
+      <ellipse cx="73.1143" cy="30.5002" rx="7" ry="7" fill={redDotColor} className="dot-inner recording-dot" />
     </svg>
   );
 };

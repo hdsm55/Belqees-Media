@@ -44,11 +44,11 @@ export default function StatsSection({ stats }: StatsSectionProps) {
               {/* Corner Brackets */}
               <CornerBrackets showOnHover={true} />
 
-              {/* Red Circle in Top Right Corner - تلمع باستمرار */}
+              {/* Red Circle in Top Right Corner */}
               <div
-                className="absolute top-3 right-3 w-3 h-3 bg-primary-500 rounded-full animate-pulse-red"
+                className="absolute top-3 right-3 w-3 h-3 bg-primary-500 rounded-full recording-dot-pulse"
                 style={{
-                  boxShadow: '0 0 10px rgba(217, 0, 0, 0.6), 0 0 20px rgba(217, 0, 0, 0.4)'
+                  boxShadow: 'none'
                 }}
                 aria-hidden="true"
               />

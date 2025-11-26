@@ -58,29 +58,48 @@ html.lenis {
       cursor: none !important;
     }
 
-    /* Recording Dot Animation - لقطة تسجيل */
-    @keyframes recordingPulse {
-
-      0%,
-      100% {
+    /* Recording Dot Pulse Animation - لمعة بدون توهج (مثل ضوء التسجيل في الكاميرات) */
+    @keyframes recordingDotPulse {
+      0%, 100% {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-        box-shadow: 0 0 8px rgba(217, 0, 0, 0.8), 0 0 16px rgba(217, 0, 0, 0.4);
       }
-
       50% {
-        opacity: 0.6;
-        transform: translate(-50%, -50%) scale(0.9);
-        box-shadow: 0 0 12px rgba(217, 0, 0, 1), 0 0 24px rgba(217, 0, 0, 0.6);
+        opacity: 0.3;
+      }
+    }
+
+    /* Recording Dot Pulse Animation for SVG elements */
+    @keyframes recordingDotPulseSvg {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.3;
       }
     }
 
     .cursor-recording-dot {
-      animation: recordingPulse 1.5s ease-in-out infinite;
+      animation: none;
     }
 
     .cursor-recording-dot:hover {
       animation: none;
+    }
+
+    /* Recording dot pulse animation - لمعة بدون توهج */
+    .recording-dot-pulse {
+      animation: recordingDotPulse 1.2s ease-in-out infinite;
+    }
+
+    /* Recording dot animation for all red dots in SVG icons */
+    .recording-dot,
+    [class*="recording-dot"] {
+      animation: recordingDotPulseSvg 1.2s ease-in-out infinite;
+    }
+
+    /* Apply to SVG elements with recording-dot class */
+    svg .recording-dot {
+      animation: recordingDotPulseSvg 1.2s ease-in-out infinite;
     }
   }
 

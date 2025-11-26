@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createRouteClient } from '@/lib/supabase/route-client';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { rateLimit } from '@/lib/rate-limit';
@@ -18,7 +18,7 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
     const body = await request.json();
     const { email, password } = loginSchema.parse(body);
 
-    const supabase = await createClient();
+    const { supabase, withSupabaseCookies } = createRouteClient(request);
 
     // تسجيل الدخول في Supabase
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
@@ -30,13 +30,8 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
         throw new InvalidCredentialsError();
     }
 
-    // التأكد من حفظ الجلسة في الكوكيز (مهم لـ getCurrentUser ولوحة التحكم)
-    if (authData.session) {
-        await supabase.auth.setSession({
-            access_token: authData.session.access_token,
-            refresh_token: authData.session.refresh_token,
-        });
-    }
+    // ملاحظة: مع createRouteClient، Supabase سيقوم بضبط الكوكيز عبر setAll تلقائيًا
+    // ولا حاجة لاستدعاء setSession يدويًا هنا.
 
     // البحث عن المستخدم في قاعدة البيانات أو إنشاؤه
     let user = await prisma.user.findUnique({
@@ -54,7 +49,7 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
         });
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
         success: true,
         data: {
             user: {
@@ -65,5 +60,8 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
             session: authData.session,
         },
     });
+
+    // دمج الكوكيز التي عيّنها Supabase في الرد النهائي
+    return withSupabaseCookies(response);
 });
 

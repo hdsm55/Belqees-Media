@@ -135,18 +135,11 @@ export default function Button({
         {/* دائرة التسجيل الحمراء */}
         {shouldShowDot && (
           <span
-            className="relative flex-shrink-0 w-3 h-3 rounded-full bg-[#D90000] z-10"
+            className="relative flex-shrink-0 w-3 h-3 rounded-full bg-[#D90000] z-10 recording-dot-pulse"
             style={{
-              boxShadow: '0 0 8px rgba(217, 0, 0, 0.8), 0 0 16px rgba(217, 0, 0, 0.4)',
+              boxShadow: 'none',
             }}
-          >
-            <span
-              className="absolute inset-0 rounded-full bg-[#D90000] animate-ping opacity-75"
-              style={{
-                animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              }}
-            />
-          </span>
+          />
         )}
 
         <span className="relative z-10 font-semibold text-sm sm:text-base">{children}</span>

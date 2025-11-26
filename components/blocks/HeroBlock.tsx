@@ -237,15 +237,17 @@ export default function HeroBlock({
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-[1] w-full flex flex-col items-center justify-center min-h-[calc(90vh-4rem)] md:min-h-[calc(100vh-5rem)]">
         <div className="max-w-5xl mx-auto w-full">
-          <div className="text-center space-y-5 md:space-y-6 lg:space-y-8 flex flex-col items-center">
+          <div className="text-center space-y-6 md:space-y-8 lg:space-y-10 flex flex-col items-center">
             {/* Title - العنوان الرئيسي */}
             <h1
               ref={titleRef}
-              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold opacity-0 leading-tight tracking-tight w-full ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-white drop-shadow-2xl' : 'text-dark dark:text-gray-100'}`}
+              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold opacity-0 leading-[1.2] tracking-tight w-full max-w-4xl ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-white drop-shadow-2xl' : 'text-dark dark:text-gray-100'}`}
               style={{
                 textShadow: backgroundVideo || youtubeVideoId || backgroundImage
                   ? '0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(0, 0, 0, 0.3)'
                   : 'none',
+                wordSpacing: '0.1em',
+                letterSpacing: '-0.02em',
               }}
             >
               {title}
@@ -255,11 +257,12 @@ export default function HeroBlock({
             {subtitle && (
               <p
                 ref={subtitleRef}
-                className={`text-base sm:text-lg md:text-xl lg:text-2xl opacity-0 font-medium w-full ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-gray-100 drop-shadow-lg' : 'text-dark-light dark:text-gray-300'}`}
+                className={`text-base sm:text-lg md:text-xl lg:text-2xl opacity-0 font-medium w-full max-w-2xl leading-relaxed ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-gray-100 drop-shadow-lg' : 'text-dark-light dark:text-gray-300'}`}
                 style={{
                   textShadow: backgroundVideo || youtubeVideoId || backgroundImage
                     ? '0 2px 10px rgba(0, 0, 0, 0.4)'
                     : 'none',
+                  letterSpacing: '0.01em',
                 }}
               >
                 {subtitle}

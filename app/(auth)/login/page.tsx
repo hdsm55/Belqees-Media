@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/atoms/Button';
 import Input from '@/components/atoms/Input';
+import { createBrowserSupabaseClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,6 +33,19 @@ export default function LoginPage() {
         const errorMessage = data.error?.message || data.error || data.message || 'حدث خطأ أثناء تسجيل الدخول';
         setError(typeof errorMessage === 'string' ? errorMessage : 'حدث خطأ أثناء تسجيل الدخول');
         return;
+      }
+
+      // في حال نجح تسجيل الدخول عبر API، نحدّث جلسة Supabase في المتصفح
+      try {
+        const supabase = createBrowserSupabaseClient();
+        if (data?.data?.session) {
+          await supabase.auth.setSession({
+            access_token: data.data.session.access_token,
+            refresh_token: data.data.session.refresh_token,
+          });
+        }
+      } catch (sessionError) {
+        console.error('Error setting Supabase session on client:', sessionError);
       }
 
       // إعادة تحميل الصفحة للانتقال إلى Dashboard

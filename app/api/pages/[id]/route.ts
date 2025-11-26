@@ -56,6 +56,33 @@ export const PUT = withErrorHandler(async (
   });
 });
 
+export const PATCH = withErrorHandler(async (
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) => {
+  // Rate limiting
+  const { response: rateLimitResponse } = await rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
+  await requireAuth();
+  const { id } = await params;
+  const body = await request.json();
+
+  const page = await prisma.page.update({
+    where: { id },
+    data: body,
+  });
+
+  // Invalidate cache
+  await invalidateCacheByTags(['pages', 'public']);
+
+  return NextResponse.json({
+    success: true,
+    data: page,
+    message: 'تم تحديث الصفحة بنجاح',
+  });
+});
+
 export const DELETE = withErrorHandler(async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
