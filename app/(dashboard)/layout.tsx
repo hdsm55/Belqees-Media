@@ -2,6 +2,9 @@ import { getCurrentUser } from '@/lib/auth/session';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
+import { ToastProvider } from '@/components/dashboard/ToastContainer';
+import NavLink from '@/components/dashboard/NavLink';
+import Button from '@/components/atoms/Button';
 
 export default async function DashboardLayout({
   children,
@@ -23,82 +26,81 @@ export default async function DashboardLayout({
   ]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <ToastProvider>
+      <div className="min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-64 bg-white shadow-lg">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-primary-600 mb-8">Belqees Media</h1>
+      <aside className="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-lg border-r border-gray-200 dark:border-gray-800">
+        <div className="p-6 h-full flex flex-col">
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+              Belqees Media
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">لوحة التحكم</p>
+          </div>
 
-          <nav className="space-y-2">
-            <Link
-              href="/dashboard"
-              className="block px-4 py-2 rounded hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-            >
+          <nav className="space-y-1 flex-1">
+            <NavLink href="/dashboard" icon="📊">
               لوحة التحكم
-            </Link>
-            <Link
-              href="/dashboard/pages"
-              className="block px-4 py-2 rounded hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-            >
-              الصفحات ({pagesCount})
-            </Link>
-            <Link
-              href="/dashboard/services"
-              className="block px-4 py-2 rounded hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-            >
-              الخدمات ({servicesCount})
-            </Link>
-            <Link
-              href="/dashboard/portfolio"
-              className="block px-4 py-2 rounded hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-            >
-              الأعمال ({portfolioCount})
-            </Link>
-            <Link
-              href="/dashboard/events"
-              className="block px-4 py-2 rounded hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-            >
+            </NavLink>
+            <NavLink href="/dashboard/pages" icon="📄" badge={pagesCount}>
+              الصفحات
+            </NavLink>
+            <NavLink href="/dashboard/services" icon="⚙️" badge={servicesCount}>
+              الخدمات
+            </NavLink>
+            <NavLink href="/dashboard/portfolio" icon="💼" badge={portfolioCount}>
+              الأعمال
+            </NavLink>
+            <NavLink href="/dashboard/events" icon="📅">
               الفعاليات
-            </Link>
-            <Link
-              href="/dashboard/blog"
-              className="block px-4 py-2 rounded hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-            >
-              المدونة ({blogCount})
-            </Link>
-            <Link
-              href="/dashboard/media"
-              className="block px-4 py-2 rounded hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-            >
+            </NavLink>
+            <NavLink href="/dashboard/blog" icon="✍️" badge={blogCount}>
+              المدونة
+            </NavLink>
+            <NavLink href="/dashboard/media" icon="📁">
               الملفات
-            </Link>
+            </NavLink>
             {user.role === 'ADMIN' && (
-              <Link
-                href="/dashboard/users"
-                className="block px-4 py-2 rounded hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-              >
+              <NavLink href="/dashboard/users" icon="👥">
                 المستخدمين
-              </Link>
+              </NavLink>
             )}
           </nav>
+
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
+            <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              {user.email}
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-500">
+              الدور: {user.role}
+            </div>
+          </div>
         </div>
       </aside>
 
       {/* Main Content */}
       <div className="ml-64">
         {/* Top Bar */}
-        <header className="bg-white shadow-sm sticky top-0 z-10">
+        <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800">
           <div className="px-6 py-4 flex justify-between items-center">
-            <h2 className="text-xl font-semibold">لوحة التحكم</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">لوحة التحكم</h2>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">{user.email}</span>
+              <Link
+                href="/"
+                target="_blank"
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400"
+              >
+                عرض الموقع
+              </Link>
               <form action="/api/auth/logout" method="POST">
-                <button
+                <Button
                   type="submit"
-                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                  variant="outline"
+                  size="sm"
+                  className="border-red-300 text-red-600 hover:bg-red-50"
                 >
                   تسجيل الخروج
-                </button>
+                </Button>
               </form>
             </div>
           </div>
@@ -108,6 +110,7 @@ export default async function DashboardLayout({
         <main>{children}</main>
       </div>
     </div>
+    </ToastProvider>
   );
 }
 

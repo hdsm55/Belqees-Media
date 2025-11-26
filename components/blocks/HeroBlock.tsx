@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { gsap } from 'gsap';
 import Button from '@/components/atoms/Button';
 import ParallaxBackground from '@/components/animations/ParallaxBackground';
+import ViewportBrackets from '@/components/atoms/ViewportBrackets';
 
 interface HeroBlockProps {
   title: string;
   subtitle?: string;
-  description?: string;
   ctaText?: string;
   ctaLink?: string;
   backgroundImage?: string;
@@ -17,12 +17,12 @@ interface HeroBlockProps {
   youtubeVideoId?: string; // YouTube Video ID (اختياري)
   videoLoop?: boolean; // تكرار الفيديو
   videoMuted?: boolean; // صامت
+  videoPoster?: string; // Poster image للفيديو (اختياري)
 }
 
 export default function HeroBlock({
   title,
   subtitle,
-  description,
   ctaText = 'ابدأ الآن',
   ctaLink = '/contact',
   backgroundImage,
@@ -30,26 +30,23 @@ export default function HeroBlock({
   youtubeVideoId,
   videoLoop = true,
   videoMuted = true,
+  videoPoster,
 }: HeroBlockProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const companyNameRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Check if elements exist
-    if (!subtitleRef.current && !titleRef.current && !descriptionRef.current && !ctaRef.current) {
+    if (!subtitleRef.current && !titleRef.current && !ctaRef.current) {
       return;
     }
 
     // Set initial state - إخفاء العناصر أولاً
     const elements = [
-      companyNameRef.current,
-      subtitleRef.current,
       titleRef.current,
-      descriptionRef.current,
+      subtitleRef.current,
       ctaRef.current,
     ].filter(Boolean) as HTMLElement[];
 
@@ -70,38 +67,61 @@ export default function HeroBlock({
     });
   }, []);
 
-  // Ensure video plays dynamically
+  // Dynamic video loading with Intersection Observer
   useEffect(() => {
     if (videoRef.current && backgroundVideo) {
       const video = videoRef.current;
 
-      // Force play
-      const playPromise = video.play();
+      // Set video to load only metadata initially (not the full video)
+      video.preload = 'metadata';
 
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            // Video is playing
-          })
-          .catch((error) => {
-            // Auto-play was prevented
-            // Try to play on user interaction
-            const handleUserInteraction = () => {
-              video.play();
-              document.removeEventListener('click', handleUserInteraction);
-              document.removeEventListener('touchstart', handleUserInteraction);
-            };
-            document.addEventListener('click', handleUserInteraction);
-            document.addEventListener('touchstart', handleUserInteraction);
+      // Use Intersection Observer to load video only when visible
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Video is visible, start loading
+              video.preload = 'auto';
+
+              // Load video progressively
+              const playPromise = video.play();
+
+              if (playPromise !== undefined) {
+                playPromise
+                  .then(() => {
+                    // Video is playing
+                  })
+                  .catch((error) => {
+                    // Auto-play was prevented
+                    const handleUserInteraction = () => {
+                      video.play();
+                      document.removeEventListener('click', handleUserInteraction);
+                      document.removeEventListener('touchstart', handleUserInteraction);
+                    };
+                    document.addEventListener('click', handleUserInteraction);
+                    document.addEventListener('touchstart', handleUserInteraction);
+                  });
+              }
+
+              // Unobserve after loading starts
+              observer.unobserve(video);
+            }
           });
-      }
+        },
+        {
+          rootMargin: '50px', // Start loading 50px before video is visible
+          threshold: 0.1,
+        }
+      );
+
+      observer.observe(video);
 
       // Ensure video loops
       video.loop = videoLoop !== false;
       video.muted = videoMuted !== false;
 
-      // Handle video events
-      video.addEventListener('loadeddata', () => {
+      // Progressive loading: play when enough data is loaded
+      video.addEventListener('canplay', () => {
         video.play().catch(() => {
           // Silent fail if autoplay is blocked
         });
@@ -109,7 +129,7 @@ export default function HeroBlock({
 
       // Ensure video continues playing if paused
       const checkPlaying = setInterval(() => {
-        if (video.paused && !video.ended) {
+        if (video.paused && !video.ended && video.readyState >= 2) {
           video.play().catch(() => {
             // Silent fail
           });
@@ -117,37 +137,45 @@ export default function HeroBlock({
       }, 1000);
 
       return () => {
+        observer.disconnect();
         clearInterval(checkPlaying);
       };
     }
   }, [backgroundVideo, videoLoop, videoMuted]);
 
   return (
-    <section className="relative min-h-[90vh] md:min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors pt-16 md:pt-20">
+    <section className="hero-section relative min-h-[90vh] md:min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors pt-16 md:pt-20" style={{ zIndex: 0 }}>
+      {/* Viewport Brackets - إطارات الكاميرا ثابتة داخل Hero Section */}
+      <ViewportBrackets />
+
       {/* Background Video or Image */}
       {backgroundVideo && (
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0" style={{ zIndex: 0 }}>
           <video
             ref={videoRef}
             autoPlay
             loop={videoLoop}
             muted={videoMuted}
             playsInline
-            preload="auto"
+            preload="metadata"
+            poster={videoPoster || backgroundImage}
             className="absolute inset-0 w-full h-full object-cover scale-105"
             style={{ filter: 'brightness(0.75) contrast(1.1)' }}
-            onLoadedData={(e) => {
+            onCanPlay={(e) => {
+              // Start playing when enough data is loaded (progressive loading)
               const video = e.currentTarget;
-              video.play().catch(() => {
-                // Silent fail if autoplay is blocked
-              });
+              if (video.readyState >= 2) {
+                video.play().catch(() => {
+                  // Silent fail if autoplay is blocked
+                });
+              }
             }}
             onPlay={() => {
               // Video is playing
             }}
             onPause={() => {
               // Try to resume if paused unexpectedly
-              if (videoRef.current && !videoRef.current.ended) {
+              if (videoRef.current && !videoRef.current.ended && videoRef.current.readyState >= 2) {
                 setTimeout(() => {
                   videoRef.current?.play().catch(() => {
                     // Silent fail
@@ -155,10 +183,20 @@ export default function HeroBlock({
                 }, 100);
               }
             }}
+            onWaiting={() => {
+              // Video is buffering - this is normal for progressive loading
+            }}
+            onError={(e) => {
+              // Fallback to poster image if video fails to load
+              const video = e.currentTarget;
+              if (videoPoster || backgroundImage) {
+                video.style.display = 'none';
+              }
+            }}
           >
             <source src={backgroundVideo} type="video/mp4" />
             <source src={backgroundVideo.replace('.mp4', '.webm')} type="video/webm" />
-            متصفحك لا يدعم الفيديو.
+            <p className="text-white">متصفحك لا يدعم الفيديو.</p>
           </video>
           {/* Gradient Overlay - خفيف لإظهار الفيديو */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
@@ -197,27 +235,13 @@ export default function HeroBlock({
       )}
 
       {/* Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col items-center justify-center min-h-[calc(90vh-4rem)] md:min-h-[calc(100vh-5rem)]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-[1] w-full flex flex-col items-center justify-center min-h-[calc(90vh-4rem)] md:min-h-[calc(100vh-5rem)]">
         <div className="max-w-5xl mx-auto w-full">
           <div className="text-center space-y-5 md:space-y-6 lg:space-y-8 flex flex-col items-center">
-            {/* Company Name - بلقيس ميديا */}
-            <div
-              ref={companyNameRef}
-              className={`opacity-0 text-sm sm:text-base md:text-lg lg:text-xl font-semibold tracking-wider uppercase ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-white/90 drop-shadow-lg' : 'text-primary-500 dark:text-primary-400'}`}
-              style={{
-                textShadow: backgroundVideo || youtubeVideoId || backgroundImage
-                  ? '0 2px 8px rgba(0, 0, 0, 0.4)'
-                  : 'none',
-                letterSpacing: '0.15em',
-              }}
-            >
-              بلقيس ميديا
-            </div>
-
-            {/* Title */}
+            {/* Title - العنوان الرئيسي */}
             <h1
               ref={titleRef}
-              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold opacity-0 leading-tight tracking-tight w-full ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-white drop-shadow-2xl' : 'text-dark dark:text-gray-100'}`}
+              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold opacity-0 leading-tight tracking-tight w-full ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-white drop-shadow-2xl' : 'text-dark dark:text-gray-100'}`}
               style={{
                 textShadow: backgroundVideo || youtubeVideoId || backgroundImage
                   ? '0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(0, 0, 0, 0.3)'
@@ -227,7 +251,7 @@ export default function HeroBlock({
               {title}
             </h1>
 
-            {/* Subtitle */}
+            {/* Subtitle - العنوان الفرعي */}
             {subtitle && (
               <p
                 ref={subtitleRef}
@@ -242,31 +266,15 @@ export default function HeroBlock({
               </p>
             )}
 
-            {/* Description */}
-            {description && (
-              <p
-                ref={descriptionRef}
-                className={`text-sm sm:text-base md:text-lg opacity-0 max-w-3xl mx-auto leading-relaxed w-full ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-gray-200 drop-shadow-md' : 'text-dark-light dark:text-gray-400'}`}
-                style={{
-                  textShadow: backgroundVideo || youtubeVideoId || backgroundImage
-                    ? '0 1px 5px rgba(0, 0, 0, 0.3)'
-                    : 'none',
-                }}
-              >
-                {description}
-              </p>
-            )}
-
-            {/* CTA Button - محاذاة في المنتصف */}
+            {/* CTA Button - زر التواصل */}
             <div ref={ctaRef} className="opacity-0 pt-2 flex justify-center w-full">
               <Link href={ctaLink} className="inline-block">
                 <Button
-                  variant="primary"
+                  variant="recording"
                   size="lg"
-                  className="inline-block text-base sm:text-lg px-8 py-4 rounded-lg shadow-xl hover:shadow-primary/50 hover:scale-105 transition-all duration-300 font-semibold"
-                  style={{
-                    boxShadow: '0 8px 30px rgba(217, 0, 0, 0.4), 0 4px 12px rgba(217, 0, 0, 0.3)',
-                  }}
+                  showRecordingDot={true}
+                  showBrackets={true}
+                  continuousGlow={true}
                 >
                   {ctaText}
                 </Button>
@@ -275,16 +283,6 @@ export default function HeroBlock({
           </div>
         </div>
 
-        {/* Scroll Indicator - محاذاة في المنتصف تماماً - حركة سلسة */}
-        {(backgroundVideo || youtubeVideoId || backgroundImage) && (
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex justify-center items-center">
-            <div className="w-5 h-8 border border-white/60 rounded-full flex items-start justify-center pt-1.5">
-              <div className="w-1 h-2 bg-white/80 rounded-full" style={{
-                animation: 'scrollIndicator 2s ease-in-out infinite'
-              }} />
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );

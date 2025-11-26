@@ -1,70 +1,69 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { rateLimit } from '@/lib/rate-limit';
+import { withErrorHandler, InvalidCredentialsError } from '@/lib/errors';
 
 const loginSchema = z.object({
     email: z.string().email('البريد الإلكتروني غير صحيح'),
     password: z.string().min(6, 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'),
 });
 
-export async function POST(request: Request) {
-    try {
-        const body = await request.json();
-        const { email, password } = loginSchema.parse(body);
+export const POST = withErrorHandler(async (request: NextRequest) => {
+    // Rate limiting (خاص بتسجيل الدخول - 5 requests/minute)
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
 
-        const supabase = await createClient();
+    const body = await request.json();
+    const { email, password } = loginSchema.parse(body);
 
-        // تسجيل الدخول في Supabase
-        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-            email,
-            password,
+    const supabase = await createClient();
+
+    // تسجيل الدخول في Supabase
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+    });
+
+    if (authError || !authData.user) {
+        throw new InvalidCredentialsError();
+    }
+
+    // التأكد من حفظ الجلسة في الكوكيز (مهم لـ getCurrentUser ولوحة التحكم)
+    if (authData.session) {
+        await supabase.auth.setSession({
+            access_token: authData.session.access_token,
+            refresh_token: authData.session.refresh_token,
         });
+    }
 
-        if (authError || !authData.user) {
-            return NextResponse.json(
-                { error: 'البريد الإلكتروني أو كلمة المرور غير صحيحة' },
-                { status: 401 }
-            );
-        }
+    // البحث عن المستخدم في قاعدة البيانات أو إنشاؤه
+    let user = await prisma.user.findUnique({
+        where: { supabaseUserId: authData.user.id },
+    });
 
-        // البحث عن المستخدم في قاعدة البيانات أو إنشاؤه
-        let user = await prisma.user.findUnique({
-            where: { supabaseUserId: authData.user.id },
+    if (!user) {
+        // إنشاء مستخدم جديد في قاعدة البيانات
+        user = await prisma.user.create({
+            data: {
+                email: authData.user.email!,
+                supabaseUserId: authData.user.id,
+                role: 'VIEWER', // الدور الافتراضي
+            },
         });
+    }
 
-        if (!user) {
-            // إنشاء مستخدم جديد في قاعدة البيانات
-            user = await prisma.user.create({
-                data: {
-                    email: authData.user.email!,
-                    supabaseUserId: authData.user.id,
-                    role: 'VIEWER', // الدور الافتراضي
-                },
-            });
-        }
-
-        return NextResponse.json({
+    return NextResponse.json({
+        success: true,
+        data: {
             user: {
                 id: user.id,
                 email: user.email,
                 role: user.role,
             },
             session: authData.session,
-        });
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return NextResponse.json(
-                { error: error.errors[0].message },
-                { status: 400 }
-            );
-        }
-
-        console.error('Login error:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء تسجيل الدخول' },
-            { status: 500 }
-        );
-    }
-}
+        },
+    });
+});
 

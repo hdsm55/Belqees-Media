@@ -28,7 +28,9 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'حدث خطأ أثناء تسجيل الدخول');
+        // Handle error object from error handler
+        const errorMessage = data.error?.message || data.error || data.message || 'حدث خطأ أثناء تسجيل الدخول';
+        setError(typeof errorMessage === 'string' ? errorMessage : 'حدث خطأ أثناء تسجيل الدخول');
         return;
       }
 

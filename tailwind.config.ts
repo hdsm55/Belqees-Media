@@ -30,8 +30,14 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['Poppins', 'Roboto', 'system-ui', 'sans-serif'],
-        arabic: ['Cairo', 'Tajawal', 'sans-serif'],
+        // Cinematic Display Font for Headings
+        display: ['var(--font-playfair)', 'Playfair Display', 'serif'],
+        // Modern Sans-serif for Body
+        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
+        // Cinematic Modern Font
+        cinematic: ['var(--font-space-grotesk)', 'Space Grotesk', 'sans-serif'],
+        // Arabic Font
+        arabic: ['var(--font-cairo)', 'Cairo', 'Tajawal', 'sans-serif'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.025em' }],

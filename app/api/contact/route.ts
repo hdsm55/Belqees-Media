@@ -1,69 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { contactSchema } from '@/lib/validations/contact';
+import { rateLimit } from '@/lib/rate-limit';
+import { withErrorHandler, ValidationError } from '@/lib/errors';
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
+export const POST = withErrorHandler(async (request: NextRequest) => {
+  // Rate limiting (خاص بنموذج الاتصال - 3 requests/hour)
+  const { response: rateLimitResponse } = await rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
 
-    // Validate with Zod
-    const result = contactSchema.safeParse(body);
+  const body = await request.json();
 
-    if (!result.success) {
-      return NextResponse.json(
-        {
-          error: 'Validation failed',
-          details: result.error.errors.map(err => ({
-            field: err.path[0],
-            message: err.message,
-          })),
-        },
-        { status: 400 }
-      );
-    }
+  // Validate with Zod
+  const result = contactSchema.safeParse(body);
 
-    const { name, email, message, subject } = result.data;
-
-    const contactMessage = await prisma.contactMessage.create({
-      data: {
-        name,
-        email,
-        message,
-        subject: subject || null,
-      },
-    });
-
-    return NextResponse.json(
-      {
-        status: 'success',
-        message: 'تم إرسال الرسالة بنجاح',
-        data: contactMessage,
-      },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error('Error creating contact message:', error);
-    return NextResponse.json(
-      {
-        status: 'error',
-        error: 'Failed to create contact message',
-      },
-      { status: 500 }
-    );
+  if (!result.success) {
+    throw new ValidationError('خطأ في التحقق من البيانات', result.error.errors);
   }
-}
 
-export async function GET() {
-  try {
-    const messages = await prisma.contactMessage.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
-    return NextResponse.json(messages);
-  } catch (error) {
-    console.error('Error fetching contact messages:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch contact messages' },
-      { status: 500 }
-    );
-  }
-}
+  const { name, email, message, subject } = result.data;
+
+  const contactMessage = await prisma.contactMessage.create({
+    data: {
+      name,
+      email,
+      message,
+      subject: subject || null,
+    },
+  });
+
+  return NextResponse.json(
+    {
+      success: true,
+      message: 'تم إرسال الرسالة بنجاح',
+      data: contactMessage,
+    },
+    { status: 201 }
+  );
+});
+
+export const GET = withErrorHandler(async (request: NextRequest) => {
+  // Rate limiting
+  const { response: rateLimitResponse } = await rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
+  const messages = await prisma.contactMessage.findMany({
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return NextResponse.json({
+    success: true,
+    data: messages,
+  });
+});

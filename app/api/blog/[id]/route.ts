@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth/session';
 import { z } from 'zod';
+import { rateLimit } from '@/lib/rate-limit';
 
 const updateBlogPostSchema = z.object({
   slug: z.string().min(1).optional(),
@@ -15,9 +16,13 @@ const updateBlogPostSchema = z.object({
 });
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // Rate limiting
+  const { response: rateLimitResponse } = await rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const { id } = await params;
     const post = await prisma.blogPost.findUnique({
@@ -52,9 +57,13 @@ export async function GET(
 }
 
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // Rate limiting
+  const { response: rateLimitResponse } = await rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     await requireAuth();
     const { id } = await params;
@@ -92,9 +101,13 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // Rate limiting
+  const { response: rateLimitResponse } = await rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     await requireAuth();
     const { id } = await params;

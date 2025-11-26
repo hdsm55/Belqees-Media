@@ -29,7 +29,9 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'حدث خطأ أثناء إنشاء الحساب');
+        // Handle error object from error handler
+        const errorMessage = data.error?.message || data.error || data.message || 'حدث خطأ أثناء إنشاء الحساب';
+        setError(typeof errorMessage === 'string' ? errorMessage : 'حدث خطأ أثناء إنشاء الحساب');
         return;
       }
 

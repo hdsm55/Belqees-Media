@@ -30,13 +30,15 @@ export default function Error({
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             onClick={reset}
-            variant="primary"
+            variant="video"
+            size="lg"
             className="w-full sm:w-auto"
+            showRecordingDot={true}
           >
             حاول مرة أخرى
           </Button>
           <Link href="/">
-            <Button variant="outline" className="w-full sm:w-auto">
+            <Button variant="video" size="lg" className="w-full sm:w-auto" showRecordingDot={true}>
               العودة للرئيسية
             </Button>
           </Link>
@@ -45,7 +47,9 @@ export default function Error({
         {process.env.NODE_ENV === 'development' && error.message && (
           <div className="mt-8 p-4 bg-gray-100 rounded-lg text-left">
             <p className="text-sm font-mono text-red-600 break-all">
-              {error.message}
+              {typeof error.message === 'string'
+                ? error.message
+                : JSON.stringify(error.message, null, 2)}
             </p>
           </div>
         )}

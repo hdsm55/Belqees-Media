@@ -1,4 +1,3 @@
-import Header from '@/components/organisms/Header';
 import Footer from '@/components/organisms/Footer';
 import PageTransition from '@/components/animations/PageTransition';
 
@@ -8,9 +7,8 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1">
+    <div className="min-h-screen flex flex-col relative">
+      <main className="flex-1 relative" style={{ zIndex: 1, position: 'relative' }}>
         <PageTransition>
           {children}
         </PageTransition>

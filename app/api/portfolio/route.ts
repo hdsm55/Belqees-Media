@@ -1,7 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth/session';
 import { z } from 'zod';
+import { rateLimit } from '@/lib/rate-limit';
+import { withErrorHandler } from '@/lib/errors';
+import { withCache, invalidateCacheByTags } from '@/lib/cache/middleware';
 
 const portfolioSchema = z.object({
     slug: z.string().min(1),
@@ -13,41 +16,78 @@ const portfolioSchema = z.object({
     published: z.boolean().default(false),
 });
 
-export async function GET() {
-    try {
-        const portfolio = await prisma.portfolio.findMany({
-            orderBy: { createdAt: 'desc' },
-        });
-        return NextResponse.json(portfolio);
-    } catch (error) {
-        console.error('Error fetching portfolio:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء جلب الأعمال' },
-            { status: 500 }
-        );
-    }
-}
+export const GET = withCache(
+    withErrorHandler(async (request: NextRequest) => {
+        // Rate limiting
+        const { response: rateLimitResponse } = await rateLimit(request);
+        if (rateLimitResponse) return rateLimitResponse;
 
-export async function POST(request: Request) {
-    try {
-        await requireAuth();
-        const body = await request.json();
-        const data = portfolioSchema.parse(body);
+        const { searchParams } = new URL(request.url);
+        const category = searchParams.get('category');
+        const published = searchParams.get('published');
+        const limit = searchParams.get('limit');
+        const offset = searchParams.get('offset');
 
-        const item = await prisma.portfolio.create({ data });
-        return NextResponse.json(item, { status: 201 });
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return NextResponse.json(
-                { error: error.errors[0].message },
-                { status: 400 }
-            );
+        const where: any = {};
+
+        // Filter by published status (default: only published)
+        if (published === 'all') {
+            // Show all (for admin)
+        } else {
+            where.published = true;
         }
-        console.error('Error creating portfolio item:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء إنشاء العمل' },
-            { status: 500 }
-        );
+
+        // Filter by category
+        if (category) {
+            where.category = category;
+        }
+
+        const portfolio = await prisma.portfolio.findMany({
+            where,
+            orderBy: { createdAt: 'desc' },
+            take: limit ? parseInt(limit) : undefined,
+            skip: offset ? parseInt(offset) : undefined,
+        });
+
+        const total = await prisma.portfolio.count({ where });
+
+        return NextResponse.json({
+            success: true,
+            data: portfolio,
+            pagination: {
+                total,
+                limit: limit ? parseInt(limit) : null,
+                offset: offset ? parseInt(offset) : null,
+            },
+        });
+    }),
+    {
+        type: 'portfolio',
+        skip: (request: NextRequest) => {
+            const url = new URL(request.url);
+            return url.searchParams.get('published') === 'all';
+        }
     }
-}
+);
+
+export const POST = withErrorHandler(async (request: NextRequest) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
+
+    await requireAuth();
+    const body = await request.json();
+    const data = portfolioSchema.parse(body);
+
+    const item = await prisma.portfolio.create({ data });
+
+    // Invalidate cache
+    await invalidateCacheByTags(['portfolio', 'public']);
+
+    return NextResponse.json({
+        success: true,
+        data: item,
+        message: 'تم إنشاء العمل بنجاح',
+    }, { status: 201 });
+});
 

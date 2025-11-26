@@ -1,7 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth/session';
 import { z } from 'zod';
+import { rateLimit } from '@/lib/rate-limit';
+import { withErrorHandler, NotFoundError } from '@/lib/errors';
+import { invalidateCacheByTags } from '@/lib/cache/middleware';
 
 const updateServiceSchema = z.object({
     slug: z.string().min(1).optional(),
@@ -13,82 +16,78 @@ const updateServiceSchema = z.object({
     published: z.boolean().optional(),
 });
 
-export async function GET(
-    request: Request,
+export const GET = withErrorHandler(async (
+    request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) {
-    try {
-        const { id } = await params;
-        const service = await prisma.service.findUnique({
-            where: { id },
-        });
+) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
 
-        if (!service) {
-            return NextResponse.json(
-                { error: 'الخدمة غير موجودة' },
-                { status: 404 }
-            );
-        }
+    const { id } = await params;
+    const service = await prisma.service.findUnique({
+        where: { id },
+    });
 
-        return NextResponse.json(service);
-    } catch (error) {
-        console.error('Error fetching service:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء جلب الخدمة' },
-            { status: 500 }
-        );
+    if (!service) {
+        throw new NotFoundError('الخدمة');
     }
-}
 
-export async function PUT(
-    request: Request,
+    return NextResponse.json({
+        success: true,
+        data: service,
+    });
+});
+
+export const PUT = withErrorHandler(async (
+    request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) {
-    try {
-        await requireAuth();
-        const { id } = await params;
-        const body = await request.json();
-        const data = updateServiceSchema.parse(body);
+) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
 
-        const service = await prisma.service.update({
-            where: { id },
-            data,
-        });
+    await requireAuth();
+    const { id } = await params;
+    const body = await request.json();
+    const data = updateServiceSchema.parse(body);
 
-        return NextResponse.json(service);
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return NextResponse.json(
-                { error: error.errors[0].message },
-                { status: 400 }
-            );
-        }
-        console.error('Error updating service:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء تحديث الخدمة' },
-            { status: 500 }
-        );
-    }
-}
+    const service = await prisma.service.update({
+        where: { id },
+        data,
+    });
 
-export async function DELETE(
-    request: Request,
+    // Invalidate cache
+    await invalidateCacheByTags(['services', 'public']);
+
+    return NextResponse.json({
+        success: true,
+        data: service,
+        message: 'تم تحديث الخدمة بنجاح',
+    });
+});
+
+export const DELETE = withErrorHandler(async (
+    request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) {
-    try {
-        await requireAuth();
-        const { id } = await params;
-        await prisma.service.delete({
-            where: { id },
-        });
+) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
 
-        return NextResponse.json({ message: 'تم حذف الخدمة بنجاح' });
-    } catch (error) {
-        console.error('Error deleting service:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء حذف الخدمة' },
-            { status: 500 }
-        );
-    }
-}
+    await requireAuth();
+    const { id } = await params;
+
+    await prisma.service.delete({
+        where: { id },
+    });
+
+    // Invalidate cache
+    await invalidateCacheByTags(['services', 'public']);
+
+    return NextResponse.json({
+        success: true,
+        message: 'تم حذف الخدمة بنجاح',
+    });
+});
 

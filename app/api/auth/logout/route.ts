@@ -1,25 +1,23 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { rateLimit } from '@/lib/rate-limit';
+import { withErrorHandler } from '@/lib/errors';
 
-export async function POST() {
-    try {
-        const supabase = await createClient();
-        const { error } = await supabase.auth.signOut();
+export const POST = withErrorHandler(async (request: NextRequest) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
 
-        if (error) {
-            return NextResponse.json(
-                { error: 'حدث خطأ أثناء تسجيل الخروج' },
-                { status: 500 }
-            );
-        }
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signOut();
 
-        return NextResponse.json({ message: 'تم تسجيل الخروج بنجاح' });
-    } catch (error) {
-        console.error('Logout error:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء تسجيل الخروج' },
-            { status: 500 }
-        );
+    if (error) {
+        throw new Error('حدث خطأ أثناء تسجيل الخروج');
     }
-}
+
+    return NextResponse.json({
+        success: true,
+        message: 'تم تسجيل الخروج بنجاح',
+    });
+});
 

@@ -14,7 +14,7 @@ export default function NotFound() {
         </div>
 
         <Link href="/">
-          <Button variant="primary" className="w-full sm:w-auto">
+          <Button variant="video" size="lg" className="w-full sm:w-auto" showRecordingDot={true}>
             العودة للرئيسية
           </Button>
         </Link>

@@ -1,24 +1,22 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth/session';
+import { rateLimit } from '@/lib/rate-limit';
+import { withErrorHandler, UnauthorizedError } from '@/lib/errors';
 
-export async function GET() {
-    try {
-        const user = await getCurrentUser();
+export const GET = withErrorHandler(async (request: NextRequest) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
 
-        if (!user) {
-            return NextResponse.json(
-                { error: 'غير مصرح' },
-                { status: 401 }
-            );
-        }
+    const user = await getCurrentUser();
 
-        return NextResponse.json({ user });
-    } catch (error) {
-        console.error('Get user error:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء جلب معلومات المستخدم' },
-            { status: 500 }
-        );
+    if (!user) {
+        throw new UnauthorizedError();
     }
-}
+
+    return NextResponse.json({
+        success: true,
+        data: { user },
+    });
+});
 

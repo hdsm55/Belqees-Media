@@ -1,0 +1,180 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "events": "Events",
+    "contact": "Contact Us"
+  },
+  "hero": {
+    "title": "We make media content that fits your needs",
+    "subtitle": "From large projects to small productions",
+    "description": "In our media services, we guide companies through three main stages: detailed planning before production, effective production using expert teams, and precise post-production to create a final product that not only looks great but also communicates effectively",
+    "cta": "Contact Us"
+  },
+  "stats": {
+    "years": "Years of Experience",
+    "projects": "Completed Projects",
+    "clients": "Satisfied Clients",
+    "events": "Events Covered"
+  },
+  "services": {
+    "title": "From large projects to small productions",
+    "description": "In our media services, we guide companies through three main stages: detailed planning before production, effective production using expert teams, and precise post-production",
+    "advertising": {
+      "title": "Advertising",
+      "description": "High-quality production of television and digital advertisements"
+    },
+    "corporate": {
+      "title": "Corporate Content",
+      "description": "Professional videos for companies and institutions"
+    },
+    "documentaries": {
+      "title": "Documentaries",
+      "description": "Professional production of documentaries and impactful stories"
+    },
+    "microproductions": {
+      "title": "Microproductions",
+      "description": "Flexible media solutions for small projects"
+    },
+    "liveStreaming": {
+      "title": "Live Streaming",
+      "description": "Seamless multi-platform broadcasting for news, events, and live programs"
+    },
+    "liveEvents": {
+      "title": "Live Event Production",
+      "description": "Full technical execution of conferences, forums, and public events with multi-camera setups, sound, lighting, and live direction"
+    },
+    "studioDesign": {
+      "title": "Studio Design & Setup",
+      "description": "From planning and construction to technical integration and decor"
+    },
+    "technicalConsultancy": {
+      "title": "Technical Consultancy",
+      "description": "Supporting channels and production companies with reliable, tailored advice for studio operations and broadcasting infrastructure"
+    },
+    "training": {
+      "title": "Training & Development",
+      "description": "Courses in editing, directing, graphics, and media management tailored to production teams and broadcast professionals"
+    },
+    "mediaProduction": "Media Production"
+  },
+  "approach": {
+    "title": "Our Approach",
+    "description": "We provide a complete audiovisual service. We allocate our team and equipment according to each project's needs, ensuring customized production with high quality. We are committed to innovation, exceptional customer service, and the highest standards of ethics and editorial integrity.",
+    "linkText": "Learn More"
+  },
+  "clients": {
+    "title": "Our Partners"
+  },
+  "portfolio": {
+    "title": "Our Latest Projects",
+    "viewAll": "View All",
+    "description": "Browse a collection of our best projects in media production and live broadcasting",
+    "all": "All",
+    "viewAllProjects": "View All Projects",
+    "viewProjectDetails": "View Details",
+    "projectImage": "Project Image",
+    "projectCategory": "Project Category",
+    "noProjects": "No projects available at the moment",
+    "retry": "Retry",
+    "fetchError": "Failed to fetch data",
+    "errorOccurred": "An error occurred while fetching data",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "backToPortfolio": "Back to Portfolio",
+    "gallery": "Image Gallery",
+    "viewImage": "View Image",
+    "videoNotSupported": "Your browser does not support video.",
+    "similarProject": "Want a similar project?",
+    "similarProjectDescription": "Contact us to learn how we can help you achieve your project"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "Let us understand how media content can help your communication",
+    "cta": "Contact Us",
+    "email": "Email",
+    "phone": "Phone"
+  },
+  "about": {
+    "pageTitle": "About",
+    "pageSubtitle": "Belqees Media is a full-service media production company founded in 2015",
+    "title": "BELQEES MEDIA",
+    "intro": {
+      "title": "About the Company",
+      "description": "Belqees Media, founded in 2015, is a dynamic and forward-thinking media production company offering high-quality services both inside and outside Turkey. With years of experience and a multinational team, we combine creative, editorial, and technical expertise to support a diverse range of clients and media partners.",
+      "services": "We provide a wide range of services including live streaming, event coverage, studio setup, media production, and technical consultancy tailored for television channels and organizations."
+    },
+    "channel": {
+      "title": "Belqees Channel",
+      "description": "We operate Belqees Channel, a 24/7 satellite news station, supported by three fully equipped studios, modern broadcast technology, and an integrated headquarters that connects all editorial and technical departments for seamless production workflows."
+    },
+    "systems": {
+      "title": "Our Broadcast & Media Systems",
+      "description": "We rely on advanced media systems to ensure a smooth, professional, and fully integrated workflow — from content creation to final broadcast.",
+      "octopus": {
+        "title": "Octopus Newsroom",
+        "description": "A modern newsroom computer system (NRCS) that streamlines news planning, scripting, and rundown management from the field to broadcast."
+      },
+      "metus": {
+        "title": "Metus MAM",
+        "description": "A media asset management and archiving solution used to organize, store, and retrieve video content efficiently across production teams."
+      },
+      "brainstorm": {
+        "title": "Brainstorm 3D",
+        "description": "Real-time 3D graphics and virtual set solutions for dynamic, high-quality broadcast visuals."
+      },
+      "adobe": {
+        "title": "Adobe Creative Cloud",
+        "description": "A professional suite of tools for video editing, motion graphics, and design, used to produce high-quality visual content."
+      }
+    },
+    "values": {
+      "title": "Our Values",
+      "subtitle": "The principles that guide our work",
+      "innovativeEfficiency": {
+        "title": "Innovative Efficiency",
+        "description": "We use the latest technologies and innovative methods to ensure high efficiency in every project"
+      },
+      "buildingConnections": {
+        "title": "Building Connections",
+        "description": "We believe in the power of long-term relationships with our clients and partners to achieve mutual success"
+      },
+      "forwardVision": {
+        "title": "Forward Vision",
+        "description": "We always look to the future and prepare for upcoming challenges and opportunities in the media world"
+      }
+    },
+    "gallery": {
+      "title": "Gallery",
+      "subtitle": "Explore our stunning media projects"
+    },
+    "specialization": "We specialize in providing end-to-end services for broadcasters and content creators, including:",
+    "team": "With a skilled multinational team — including technical engineers, directors, editors, and media consultants — we serve clients both inside and outside Turkey. Our company is committed to innovation, exceptional customer service, and the highest standards of ethics and editorial integrity.",
+    "partners": {
+      "title": "Our Partners",
+      "description": "At Belqees Media, we proudly serve a diverse network of partners — including television channels, production companies, institutions, and organizations — who rely on us for a wide range of media services. From live streaming and event coverage to studio setup, media production, and technical consultancy, our partners trust us to deliver creative, reliable, and high-quality solutions tailored to their unique needs. These long-term relationships reflect our ongoing commitment to professionalism, innovation, and client satisfaction in every project we undertake."
+    }
+  },
+  "footer": {
+    "description": "A full-service media production company founded in 2015, dedicated to providing high-quality solutions for television channels, digital platforms, and live events.",
+    "quickLinks": "Quick Links",
+    "services": "Services",
+    "contactUs": "Contact Us",
+    "liveStreaming": "Live Streaming",
+    "eventProduction": "Event Production",
+    "mediaProduction": "Media Production",
+    "studioDesign": "Studio Design",
+    "technicalConsultancy": "Technical Consultancy",
+    "training": "Training & Development",
+    "allRightsReserved": "All rights reserved"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "skipToContent": "Skip to main content",
+    "companyStats": "Company Statistics",
+    "visitWebsite": "Visit website",
+    "clientLogo": "Logo"
+  }
+}

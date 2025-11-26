@@ -1,7 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth/session';
 import { z } from 'zod';
+import { rateLimit } from '@/lib/rate-limit';
+import { withErrorHandler } from '@/lib/errors';
+import { withCache, invalidateCacheByTags } from '@/lib/cache/middleware';
 
 const serviceSchema = z.object({
     slug: z.string().min(1),
@@ -13,41 +16,61 @@ const serviceSchema = z.object({
     published: z.boolean().default(false),
 });
 
-export async function GET() {
-    try {
+export const GET = withCache(
+    withErrorHandler(async (request: NextRequest) => {
+        // Rate limiting
+        const { response: rateLimitResponse } = await rateLimit(request);
+        if (rateLimitResponse) return rateLimitResponse;
+
+        const { searchParams } = new URL(request.url);
+        const published = searchParams.get('published');
+
+        const where: any = {};
+
+        // Filter by published status (default: only published)
+        if (published === 'all') {
+            // Show all (for admin)
+        } else {
+            where.published = true;
+        }
+
         const services = await prisma.service.findMany({
+            where,
             orderBy: { createdAt: 'desc' },
         });
-        return NextResponse.json(services);
-    } catch (error) {
-        console.error('Error fetching services:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء جلب الخدمات' },
-            { status: 500 }
-        );
-    }
-}
 
-export async function POST(request: Request) {
-    try {
-        await requireAuth();
-        const body = await request.json();
-        const data = serviceSchema.parse(body);
-
-        const service = await prisma.service.create({ data });
-        return NextResponse.json(service, { status: 201 });
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return NextResponse.json(
-                { error: error.errors[0].message },
-                { status: 400 }
-            );
+        return NextResponse.json({
+            success: true,
+            data: services,
+        });
+    }),
+    {
+        type: 'services',
+        skip: (request: NextRequest) => {
+            const url = new URL(request.url);
+            return url.searchParams.get('published') === 'all';
         }
-        console.error('Error creating service:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء إنشاء الخدمة' },
-            { status: 500 }
-        );
     }
-}
+);
+
+export const POST = withErrorHandler(async (request: NextRequest) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
+
+    await requireAuth();
+    const body = await request.json();
+    const data = serviceSchema.parse(body);
+
+    const service = await prisma.service.create({ data });
+
+    // Invalidate cache
+    await invalidateCacheByTags(['services', 'public']);
+
+    return NextResponse.json({
+        success: true,
+        data: service,
+        message: 'تم إنشاء الخدمة بنجاح',
+    }, { status: 201 });
+});
 

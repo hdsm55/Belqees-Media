@@ -25,18 +25,69 @@ html.lenis {
 
 @layer base {
   :root {
-    --font-poppins: 'Poppins', 'Roboto', system-ui, sans-serif;
-    --font-cairo: 'Cairo', 'Tajawal', sans-serif;
+    --font-tajawal: 'Tajawal', sans-serif;
+    --font-ibm-plex: 'IBM Plex Sans Arabic', sans-serif;
     --color-primary: #D90000;
     --color-primary-light: #FFE5E5;
     --color-dark: #000000;
     --color-dark-light: #666666;
   }
 
+  /* Custom Cursor Support */
+  @media (min-width: 768px) {
+    * {
+      cursor: none !important;
+    }
+
+    a,
+    button,
+    [role="button"],
+    [data-cursor="pointer"] {
+      cursor: none !important;
+    }
+
+    img {
+      cursor: none !important;
+    }
+
+    p,
+    span,
+    div[contenteditable],
+    input,
+    textarea {
+      cursor: none !important;
+    }
+
+    /* Recording Dot Animation - لقطة تسجيل */
+    @keyframes recordingPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 0 8px rgba(217, 0, 0, 0.8), 0 0 16px rgba(217, 0, 0, 0.4);
+      }
+
+      50% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(0.9);
+        box-shadow: 0 0 12px rgba(217, 0, 0, 1), 0 0 24px rgba(217, 0, 0, 0.6);
+      }
+    }
+
+    .cursor-recording-dot {
+      animation: recordingPulse 1.5s ease-in-out infinite;
+    }
+
+    .cursor-recording-dot:hover {
+      animation: none;
+    }
+  }
+
   /* Light Mode */
   body {
     @apply bg-white text-dark;
-    font-family: var(--font-cairo);
+    font-family: var(--font-tajawal);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
@@ -46,40 +97,119 @@ html.lenis {
   }
 
   html[dir='rtl'] body {
-    font-family: var(--font-cairo);
+    font-family: var(--font-tajawal);
   }
 
   html[dir='ltr'] body {
-    font-family: var(--font-poppins);
+    font-family: var(--font-tajawal);
+  }
+
+  /* Ensure Header is always visible */
+  header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 99999 !important;
+    background-color: transparent !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    min-height: 64px !important;
+    isolation: isolate !important;
+    transform: translateZ(0) !important;
+    will-change: transform !important;
+    pointer-events: auto !important;
+  }
+
+  .dark header {
+    background-color: transparent !important;
+  }
+
+  /* Ensure no other element covers the header */
+  body>div>header,
+  body>div>div>header,
+  #main-content header,
+  #main-content>div>header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 99999 !important;
+    background-color: transparent !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .dark body>div>header,
+  .dark body>div>div>header,
+  .dark #main-content header,
+  .dark #main-content>div>header {
+    background-color: transparent !important;
+  }
+
+  /* Prevent any section from covering the header */
+  section {
+    position: relative;
+  }
+
+  /* Ensure ViewportBrackets are visible */
+  [class*="ViewportBrackets"],
+  div[style*="zIndex: 99996"] {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 99996 !important;
+    pointer-events: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  section[class*="hero"],
+  section[class*="Hero"] {
+    z-index: 0 !important;
   }
 
   /* Typography Scale */
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight;
+    font-family: var(--font-ibm-plex);
   }
 
   h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight;
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight;
+    font-family: var(--font-ibm-plex);
   }
 
   h3 {
-    @apply text-2xl md:text-3xl font-semibold leading-snug;
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold leading-snug tracking-normal;
+    font-family: var(--font-ibm-plex);
   }
 
   h4 {
-    @apply text-xl md:text-2xl font-semibold leading-snug;
+    @apply text-lg md:text-xl lg:text-2xl font-semibold leading-snug tracking-normal;
+    font-family: var(--font-ibm-plex);
   }
 
   h5 {
-    @apply text-lg md:text-xl font-medium leading-normal;
+    @apply text-base md:text-lg lg:text-xl font-medium leading-normal tracking-normal;
+    font-family: var(--font-tajawal);
   }
 
   h6 {
-    @apply text-base md:text-lg font-medium leading-normal;
+    @apply text-sm md:text-base lg:text-lg font-medium leading-normal tracking-normal;
+    font-family: var(--font-tajawal);
   }
 
   p {
-    @apply text-base md:text-lg leading-relaxed;
+    @apply text-sm md:text-base lg:text-lg font-normal leading-relaxed tracking-normal;
   }
 
   /* Dark Mode Typography */
@@ -137,12 +267,15 @@ html {
 }
 
 /* Smooth transitions for all interactive elements */
-a, button, [role="button"] {
+a,
+button,
+[role="button"] {
   transition: all 0.2s ease-in-out;
 }
 
 /* Optimize animations */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -154,14 +287,72 @@ a, button, [role="button"] {
 
 /* Hero Section Scroll Indicator Animation - حركة سلسة وخفيفة */
 @keyframes scrollIndicator {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.4;
     transform: translateY(0);
   }
+
   50% {
     opacity: 1;
     transform: translateY(8px);
   }
+}
+
+/* Shimmer Animation - لمعة مستمرة تلمع باستمرار */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Pulse Glow Animation - لمعة نابضة مستمرة */
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Red Circle Pulsing Animation - دائرة حمراء تلمع باستمرار */
+@keyframes pulse-red {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(217, 0, 0, 0.6), 0 0 20px rgba(217, 0, 0, 0.4);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(217, 0, 0, 0.8), 0 0 30px rgba(217, 0, 0, 0.6);
+  }
+}
+
+.animate-pulse-red {
+  animation: pulse-red 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 3s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
 /* Visual Effects - tmrw.film Style */
