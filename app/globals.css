@@ -60,9 +60,12 @@ html.lenis {
 
     /* Recording Dot Pulse Animation - لمعة بدون توهج (مثل ضوء التسجيل في الكاميرات) */
     @keyframes recordingDotPulse {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: 1;
       }
+
       50% {
         opacity: 0.3;
       }
@@ -70,9 +73,12 @@ html.lenis {
 
     /* Recording Dot Pulse Animation for SVG elements */
     @keyframes recordingDotPulseSvg {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: 1;
       }
+
       50% {
         opacity: 0.3;
       }
@@ -391,6 +397,41 @@ button,
 
   .partner-logo:hover {
     transform: scale(1.08);
+  }
+
+  /* Infinite Carousel Animation - True Infinite Loop */
+  .clients-carousel-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .clients-carousel-track {
+    display: flex;
+    align-items: center;
+    will-change: transform;
+    width: fit-content;
+    min-height: 120px;
+  }
+
+  .clients-carousel-copy {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  /* Animation is now handled by JavaScript for perfect seamless loop */
+
+  /* Ensure images are visible */
+  .clients-carousel-track .partner-logo {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  /* Logo wrapper styling - prevent shrinking */
+  .clients-carousel-track .logo-wrapper {
+    flex-shrink: 0;
   }
 
   /* 2. Camera Frame Effect for Portfolio Items */

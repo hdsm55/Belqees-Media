@@ -151,11 +151,10 @@ export default function PortfolioDetailContent({ item }: PortfolioDetailContentP
               </p>
               <Link href="/contact">
                 <Button
-                  variant="recording"
+                  variant="simple"
                   size="lg"
                   showRecordingDot={true}
                   showBrackets={true}
-                  continuousGlow={true}
                 >
                   {t('nav.contact')}
                 </Button>

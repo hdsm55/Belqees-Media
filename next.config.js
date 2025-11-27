@@ -28,7 +28,7 @@ const nextConfig = {
 
   // Experimental Features for Better Performance
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Disabled - requires 'critters' package
   },
 
   // Headers for Security and Performance

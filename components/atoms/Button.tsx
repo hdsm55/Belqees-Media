@@ -4,7 +4,7 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'video' | 'recording';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'video' | 'recording' | 'simple';
   size?: 'sm' | 'md' | 'lg';
   children: ReactNode;
   showRecordingDot?: boolean; // إظهار دائرة التسجيل الحمراء
@@ -66,19 +66,80 @@ export default function Button({
       // لمعة مستمرة
       shouldGlow && 'shadow-[0_0_20px_rgba(255,255,255,0.5),0_0_40px_rgba(255,255,255,0.3),inset_0_0_10px_rgba(255,255,255,0.1)]'
     ),
+    simple: cn(
+      'relative bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300',
+      'flex items-center justify-center gap-2 px-6 py-3 rounded-lg',
+      'hover:bg-gray-300 dark:hover:bg-gray-600',
+      'transition-colors duration-300',
+      'focus:ring-2 focus:ring-gray-400 focus:ring-offset-2',
+      'font-medium'
+    ),
   };
 
   const sizes = {
-    sm: variant === 'video' || variant === 'recording' ? 'px-4 py-2 text-sm' : 'px-3 py-1.5 text-sm',
-    md: variant === 'video' || variant === 'recording' ? 'px-6 py-3 text-base' : 'px-4 py-2 text-base',
-    lg: variant === 'video' || variant === 'recording' ? 'px-8 py-4 text-lg' : 'px-6 py-3 text-lg',
+    sm: variant === 'video' || variant === 'recording' ? 'px-4 py-2 text-sm' : variant === 'simple' ? 'px-4 py-2 text-sm' : 'px-3 py-1.5 text-sm',
+    md: variant === 'video' || variant === 'recording' ? 'px-6 py-3 text-base' : variant === 'simple' ? 'px-6 py-3 text-base' : 'px-4 py-2 text-base',
+    lg: variant === 'video' || variant === 'recording' ? 'px-8 py-4 text-lg' : variant === 'simple' ? 'px-8 py-4 text-lg' : 'px-6 py-3 text-lg',
   };
 
-  // إذا كان التصميم هو recording أو video، نعرض التصميم الخاص
-  if (isRecordingStyle || variant === 'recording' || variant === 'video') {
+  // إذا كان التصميم هو simple، نعرض التصميم البسيط مع الأقواس
+  if (variant === 'simple') {
     return (
       <button
-        className={cn(baseStyles, variants[variant === 'recording' ? 'recording' : 'video'], sizes[size], className)}
+        className={cn(baseStyles, variants.simple, sizes[size], className)}
+        aria-disabled={props.disabled}
+        {...props}
+      >
+        {/* إطار L-shaped brackets */}
+        {shouldShowBrackets && (
+          <>
+            {/* Top Left Bracket */}
+            <div className="absolute top-0 left-0 w-6 h-6">
+              <div className="absolute top-0 left-0 w-4 h-0.5 bg-gray-600 dark:bg-gray-400" />
+              <div className="absolute top-0 left-0 w-0.5 h-4 bg-gray-600 dark:bg-gray-400" />
+            </div>
+
+            {/* Top Right Bracket */}
+            <div className="absolute top-0 right-0 w-6 h-6">
+              <div className="absolute top-0 right-0 w-4 h-0.5 bg-gray-600 dark:bg-gray-400" />
+              <div className="absolute top-0 right-0 w-0.5 h-4 bg-gray-600 dark:bg-gray-400" />
+            </div>
+
+            {/* Bottom Left Bracket */}
+            <div className="absolute bottom-0 left-0 w-6 h-6">
+              <div className="absolute bottom-0 left-0 w-0.5 h-4 bg-gray-600 dark:bg-gray-400" />
+              <div className="absolute bottom-0 left-0 w-4 h-0.5 bg-gray-600 dark:bg-gray-400" />
+            </div>
+
+            {/* Bottom Right Bracket */}
+            <div className="absolute bottom-0 right-0 w-6 h-6">
+              <div className="absolute bottom-0 right-0 w-0.5 h-4 bg-gray-600 dark:bg-gray-400" />
+              <div className="absolute bottom-0 right-0 w-4 h-0.5 bg-gray-600 dark:bg-gray-400" />
+            </div>
+          </>
+        )}
+
+        {/* دائرة التسجيل الحمراء - على اليمين في RTL */}
+        {shouldShowDot && (
+          <span
+            className="relative flex-shrink-0 w-3 h-3 rounded-full bg-[#D90000] z-10 recording-dot-pulse order-2"
+            style={{
+              boxShadow: 'none',
+            }}
+          />
+        )}
+
+        <span className="relative z-10 order-1">{children}</span>
+      </button>
+    );
+  }
+
+  // إذا كان التصميم هو recording أو video، نعرض التصميم الخاص
+  if (isRecordingStyle) {
+    const recordingVariant = (variant === 'recording' || variant === 'video') ? variant : 'video';
+    return (
+      <button
+        className={cn(baseStyles, variants[recordingVariant], sizes[size], className)}
         aria-disabled={props.disabled}
         {...props}
       >
@@ -147,9 +208,11 @@ export default function Button({
     );
   }
 
+  // Default button styles
+  const defaultVariant = variant || 'primary';
   return (
     <button
-      className={cn(baseStyles, variants[variant], sizes[size], className)}
+      className={cn(baseStyles, variants[defaultVariant as keyof typeof variants], sizes[size], className)}
       aria-disabled={props.disabled}
       {...props}
     >

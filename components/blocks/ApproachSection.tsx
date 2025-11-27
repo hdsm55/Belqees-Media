@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import Button from '@/components/atoms/Button';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -26,28 +27,51 @@ export default function ApproachSection({
   return (
     <section className="py-20 bg-white dark:bg-gray-900 transition-colors">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <ScrollReveal animation="fadeInUp">
-            <div className="text-right">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dark dark:text-gray-100 mb-6 md:mb-8">{displayTitle}</h2>
-              <p className="text-sm sm:text-base md:text-lg text-dark-light dark:text-gray-300 leading-relaxed mb-8 md:mb-10 max-w-2xl ml-auto">{description}</p>
-              {linkHref && (
-                <div className="flex justify-end">
-                  <Link href={linkHref}>
+        <div className="border border-black dark:border-gray-700">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+            {/* الصورة في القسم الأيسر */}
+            {image ? (
+              <ScrollReveal animation="fadeInUp" delay={0.1}>
+                <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-800">
+                  <Image
+                    src={image}
+                    alt={displayTitle || 'Our approach'}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    loading="lazy"
+                  />
+                  {/* نقطة حمراء في الزاوية العلوية اليسرى */}
+                  <div className="absolute top-3 left-3 w-3 h-3 bg-[#D90000] rounded-full recording-dot-pulse" />
+                </div>
+              </ScrollReveal>
+            ) : (
+              <div className="relative aspect-[4/3] bg-gray-100 dark:bg-gray-800">
+                {/* نقطة حمراء في الزاوية العلوية اليسرى */}
+                <div className="absolute top-3 left-3 w-3 h-3 bg-[#D90000] rounded-full recording-dot-pulse" />
+              </div>
+            )}
+
+            {/* النص في القسم الأيمن */}
+            <ScrollReveal animation="fadeInUp">
+              <div className="text-right p-8 md:p-12 lg:p-16">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dark dark:text-gray-100 mb-4 md:mb-6">{displayTitle}</h2>
+                <p className="text-sm sm:text-base md:text-lg text-dark-light dark:text-gray-300 leading-relaxed mb-6 md:mb-8">{description}</p>
+                {linkHref && (
+                  <Link href={linkHref} className="inline-block">
                     <Button
-                      variant="recording"
+                      variant="simple"
                       size="lg"
                       showRecordingDot={true}
                       showBrackets={true}
-                      continuousGlow={true}
                     >
                       {displayLinkText}
                     </Button>
                   </Link>
-                </div>
-              )}
-            </div>
-          </ScrollReveal>
+                )}
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>

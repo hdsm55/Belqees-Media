@@ -97,11 +97,6 @@
 
 ### 6. تحسينات تجربة المستخدم (UX)
 
-#### ✅ Skip to Content
-- مكون `SkipToContent.tsx` جديد:
-  - يسمح للمستخدمين بالتنقل السريع للمحتوى
-  - مفيد جداً لمستخدمي لوحة المفاتيح
-  - يظهر فقط عند التركيز (focus)
 
 #### ✅ Focus Management
 - تحسين focus states في جميع المكونات
@@ -152,7 +147,6 @@
 ### New Components
 - `components/ErrorBoundary.tsx`
 - `components/PerformanceOptimizer.tsx`
-- `components/SkipToContent.tsx`
 
 ### Configuration
 - `next.config.js`

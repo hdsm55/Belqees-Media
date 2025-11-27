@@ -146,6 +146,7 @@ export default function HomePageContent() {
       <ApproachSection
         title={t('approach.title')}
         description={t('approach.description')}
+        image="/images/approach.jpg"
         linkText={t('approach.linkText')}
         linkHref="/about"
       />
@@ -153,13 +154,14 @@ export default function HomePageContent() {
       {/* Clients Section */}
       <ClientsCarousel
         clients={[
-          { id: '1', name: 'شريك 1', logo: '' },
-          { id: '2', name: 'شريك 2', logo: '' },
-          { id: '3', name: 'شريك 3', logo: '' },
-          { id: '4', name: 'شريك 4', logo: '' },
-          { id: '5', name: 'شريك 5', logo: '' },
-          { id: '6', name: 'شريك 6', logo: '' },
-        ]}
+
+          { id: '1', name: 'شريك 1', logo: '/images/partner-1.png' },
+          { id: '2', name: 'شريك 2', logo: '/images/partner-2.png' },
+          { id: '3', name: 'شريك 3', logo: '/images/partner-3.png' },
+          { id: '4', name: 'شريك 4', logo: '/images/partner-4.png' },
+          { id: '5', name: 'شريك 5', logo: '/images/partner-5.png' },
+          { id: '6', name: 'شريك 6', logo: '/images/partner-6.png' },
+             ]}
         title={t('clients.title')}
       />
 
@@ -211,11 +213,10 @@ export default function HomePageContent() {
                   </p>
                   <Link href="/contact">
                     <Button
-                      variant="recording"
+                      variant="simple"
                       size="lg"
                       showRecordingDot={true}
                       showBrackets={true}
-                      continuousGlow={true}
                     >
                       {t('contact.cta')}
                     </Button>

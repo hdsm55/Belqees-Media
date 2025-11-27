@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function Footer() {
@@ -13,13 +14,19 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="relative">
-                <span className="text-2xl font-bold text-dark dark:text-gray-100">b</span>
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-primary-500 rounded-full"></span>
-              </div>
-              <span className="text-lg font-bold text-dark dark:text-gray-100">Belqees Media</span>
-            </div>
+            <Link
+              href="/"
+              className="flex items-center gap-2 mb-4 group"
+              aria-label="Belqees Media Home"
+            >
+              <Image
+                src="/images/logo.avif"
+                alt="Belqees Media Logo"
+                width={120}
+                height={48}
+                className="h-10 md:h-12 w-auto transition-all duration-300 group-hover:scale-105"
+              />
+            </Link>
             <p className="text-dark-light dark:text-gray-400 text-sm">
               {t('footer.description')}
             </p>

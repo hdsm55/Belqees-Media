@@ -60,24 +60,22 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 onClick={this.handleReset}
-                variant="recording"
+                variant="simple"
                 size="lg"
                 className="w-full sm:w-auto"
                 showRecordingDot={true}
                 showBrackets={true}
-                continuousGlow={true}
                 aria-label="إعادة المحاولة"
               >
                 حاول مرة أخرى
               </Button>
               <Link href="/">
                 <Button
-                  variant="recording"
+                  variant="simple"
                   size="lg"
                   className="w-full sm:w-auto"
                   showRecordingDot={true}
                   showBrackets={true}
-                  continuousGlow={true}
                   aria-label="العودة للصفحة الرئيسية"
                 >
                   العودة للرئيسية

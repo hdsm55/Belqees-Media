@@ -5,7 +5,6 @@ import LenisProvider from '@/components/providers/LenisProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import CustomCursor from '@/components/atoms/CustomCursor';
 import PerformanceOptimizer from '@/components/PerformanceOptimizer';
-import SkipToContent from '@/components/SkipToContent';
 import Header from '@/components/organisms/Header';
 
 // Arabic Font - Tajawal (خط عربي أنيق وحديث)
@@ -60,7 +59,6 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" className={`${tajawal.variable} ${ibmPlexSansArabic.variable}`} suppressHydrationWarning>
       <body className="font-arabic antialiased bg-white text-dark dark:bg-gray-900 dark:text-gray-100 transition-colors">
-        <SkipToContent />
         <ThemeProvider>
           <LenisProvider>
             <PerformanceOptimizer />
