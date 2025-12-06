@@ -186,10 +186,9 @@ export class NotFoundError extends AppError {
   }
 }
 
-export class ResourceNotFoundError extends NotFoundError {
+export class ResourceNotFoundError extends AppError {
   constructor(resource: string, details?: any) {
-    super(resource, undefined, details);
-    this.code = ErrorCode.RESOURCE_NOT_FOUND;
+    super(ErrorCode.RESOURCE_NOT_FOUND, `${resource} غير موجود`, details);
   }
 }
 

@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { rateLimit } from '@/lib/rate-limit';
 import { withErrorHandler } from '@/lib/errors';
 import { withCache, invalidateCacheByTags } from '@/lib/cache/middleware';
+import { withCSRFProtection } from '@/lib/csrf/middleware';
 
 const portfolioSchema = z.object({
     slug: z.string().min(1),
@@ -70,24 +71,26 @@ export const GET = withCache(
     }
 );
 
-export const POST = withErrorHandler(async (request: NextRequest) => {
-    // Rate limiting
-    const { response: rateLimitResponse } = await rateLimit(request);
-    if (rateLimitResponse) return rateLimitResponse;
+export const POST = withCSRFProtection(
+    withErrorHandler(async (request: NextRequest) => {
+        // Rate limiting
+        const { response: rateLimitResponse } = await rateLimit(request);
+        if (rateLimitResponse) return rateLimitResponse;
 
-    await requireAuth();
-    const body = await request.json();
-    const data = portfolioSchema.parse(body);
+        await requireAuth();
+        const body = await request.json();
+        const data = portfolioSchema.parse(body);
 
-    const item = await prisma.portfolio.create({ data });
+        const item = await prisma.portfolio.create({ data });
 
-    // Invalidate cache
-    await invalidateCacheByTags(['portfolio', 'public']);
+        // Invalidate cache
+        await invalidateCacheByTags(['portfolio', 'public']);
 
-    return NextResponse.json({
-        success: true,
-        data: item,
-        message: 'تم إنشاء العمل بنجاح',
-    }, { status: 201 });
-});
+        return NextResponse.json({
+            success: true,
+            data: item,
+            message: 'تم إنشاء العمل بنجاح',
+        }, { status: 201 });
+    })
+);
 

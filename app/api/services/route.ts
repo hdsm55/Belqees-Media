@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { rateLimit } from '@/lib/rate-limit';
 import { withErrorHandler } from '@/lib/errors';
 import { withCache, invalidateCacheByTags } from '@/lib/cache/middleware';
+import { withCSRFProtection } from '@/lib/csrf/middleware';
 
 const serviceSchema = z.object({
     slug: z.string().min(1),
@@ -37,6 +38,16 @@ export const GET = withCache(
         const services = await prisma.service.findMany({
             where,
             orderBy: { createdAt: 'desc' },
+            select: {
+                id: true,
+                slug: true,
+                title: true,
+                description: true,
+                icon: true,
+                image: true,
+                published: true,
+                createdAt: true,
+            },
         });
 
         return NextResponse.json({
@@ -53,24 +64,26 @@ export const GET = withCache(
     }
 );
 
-export const POST = withErrorHandler(async (request: NextRequest) => {
-    // Rate limiting
-    const { response: rateLimitResponse } = await rateLimit(request);
-    if (rateLimitResponse) return rateLimitResponse;
+export const POST = withCSRFProtection(
+    withErrorHandler(async (request: NextRequest) => {
+        // Rate limiting
+        const { response: rateLimitResponse } = await rateLimit(request);
+        if (rateLimitResponse) return rateLimitResponse;
 
-    await requireAuth();
-    const body = await request.json();
-    const data = serviceSchema.parse(body);
+        await requireAuth();
+        const body = await request.json();
+        const data = serviceSchema.parse(body);
 
-    const service = await prisma.service.create({ data });
+        const service = await prisma.service.create({ data });
 
-    // Invalidate cache
-    await invalidateCacheByTags(['services', 'public']);
+        // Invalidate cache
+        await invalidateCacheByTags(['services', 'public']);
 
-    return NextResponse.json({
-        success: true,
-        data: service,
-        message: 'تم إنشاء الخدمة بنجاح',
-    }, { status: 201 });
-});
+        return NextResponse.json({
+            success: true,
+            data: service,
+            message: 'تم إنشاء الخدمة بنجاح',
+        }, { status: 201 });
+    })
+);
 

@@ -3,6 +3,12 @@ import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth/session';
 import { z } from 'zod';
 import { rateLimit } from '@/lib/rate-limit';
+import { invalidateCacheByTags } from '@/lib/cache/middleware';
+import { withCSRFProtection } from '@/lib/csrf/middleware';
+import { withErrorHandler } from '@/lib/errors';
+
+// Force dynamic rendering for API routes
+export const dynamic = 'force-dynamic';
 
 const updatePortfolioSchema = z.object({
     slug: z.string().min(1).optional(),
@@ -38,127 +44,106 @@ export async function GET(
 
         if (!item) {
             return NextResponse.json(
-                { error: 'العمل غير موجود' },
+                { success: false, error: 'العمل غير موجود' },
                 { status: 404 }
             );
         }
-
-        // Only return published items (unless it's an admin request)
-        if (!item.published) {
-            // In production, check if user is admin
-            // For now, return 404 for unpublished items
-            return NextResponse.json(
-                { error: 'العمل غير موجود' },
-                { status: 404 }
-            );
-        }
-
-        return NextResponse.json(item);
-    } catch (error) {
-        console.error('Error fetching portfolio item:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء جلب العمل' },
-            { status: 500 }
-        );
-    }
-}
-
-export async function PUT(
-    request: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-) {
-    // Rate limiting
-    const { response: rateLimitResponse } = await rateLimit(request);
-    if (rateLimitResponse) return rateLimitResponse;
-
-    try {
-        await requireAuth();
-        const { id } = await params;
-        const body = await request.json();
-        const data = updatePortfolioSchema.parse(body);
-
-        const item = await prisma.portfolio.update({
-            where: { id },
-            data,
-        });
-
-        return NextResponse.json(item);
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return NextResponse.json(
-                { error: error.errors[0].message },
-                { status: 400 }
-            );
-        }
-        console.error('Error updating portfolio item:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء تحديث العمل' },
-            { status: 500 }
-        );
-    }
-}
-
-export async function PATCH(
-    request: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-) {
-    // Rate limiting
-    const { response: rateLimitResponse } = await rateLimit(request);
-    if (rateLimitResponse) return rateLimitResponse;
-
-    try {
-        await requireAuth();
-        const { id } = await params;
-        const body = await request.json();
-        const data = updatePortfolioSchema.parse(body);
-
-        const item = await prisma.portfolio.update({
-            where: { id },
-            data,
-        });
 
         return NextResponse.json({
             success: true,
             data: item,
-            message: 'تم تحديث العمل بنجاح',
         });
     } catch (error) {
-        if (error instanceof z.ZodError) {
-            return NextResponse.json(
-                { error: error.errors[0].message },
-                { status: 400 }
-            );
-        }
-        console.error('Error updating portfolio item:', error);
+        console.error('Error fetching portfolio item:', error);
         return NextResponse.json(
-            { error: 'حدث خطأ أثناء تحديث العمل' },
+            { success: false, error: 'حدث خطأ أثناء جلب العمل' },
             { status: 500 }
         );
     }
 }
 
-export async function DELETE(
+export const PUT = withCSRFProtection(
+  withErrorHandler(async (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) {
+  ) => {
     // Rate limiting
     const { response: rateLimitResponse } = await rateLimit(request);
     if (rateLimitResponse) return rateLimitResponse;
 
-    try {
-        await requireAuth();
-        const { id } = await params;
-        await prisma.portfolio.delete({
-            where: { id },
-        });
+    await requireAuth();
+    const { id } = await params;
+    const body = await request.json();
+    const data = updatePortfolioSchema.parse(body);
 
-        return NextResponse.json({ message: 'تم حذف العمل بنجاح' });
-    } catch (error) {
-        console.error('Error deleting portfolio item:', error);
-        return NextResponse.json(
-            { error: 'حدث خطأ أثناء حذف العمل' },
-            { status: 500 }
-        );
-    }
-}
+    const item = await prisma.portfolio.update({
+        where: { id },
+        data,
+    });
+
+    // Invalidate cache
+    await invalidateCacheByTags(['portfolio', 'public']);
+
+    return NextResponse.json({
+        success: true,
+        data: item,
+        message: 'تم تحديث العمل بنجاح',
+    });
+  })
+);
+
+export const PATCH = withCSRFProtection(
+  withErrorHandler(async (
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+  ) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
+
+    await requireAuth();
+    const { id } = await params;
+    const body = await request.json();
+    const data = updatePortfolioSchema.parse(body);
+
+    const item = await prisma.portfolio.update({
+        where: { id },
+        data,
+    });
+
+    // Invalidate cache
+    await invalidateCacheByTags(['portfolio', 'public']);
+
+    return NextResponse.json({
+        success: true,
+        data: item,
+        message: 'تم تحديث العمل بنجاح',
+    });
+  })
+);
+
+export const DELETE = withCSRFProtection(
+  withErrorHandler(async (
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+  ) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
+
+    await requireAuth();
+    const { id } = await params;
+    await prisma.portfolio.delete({
+        where: { id },
+    });
+
+    // Invalidate cache
+    await invalidateCacheByTags(['portfolio', 'public']);
+
+    return NextResponse.json({
+        success: true,
+        message: 'تم حذف العمل بنجاح',
+    });
+  })
+);
 

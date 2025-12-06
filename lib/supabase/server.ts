@@ -1,4 +1,5 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
 export const createClient = async () => {
@@ -12,7 +13,7 @@ export const createClient = async () => {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: Array<{ name: string; value: string; options?: CookieOptions }>) {
           try {
             // لوج للتشخيص: التأكد أن Supabase يحاول فعلاً تعيين الكوكيز
             console.log(
@@ -46,6 +47,27 @@ export const createClient = async () => {
             // user sessions.
           }
         },
+      } as any,
+    }
+  );
+};
+
+/**
+ * إنشاء Supabase Admin Client باستخدام Service Role Key
+ * يتجاوز RLS Policies - استخدم فقط في Server/API Routes
+ */
+export const createAdminClient = () => {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('Supabase URL and Service Role Key must be configured');
+  }
+
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
       },
     }
   );

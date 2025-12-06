@@ -4,51 +4,92 @@ import { useEffect, useState, useRef } from 'react';
 
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [outerPosition, setOuterPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isOnImage, setIsOnImage] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const innerCircleRef = useRef<HTMLDivElement>(null);
   const outerRingRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number>();
-  const innerAnimationFrameRef = useRef<number>();
+  const rafId = useRef<number | null>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   useEffect(() => {
     // إلغاء الكيرسر على الأجهزة المحمولة
     if (isMobile) return;
 
-    // تتبع موقع الماوس - الدائرة الداخلية مباشرة، الخارجية بتأخير
-    const handleMouseMove = (e: MouseEvent) => {
-      // الدائرة الداخلية تتبع مباشرة بدون تأخير باستخدام requestAnimationFrame للأداء الأفضل
-      if (innerAnimationFrameRef.current) {
-        cancelAnimationFrame(innerAnimationFrameRef.current);
-      }
+    // تهيئة الموضع الأولي
+    const initPosition = () => {
+      if (typeof window !== 'undefined') {
+        const x = window.innerWidth / 2;
+        const y = window.innerHeight / 2;
+        setMousePosition({ x, y });
 
-      innerAnimationFrameRef.current = requestAnimationFrame(() => {
         if (innerCircleRef.current) {
-          innerCircleRef.current.style.left = `${e.clientX}px`;
-          innerCircleRef.current.style.top = `${e.clientY}px`;
+          innerCircleRef.current.style.left = `${x}px`;
+          innerCircleRef.current.style.top = `${y}px`;
         }
-        setMousePosition({ x: e.clientX, y: e.clientY });
-      });
+        if (outerRingRef.current) {
+          outerRingRef.current.style.left = `${x}px`;
+          outerRingRef.current.style.top = `${y}px`;
+        }
+      }
+    };
 
-      // الدائرة الخارجية تتحرك مباشرة بدون أي تأخير
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
+    initPosition();
+
+    // متغيرات للحركة السلسة
+    let currentX = window.innerWidth / 2;
+    let currentY = window.innerHeight / 2;
+    let targetX = currentX;
+    let targetY = currentY;
+
+    // دالة لتحديث الموضع بشكل سلس
+    const updatePosition = () => {
+      // حساب المسافة بين الموضع الحالي والهدف
+      const dx = targetX - currentX;
+      const dy = targetY - currentY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      // إذا كانت المسافة صغيرة جداً، توقف
+      if (distance < 0.1) {
+        currentX = targetX;
+        currentY = targetY;
+        if (rafId.current) {
+          cancelAnimationFrame(rafId.current);
+          rafId.current = null;
+        }
+        return;
       }
 
-      animationFrameRef.current = requestAnimationFrame(() => {
-        if (outerRingRef.current) {
-          outerRingRef.current.style.left = `${e.clientX}px`;
-          outerRingRef.current.style.top = `${e.clientY}px`;
-        }
-        setOuterPosition({
-          x: e.clientX,
-          y: e.clientY,
-        });
-      });
+      // حركة سلسة باستخدام easing
+      const easing = 0.07; // قيمة أقل = حركة أسرع وأكثر استجابة
+      currentX += dx * easing;
+      currentY += dy * easing;
+
+      // تحديث الموضع
+      setMousePosition({ x: currentX, y: currentY });
+
+      if (innerCircleRef.current) {
+        innerCircleRef.current.style.left = `${currentX}px`;
+        innerCircleRef.current.style.top = `${currentY}px`;
+      }
+      if (outerRingRef.current) {
+        outerRingRef.current.style.left = `${currentX}px`;
+        outerRingRef.current.style.top = `${currentY}px`;
+      }
+
+      // الاستمرار في التحديث
+      rafId.current = requestAnimationFrame(updatePosition);
+    };
+
+    // تتبع موقع الماوس
+    const handleMouseMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+
+      // بدء التحديث إذا لم يكن جارياً
+      if (!rafId.current) {
+        rafId.current = requestAnimationFrame(updatePosition);
+      }
     };
 
     // تفاعل الضغط
@@ -58,15 +99,6 @@ export default function CustomCursor() {
 
     const handleMouseUp = () => {
       setIsClicking(false);
-    };
-
-    // تفاعل السحب
-    const handleDragStart = () => {
-      setIsDragging(true);
-    };
-
-    const handleDragEnd = () => {
-      setIsDragging(false);
     };
 
     // التحقق من العناصر التفاعلية
@@ -92,14 +124,6 @@ export default function CustomCursor() {
       } else {
         setIsOnImage(false);
       }
-
-      // التحقق من النص القابل للسحب
-      if (target.closest('p, span, div[contenteditable], input, textarea')) {
-        const selection = window.getSelection();
-        if (selection && selection.toString().length > 0) {
-          setIsDragging(true);
-        }
-      }
     };
 
     // إخفاء الكيرسر الافتراضي
@@ -108,26 +132,17 @@ export default function CustomCursor() {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('dragstart', handleDragStart);
-    window.addEventListener('dragend', handleDragEnd);
     document.addEventListener('mouseover', handleMouseOver);
-    document.addEventListener('selectstart', handleDragStart);
 
     return () => {
       document.body.style.cursor = '';
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      if (innerAnimationFrameRef.current) {
-        cancelAnimationFrame(innerAnimationFrameRef.current);
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
       }
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('dragstart', handleDragStart);
-      window.removeEventListener('dragend', handleDragEnd);
       document.removeEventListener('mouseover', handleMouseOver);
-      document.removeEventListener('selectstart', handleDragStart);
     };
   }, [isMobile]);
 
@@ -136,27 +151,20 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* الدائرة الداخلية - نقطة حمراء تلمع باستمرار (إيحاء حالة تسجيل) */}
+      {/* الدائرة الداخلية - نقطة حمراء */}
       <div
         ref={innerCircleRef}
         className={`fixed pointer-events-none z-[999999] ${!isHovering ? 'recording-dot-pulse' : ''}`}
         style={{
-          left: mousePosition.x,
-          top: mousePosition.y,
-          width: isClicking ? '10px' : isHovering ? '26px' : isDragging ? '12px' : '12px',
-          // الحفاظ على الشكل دائري دائماً حتى في حالة السحب
-          height: isClicking ? '10px' : isHovering ? '26px' : isDragging ? '12px' : '12px',
+          width: isClicking ? '10px' : isHovering ? '26px' : '12px',
+          height: isClicking ? '10px' : isHovering ? '26px' : '12px',
           borderRadius: '50%',
           backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.9)' : '#D90000',
-          transform: 'translate(-50%, -50%)',
           mixBlendMode: isHovering ? 'difference' : 'normal',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition:
-            'width 0.3s cubic-bezier(0.23, 1, 0.32, 1), height 0.3s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1)',
-          willChange: 'transform, opacity',
-          opacity: isOnImage ? 0 : undefined,
+          transform: 'translate(-50%, -50%)',
+          transition: 'width 0.2s ease-out, height 0.2s ease-out, background-color 0.2s ease-out',
+          willChange: 'transform',
+          opacity: isOnImage ? 0 : 1,
           boxShadow: 'none',
         }}
       />
@@ -166,14 +174,12 @@ export default function CustomCursor() {
         ref={outerRingRef}
         className="fixed pointer-events-none z-[999998]"
         style={{
-          left: mousePosition.x,
-          top: mousePosition.y,
           width: isClicking ? '30px' : isHovering ? '60px' : '45px',
           height: isClicking ? '30px' : isHovering ? '60px' : '45px',
           borderRadius: '50%',
           border: '1px solid rgba(255, 255, 255, 0.6)',
           transform: 'translate(-50%, -50%)',
-          transition: 'width 0.6s cubic-bezier(0.23, 1, 0.32, 1), height 0.6s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+          transition: 'width 0.3s ease-out, height 0.3s ease-out, border-color 0.3s ease-out',
           willChange: 'transform',
           opacity: isOnImage ? 0 : 1,
         }}
@@ -184,10 +190,10 @@ export default function CustomCursor() {
         <div
           className="fixed pointer-events-none z-[999999] text-white text-sm font-medium"
           style={{
-            left: mousePosition.x,
-            top: mousePosition.y,
+            left: `${mousePosition.x}px`,
+            top: `${mousePosition.y}px`,
             transform: 'translate(-50%, -50%)',
-            transition: 'opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1)',
+            transition: 'opacity 0.2s ease-out',
             willChange: 'transform',
             textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
           }}
@@ -198,4 +204,3 @@ export default function CustomCursor() {
     </>
   );
 }
-

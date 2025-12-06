@@ -148,6 +148,30 @@ html.lenis {
     pointer-events: auto !important;
   }
 
+  /* Hide header in dashboard */
+  [data-dashboard="true"] header,
+  body:has([data-dashboard="true"]) header {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  /* Header brackets should be above everything except header content */
+  header>div[style*="zIndex: 1"] {
+    z-index: 1 !important;
+  }
+
+  /* Ensure main content starts below header */
+  #main-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hero sections should start directly below header with no margin */
+  #main-content>section:first-child {
+    margin-top: 0 !important;
+  }
+
   .dark header {
     background-color: transparent !important;
   }
@@ -200,6 +224,7 @@ html.lenis {
   section[class*="hero"],
   section[class*="Hero"] {
     z-index: 0 !important;
+    margin-top: 0 !important;
   }
 
   /* Typography Scale */
@@ -399,29 +424,26 @@ button,
     transform: scale(1.08);
   }
 
-  /* Infinite Carousel Animation - True Infinite Loop */
-  .clients-carousel-wrapper {
-    position: relative;
+  /* Swiper Carousel Styles */
+  .clients-swiper {
     width: 100%;
+    overflow: visible;
+  }
+
+  .clients-swiper .swiper-wrapper {
+    transition-timing-function: linear !important;
+    transition-duration: 0ms !important;
+  }
+
+  .clients-swiper.swiper {
     overflow: hidden;
   }
 
-  .clients-carousel-track {
-    display: flex;
-    align-items: center;
-    will-change: transform;
-    width: fit-content;
-    min-height: 120px;
-  }
-
-  .clients-carousel-copy {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
+  .clients-swiper .swiper-slide {
+    width: auto;
+    height: auto;
     flex-shrink: 0;
   }
-
-  /* Animation is now handled by JavaScript for perfect seamless loop */
 
   /* Ensure images are visible */
   .clients-carousel-track .partner-logo {
@@ -557,4 +579,27 @@ button,
 [dir='ltr'] {
   direction: ltr;
   text-align: left;
+}
+
+/* Starry Background Animation */
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes starMove {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-20px);
+  }
 }

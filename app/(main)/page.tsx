@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { StructuredData } from '@/components/StructuredData';
-import HomePageContent from '@/components/pages/HomePageContent';
+import { eventService } from '@/lib/services';
+import HomePageContentClient from '@/components/pages/HomePageContentClient';
+
+// ISR: Revalidate every 5 minutes
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: 'Belqees Media - شركة إنتاج إعلامي متكاملة الخدمات',
@@ -63,7 +67,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -87,12 +91,15 @@ export default function HomePage() {
     foundingDate: '2015',
   };
 
+  // Fetch events directly from database (Server Component)
+  const events = await eventService.getPublishedEvents(4);
+
   return (
     <>
       <StructuredData data={organizationSchema} />
 
       {/* Page Content with Translations */}
-      <HomePageContent />
+      <HomePageContentClient events={events} />
     </>
   );
 }

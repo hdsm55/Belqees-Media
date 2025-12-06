@@ -11,7 +11,7 @@ export interface CacheConfig {
   /** هل يجب إعادة التحقق من Cache */
   revalidate?: number;
   /** Tags للـ Cache Invalidation */
-  tags?: string[];
+  tags?: readonly string[];
 }
 
 /**
@@ -93,7 +93,7 @@ export const CACHE_CONFIGS = {
  * Get Cache Config by type
  */
 export function getCacheConfig(type: keyof typeof CACHE_CONFIGS): CacheConfig {
-  return CACHE_CONFIGS[type];
+  return CACHE_CONFIGS[type] as CacheConfig;
 }
 
 /**

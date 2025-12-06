@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { gsap } from 'gsap';
 import Button from '@/components/atoms/Button';
 import ParallaxBackground from '@/components/animations/ParallaxBackground';
-import ViewportBrackets from '@/components/atoms/ViewportBrackets';
 
 interface HeroBlockProps {
   title: string;
@@ -144,9 +143,62 @@ export default function HeroBlock({
   }, [backgroundVideo, videoLoop, videoMuted]);
 
   return (
-    <section className="hero-section relative min-h-[90vh] md:min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors pt-16 md:pt-20" style={{ zIndex: 0 }}>
-      {/* Viewport Brackets - إطارات الكاميرا ثابتة داخل Hero Section */}
-      <ViewportBrackets />
+    <section className="hero-section relative min-h-[90vh] md:min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors" style={{ zIndex: 0 }}>
+      {/* Hero Corner Brackets - أركان الهيرو (متداخلة في مساحة الهيدر) */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 99998 }}>
+        {/* Top Left - متداخلة في مساحة الهيدر */}
+        <div
+          className="absolute"
+          style={{
+            top: '16px',
+            left: '16px',
+            width: '40px',
+            height: '40px',
+            borderTop: '2px solid rgba(255, 255, 255, 1)',
+            borderLeft: '2px solid rgba(255, 255, 255, 1)',
+            boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.3)',
+          }}
+        />
+        {/* Top Right - متداخلة في مساحة الهيدر */}
+        <div
+          className="absolute"
+          style={{
+            top: '16px',
+            right: '16px',
+            width: '40px',
+            height: '40px',
+            borderTop: '2px solid rgba(255, 255, 255, 1)',
+            borderRight: '2px solid rgba(255, 255, 255, 1)',
+            boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.3)',
+          }}
+        />
+        {/* Bottom Left */}
+        <div
+          className="absolute"
+          style={{
+            bottom: '16px',
+            left: '16px',
+            width: '40px',
+            height: '40px',
+            borderBottom: '2px solid rgba(255, 255, 255, 1)',
+            borderLeft: '2px solid rgba(255, 255, 255, 1)',
+            boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.3)',
+          }}
+        />
+        {/* Bottom Right */}
+        <div
+          className="absolute"
+          style={{
+            bottom: '16px',
+            right: '16px',
+            width: '40px',
+            height: '40px',
+            borderBottom: '2px solid rgba(255, 255, 255, 1)',
+            borderRight: '2px solid rgba(255, 255, 255, 1)',
+            boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.3)',
+          }}
+        />
+      </div>
 
       {/* Background Video or Image */}
       {backgroundVideo && (
@@ -234,58 +286,58 @@ export default function HeroBlock({
         </ParallaxBackground>
       )}
 
-      {/* Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-[1] w-full flex flex-col items-center justify-center min-h-[calc(90vh-4rem)] md:min-h-[calc(100vh-5rem)]">
-        <div className="max-w-5xl mx-auto w-full">
-          <div className="text-center space-y-6 md:space-y-8 lg:space-y-10 flex flex-col items-center">
-            {/* Title - العنوان الرئيسي */}
-            <h1
-              ref={titleRef}
-              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold opacity-0 leading-[1.2] tracking-tight w-full max-w-4xl ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-white drop-shadow-2xl' : 'text-dark dark:text-gray-100'}`}
-              style={{
-                textShadow: backgroundVideo || youtubeVideoId || backgroundImage
-                  ? '0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(0, 0, 0, 0.3)'
-                  : 'none',
-                wordSpacing: '0.1em',
-                letterSpacing: '-0.02em',
-              }}
-            >
-              {title}
-            </h1>
-
-            {/* Subtitle - العنوان الفرعي */}
-            {subtitle && (
-              <p
-                ref={subtitleRef}
-                className={`text-base sm:text-lg md:text-xl lg:text-2xl opacity-0 font-medium w-full max-w-2xl leading-relaxed ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-gray-100 drop-shadow-lg' : 'text-dark-light dark:text-gray-300'}`}
+      {/* Content - المحتوى */}
+      <div className="absolute inset-0 z-[1] flex items-end justify-center pb-16 md:pb-24 lg:pb-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center space-y-6 md:space-y-8 lg:space-y-10 flex flex-col items-center justify-center">
+              {/* Title - العنوان الرئيسي */}
+              <h1
+                ref={titleRef}
+                className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold opacity-0 leading-tight tracking-tight w-full ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-white' : 'text-dark dark:text-gray-100'}`}
                 style={{
                   textShadow: backgroundVideo || youtubeVideoId || backgroundImage
-                    ? '0 2px 10px rgba(0, 0, 0, 0.4)'
+                    ? '0 4px 20px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4)'
                     : 'none',
-                  letterSpacing: '0.01em',
                 }}
               >
-                {subtitle}
-              </p>
-            )}
+                {title}
+              </h1>
 
-            {/* CTA Button - زر التواصل */}
-            <div ref={ctaRef} className="opacity-0 pt-2 flex justify-center w-full">
-              <Link href={ctaLink} className="inline-block">
-                <Button
-                  variant="recording"
-                  size="lg"
-                  showRecordingDot={true}
-                  showBrackets={true}
-                  continuousGlow={true}
+              {/* Subtitle - العنوان الفرعي */}
+              {subtitle && (
+                <p
+                  ref={subtitleRef}
+                  className={`text-sm sm:text-base md:text-lg lg:text-xl opacity-0 font-medium w-full max-w-3xl leading-relaxed ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-gray-100' : 'text-dark-light dark:text-gray-300'}`}
+                  style={{
+                    textShadow: backgroundVideo || youtubeVideoId || backgroundImage
+                      ? '0 2px 10px rgba(0, 0, 0, 0.5)'
+                      : 'none',
+                  }}
                 >
-                  {ctaText}
-                </Button>
-              </Link>
+                  {subtitle}
+                </p>
+              )}
+
+              {/* CTA Button - زر التواصل */}
+              {ctaText && (
+                <div ref={ctaRef} className="opacity-0 pt-4 flex justify-center w-full">
+                  <Link href={ctaLink} className="inline-block">
+                    <Button
+                      variant="recording"
+                      size="lg"
+                      showRecordingDot={true}
+                      showBrackets={true}
+                      continuousGlow={true}
+                    >
+                      {ctaText}
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

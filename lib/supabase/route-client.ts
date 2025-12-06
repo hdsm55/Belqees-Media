@@ -16,7 +16,7 @@ export function createRouteClient(request: NextRequest) {
                 getAll() {
                     return request.cookies.getAll();
                 },
-                setAll(cookiesToSet) {
+                setAll(cookiesToSet: Array<{ name: string; value: string; options?: CookieOptions }>) {
                     // لوج للتشخيص: هل Supabase يحاول تعيين كوكيز في مسارات API؟
                     console.log(
                         '[Supabase][route-client][setAll] setting cookies:',
@@ -41,7 +41,7 @@ export function createRouteClient(request: NextRequest) {
                         );
                     });
                 },
-            },
+            } as any,
         }
     );
 

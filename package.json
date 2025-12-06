@@ -13,7 +13,9 @@
     "db:studio": "prisma studio",
     "db:check": "node check-db.js",
     "db:reset": "node scripts/reset-database.js",
-    "db:verify": "node scripts/verify-schema.js"
+    "db:verify": "node scripts/verify-schema.js",
+    "db:seed-services": "npx tsx scripts/seed-services.ts",
+    "db:seed-events": "npx tsx scripts/seed-events.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
@@ -26,6 +28,7 @@
     "framer-motion": "^10.16.16",
     "gsap": "^3.12.2",
     "i18next": "^23.7.6",
+    "isomorphic-dompurify": "^2.33.0",
     "lenis": "^1.1.9",
     "lucide-react": "^0.294.0",
     "next": "^14.0.4",
@@ -33,6 +36,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^13.5.0",
+    "swiper": "^12.0.3",
     "tailwind-merge": "^2.1.0",
     "zod": "^3.22.4"
   },

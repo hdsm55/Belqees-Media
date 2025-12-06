@@ -87,7 +87,7 @@ export async function rateLimit(
             : NextResponse.json(
                 {
                     error: rateLimitConfig.message || 'تم تجاوز الحد المسموح من الطلبات',
-                    retryAfter: Math.ceil(result.resetAfter || rateLimitConfig.window),
+                    retryAfter: Math.ceil((result as any).resetAfter || rateLimitConfig.window),
                 },
                 { status: 429 }
             );

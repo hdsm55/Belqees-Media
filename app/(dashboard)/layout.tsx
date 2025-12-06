@@ -5,6 +5,17 @@ import { prisma } from '@/lib/prisma';
 import { ToastProvider } from '@/components/dashboard/ToastContainer';
 import NavLink from '@/components/dashboard/NavLink';
 import Button from '@/components/atoms/Button';
+import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
+
+// Cache counts to reduce duplicate queries
+const getCachedCounts = cache(async () => {
+  const [servicesCount, blogCount] = await Promise.all([
+    prisma.service.count(),
+    prisma.blogPost.count(),
+  ]);
+  return { servicesCount, blogCount };
+});
 
 export default async function DashboardLayout({
   children,
@@ -17,21 +28,16 @@ export default async function DashboardLayout({
     redirect('/login');
   }
 
-  // إحصائيات سريعة
-  const [pagesCount, servicesCount, portfolioCount, blogCount] = await Promise.all([
-    prisma.page.count(),
-    prisma.service.count(),
-    prisma.portfolio.count(),
-    prisma.blogPost.count(),
-  ]);
+  // إحصائيات سريعة (cached)
+  const { servicesCount, blogCount } = await getCachedCounts();
 
   return (
     <ToastProvider>
       <div className="min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-lg border-r border-gray-200 dark:border-gray-800">
-        <div className="p-6 h-full flex flex-col">
-          <div className="mb-8">
+      <aside className="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-lg border-r border-gray-200 dark:border-gray-800 z-40">
+        <div className="p-6 h-full flex flex-col relative">
+          <div className="mb-8 relative z-10">
             <h1 className="text-2xl font-bold text-primary-600 dark:text-primary-400">
               Belqees Media
             </h1>
@@ -39,29 +45,29 @@ export default async function DashboardLayout({
           </div>
 
           <nav className="space-y-1 flex-1">
-            <NavLink href="/dashboard" icon="📊">
+            <NavLink href="/dashboard" icon="LayoutDashboard">
               لوحة التحكم
             </NavLink>
-            <NavLink href="/dashboard/pages" icon="📄" badge={pagesCount}>
-              الصفحات
-            </NavLink>
-            <NavLink href="/dashboard/services" icon="⚙️" badge={servicesCount}>
+            <NavLink href="/dashboard/services" icon="Settings" badge={servicesCount}>
               الخدمات
             </NavLink>
-            <NavLink href="/dashboard/portfolio" icon="💼" badge={portfolioCount}>
-              الأعمال
-            </NavLink>
-            <NavLink href="/dashboard/events" icon="📅">
+            <NavLink href="/dashboard/events" icon="Calendar">
               الفعاليات
             </NavLink>
-            <NavLink href="/dashboard/blog" icon="✍️" badge={blogCount}>
+            <NavLink href="/dashboard/blog" icon="BookOpen" badge={blogCount}>
               المدونة
             </NavLink>
-            <NavLink href="/dashboard/media" icon="📁">
+            <NavLink href="/dashboard/media" icon="FolderOpen">
               الملفات
             </NavLink>
+            <NavLink href="/dashboard/contact" icon="Mail">
+              رسائل التواصل
+            </NavLink>
+            <NavLink href="/dashboard/settings" icon="Settings">
+              الإعدادات
+            </NavLink>
             {user.role === 'ADMIN' && (
-              <NavLink href="/dashboard/users" icon="👥">
+              <NavLink href="/dashboard/users" icon="Users">
                 المستخدمين
               </NavLink>
             )}
@@ -79,35 +85,9 @@ export default async function DashboardLayout({
       </aside>
 
       {/* Main Content */}
-      <div className="ml-64">
-        {/* Top Bar */}
-        <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800">
-          <div className="px-6 py-4 flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">لوحة التحكم</h2>
-            <div className="flex items-center gap-4">
-              <Link
-                href="/"
-                target="_blank"
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400"
-              >
-                عرض الموقع
-              </Link>
-              <form action="/api/auth/logout" method="POST">
-                <Button
-                  type="submit"
-                  variant="outline"
-                  size="sm"
-                  className="border-red-300 text-red-600 hover:bg-red-50"
-                >
-                  تسجيل الخروج
-                </Button>
-              </form>
-            </div>
-          </div>
-        </header>
-
+      <div className="ml-64 flex flex-col min-h-screen">
         {/* Page Content */}
-        <main>{children}</main>
+        <main className="flex-1 overflow-auto">{children}</main>
       </div>
     </div>
     </ToastProvider>

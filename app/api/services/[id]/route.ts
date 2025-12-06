@@ -5,6 +5,10 @@ import { z } from 'zod';
 import { rateLimit } from '@/lib/rate-limit';
 import { withErrorHandler, NotFoundError } from '@/lib/errors';
 import { invalidateCacheByTags } from '@/lib/cache/middleware';
+import { withCSRFProtection } from '@/lib/csrf/middleware';
+
+// Force dynamic rendering for API routes
+export const dynamic = 'force-dynamic';
 
 const updateServiceSchema = z.object({
     slug: z.string().min(1).optional(),
@@ -39,10 +43,11 @@ export const GET = withErrorHandler(async (
     });
 });
 
-export const PUT = withErrorHandler(async (
+export const PUT = withCSRFProtection(
+  withErrorHandler(async (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) => {
+  ) => {
     // Rate limiting
     const { response: rateLimitResponse } = await rateLimit(request);
     if (rateLimitResponse) return rateLimitResponse;
@@ -65,12 +70,14 @@ export const PUT = withErrorHandler(async (
         data: service,
         message: 'تم تحديث الخدمة بنجاح',
     });
-});
+  })
+);
 
-export const PATCH = withErrorHandler(async (
+export const PATCH = withCSRFProtection(
+  withErrorHandler(async (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) => {
+  ) => {
     // Rate limiting
     const { response: rateLimitResponse } = await rateLimit(request);
     if (rateLimitResponse) return rateLimitResponse;
@@ -93,12 +100,14 @@ export const PATCH = withErrorHandler(async (
         data: service,
         message: 'تم تحديث الخدمة بنجاح',
     });
-});
+  })
+);
 
-export const DELETE = withErrorHandler(async (
+export const DELETE = withCSRFProtection(
+  withErrorHandler(async (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) => {
+  ) => {
     // Rate limiting
     const { response: rateLimitResponse } = await rateLimit(request);
     if (rateLimitResponse) return rateLimitResponse;
@@ -117,5 +126,6 @@ export const DELETE = withErrorHandler(async (
         success: true,
         message: 'تم حذف الخدمة بنجاح',
     });
-});
+  })
+);
 

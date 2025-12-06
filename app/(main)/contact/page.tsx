@@ -5,9 +5,12 @@ import Input from '@/components/atoms/Input';
 import Button from '@/components/atoms/Button';
 import { contactSchema, type ContactFormData } from '@/lib/validations/contact';
 import { useTranslation } from '@/hooks/useTranslation';
+import PageHeroSection from '@/components/blocks/PageHeroSection';
+import { useCSRF } from '@/hooks/useCSRF';
 
 export default function ContactPage() {
   const { t } = useTranslation();
+  const { token: csrfToken } = useCSRF();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -45,8 +48,12 @@ export default function ContactPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(csrfToken && { 'X-CSRF-Token': csrfToken }),
         },
-        body: JSON.stringify(result.data),
+        body: JSON.stringify({
+          ...result.data,
+          ...(csrfToken && { _csrf: csrfToken }),
+        }),
       });
 
       const data = await response.json();
@@ -69,45 +76,40 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen pt-20 md:pt-24">
+    <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors">
-        <div className="container mx-auto px-4">
-          <h1 className="text-5xl font-bold text-center text-dark dark:text-gray-100 mb-6">
-            {t('contact.pageTitle') || 'اتصل بنا'}
-          </h1>
-          <p className="text-xl text-center text-dark-light dark:text-gray-300 max-w-3xl mx-auto">
-            {t('contact.pageSubtitle') || 'نحن هنا للإجابة على استفساراتك ومساعدتك'}
-          </p>
-        </div>
-      </section>
+      <PageHeroSection
+        title={t('contact.pageTitle')}
+        subtitle={t('contact.pageSubtitle')}
+        backgroundImage="/images/contact-hero.jpg"
+      />
 
       {/* Contact Section */}
       <section className="py-16 bg-white dark:bg-gray-900 transition-colors">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
             <div>
-              <h2 className="text-3xl font-bold text-dark dark:text-gray-100 mb-6">
-                {t('contact.sendMessage') || 'أرسل رسالة'}
+              <h2 className="text-3xl font-bold text-dark dark:text-gray-100 mb-4">
+                {t('contact.sendMessage')}
               </h2>
 
               {submitStatus === 'success' && (
                 <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 rounded-lg" role="alert">
-                  {t('contact.successMessage') || 'تم إرسال الرسالة بنجاح! سنتواصل معك قريباً.'}
+                  {t('contact.successMessage')}
                 </div>
               )}
 
               {submitStatus === 'error' && (
                 <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg" role="alert">
-                  {t('contact.errorMessage') || 'حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.'}
+                  {t('contact.errorMessage')}
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6" noValidate aria-label={t('contact.form.label') || 'نموذج الاتصال'}>
+              <form onSubmit={handleSubmit} className="space-y-6" noValidate aria-label={t('contact.form.label')}>
                 <div>
                   <Input
-                    label={t('contact.form.name') || 'الاسم'}
+                    label={t('contact.form.name')}
                     type="text"
                     required
                     value={formData.name}
@@ -122,7 +124,7 @@ export default function ContactPage() {
 
                 <div>
                   <Input
-                    label={t('contact.form.email') || 'البريد الإلكتروني'}
+                    label={t('contact.form.email')}
                     type="email"
                     required
                     value={formData.email}
@@ -137,7 +139,7 @@ export default function ContactPage() {
 
                 <div>
                   <Input
-                    label={t('contact.form.subject') || 'الموضوع'}
+                    label={t('contact.form.subject')}
                     type="text"
                     value={formData.subject}
                     onChange={(e) => {
@@ -151,7 +153,7 @@ export default function ContactPage() {
 
                 <div>
                   <label htmlFor="contact-message" className="block text-sm font-medium text-dark dark:text-gray-300 mb-1">
-                    {t('contact.form.message') || 'الرسالة'} <span className="text-red-500" aria-label="مطلوب">*</span>
+                    {t('contact.form.message')} <span className="text-red-500" aria-label={t('contact.required')}>*</span>
                   </label>
                   <textarea
                     id="contact-message"
@@ -182,57 +184,102 @@ export default function ContactPage() {
                   disabled={isSubmitting}
                   className="w-full"
                   showRecordingDot={true}
-                  aria-label={isSubmitting ? t('contact.form.sending') || 'جاري الإرسال' : t('contact.form.submit') || 'إرسال'}
+                  aria-label={isSubmitting ? t('contact.form.sending') : t('contact.form.submit')}
                 >
-                  {isSubmitting ? (t('contact.form.sending') || 'جاري الإرسال...') : (t('contact.form.submit') || 'إرسال')}
+                  {isSubmitting ? t('contact.form.sending') : t('contact.form.submit')}
                 </Button>
               </form>
             </div>
 
             {/* Contact Information */}
             <div>
-              <h2 className="text-3xl font-bold text-dark dark:text-gray-100 mb-6">
-                {t('contact.contactInfo') || 'معلومات الاتصال'}
+              <h2 className="text-3xl font-bold text-dark dark:text-gray-100 mb-4">
+                {t('contact.getInTouch')}
               </h2>
-              <div className="space-y-6">
+              <div className="space-y-4">
+                {/* Address */}
                 <div>
-                  <h3 className="text-lg font-semibold text-dark dark:text-gray-100 mb-2">
-                    {t('contact.email') || 'البريد الإلكتروني'}
+                  <h3 className="text-lg font-semibold text-dark dark:text-gray-100 mb-1">
+                    {t('contact.address')}
                   </h3>
                   <a
-                    href="mailto:Contact@belqeesmedia.com"
-                    className="text-primary-500 dark:text-primary-400 hover:text-primary-600 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
-                    aria-label={`إرسال بريد إلكتروني إلى ${t('contact.email') || 'Contact@belqeesmedia.com'}`}
+                    href="https://www.google.com/maps/search/?api=1&query=TAHTAKALE+MAH.+ISPARTAKULE+BLV.+T2+BLOK+NO:2M+AVCILAR+ISTANBUL"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-dark-light dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded inline-flex items-center gap-2"
+                    aria-label={`${t('contact.address')}: ${t('contact.addressValue')} - افتح في خرائط Google`}
                   >
-                    Contact@belqeesmedia.com
+                    <span>{t('contact.addressValue')}</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
                   </a>
                 </div>
 
+                {/* Contacts */}
                 <div>
                   <h3 className="text-lg font-semibold text-dark dark:text-gray-100 mb-2">
-                    {t('contact.phone') || 'الهاتف'}
+                    {t('contact.contacts')}
                   </h3>
-                  <div className="space-y-2">
-                    <a
-                      href="tel:+902124122060"
-                      className="block text-dark-light dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
-                      aria-label="اتصال برقم +90 (212) 412 20 60"
-                    >
-                      +90 (212) 412 20 60
-                    </a>
-                    <a
-                      href="tel:+908508113366"
-                      className="block text-dark-light dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
-                      aria-label="اتصال برقم +90 (850) 811 33 66"
-                    >
-                      +90 (850) 811 33 66
-                    </a>
+
+                  <div className="space-y-3">
+                    {/* Phone */}
+                    <div>
+                      <h4 className="text-base font-medium text-dark dark:text-gray-100 mb-1">
+                        {t('contact.phone')}:
+                      </h4>
+                      <div className="space-y-1">
+                        <a
+                          href="tel:+902124122060"
+                          className="block text-dark-light dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
+                          aria-label={`${t('contact.phone')} ${t('contact.phone1')}`}
+                        >
+                          {t('contact.phone1')}
+                        </a>
+                        <a
+                          href="tel:+908508113366"
+                          className="block text-dark-light dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
+                          aria-label={`${t('contact.phone')} ${t('contact.phone2')}`}
+                        >
+                          {t('contact.phone2')}
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Mobile */}
+                    <div>
+                      <h4 className="text-base font-medium text-dark dark:text-gray-100 mb-1">
+                        {t('contact.mobile')}:
+                      </h4>
+                      <a
+                        href="tel:+905393346032"
+                        className="block text-dark-light dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
+                        aria-label={`${t('contact.mobile')} ${t('contact.mobile1')}`}
+                      >
+                        {t('contact.mobile1')}
+                      </a>
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <h4 className="text-base font-medium text-dark dark:text-gray-100 mb-1">
+                        {t('contact.email')}:
+                      </h4>
+                      <a
+                        href="mailto:Contact@belqeesmedia.com"
+                        className="text-primary-500 dark:text-primary-400 hover:text-primary-600 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
+                        aria-label={`${t('contact.email')} ${t('contact.emailValue')}`}
+                      >
+                        {t('contact.emailValue')}
+                      </a>
+                    </div>
                   </div>
                 </div>
 
+                {/* Social Media */}
                 <div>
-                  <h3 className="text-lg font-semibold text-dark dark:text-gray-100 mb-4">
-                    {t('contact.socialMedia') || 'التواصل الاجتماعي'}
+                  <h3 className="text-lg font-semibold text-dark dark:text-gray-100 mb-2">
+                    {t('contact.socialMedia')}
                   </h3>
                   <div className="flex gap-4">
                     <a

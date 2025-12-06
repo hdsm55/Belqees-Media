@@ -3,6 +3,7 @@
 import { useTranslation } from '@/hooks/useTranslation';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import CornerBrackets from '@/components/atoms/CornerBrackets';
+import Image from 'next/image';
 import {
   InnovativeEfficiencyIcon,
   BuildingConnectionsIcon,
@@ -14,15 +15,51 @@ export default function AboutPageContent() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-900 transition-colors">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-heading font-bold text-center text-dark dark:text-gray-100 mb-6">
-            {t('about.pageTitle')}
-          </h1>
-          <p className="text-lg md:text-xl text-center text-dark-light dark:text-gray-300 max-w-3xl mx-auto">
-            {t('about.pageSubtitle')}
-          </p>
+      {/* Hero Section - Compact with static image background */}
+      <section className="relative py-20 md:py-32 flex items-center justify-center overflow-hidden">
+        {/* Static Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/about-hero.jpg"
+            alt="About Belqees Media"
+            fill
+            className="object-cover"
+            priority
+            quality={90}
+          />
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(217, 0, 0, 0.3), rgba(0, 0, 0, 0.8))' }}></div>
+        </div>
+
+        {/* Corner Brackets - White borders */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="opacity-30">
+            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-white"></div>
+            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-white"></div>
+            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-white"></div>
+            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-white"></div>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          <ScrollReveal animation="fadeInUp">
+            <div className="relative inline-block">
+              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-white opacity-50"></div>
+              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-white opacity-50"></div>
+              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-white opacity-50"></div>
+              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-white opacity-50"></div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 px-6 py-3">
+                {t('about.pageTitle')}
+              </h1>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal animation="fadeInUp" delay={200}>
+            <p className="text-base md:text-lg lg:text-xl text-white text-opacity-90 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
+              {t('about.pageSubtitle')}
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -136,8 +173,17 @@ export default function AboutPageContent() {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Octopus Newsroom */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group">
+                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group overflow-hidden">
                     <CornerBrackets showOnHover={true} />
+                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                      <Image
+                        src="/images/systems/octopus-newsroom.jpg"
+                        alt={t('about.systems.octopus.title')}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
                     <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
                       {t('about.systems.octopus.title')}
                     </h3>
@@ -147,8 +193,17 @@ export default function AboutPageContent() {
                   </div>
 
                   {/* Metus MAM */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group">
+                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group overflow-hidden">
                     <CornerBrackets showOnHover={true} />
+                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                      <Image
+                        src="/images/systems/metus-mam.jpg"
+                        alt={t('about.systems.metus.title')}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
                     <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
                       {t('about.systems.metus.title')}
                     </h3>
@@ -158,8 +213,17 @@ export default function AboutPageContent() {
                   </div>
 
                   {/* Brainstorm 3D */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group">
+                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group overflow-hidden">
                     <CornerBrackets showOnHover={true} />
+                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                      <Image
+                        src="/images/systems/brainstorm-3d.jpg"
+                        alt={t('about.systems.brainstorm.title')}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
                     <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
                       {t('about.systems.brainstorm.title')}
                     </h3>
@@ -169,8 +233,17 @@ export default function AboutPageContent() {
                   </div>
 
                   {/* Adobe Creative Cloud */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group">
+                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group overflow-hidden">
                     <CornerBrackets showOnHover={true} />
+                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                      <Image
+                        src="/images/systems/adobe-creative-cloud.jpg"
+                        alt={t('about.systems.adobe.title')}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
                     <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
                       {t('about.systems.adobe.title')}
                     </h3>
@@ -208,7 +281,7 @@ export default function AboutPageContent() {
           </div>
         </div>
       </section>
+
     </>
   );
 }
-

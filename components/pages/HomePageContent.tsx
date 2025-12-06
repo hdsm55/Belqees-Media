@@ -12,35 +12,47 @@ import {
   MicroproductionsIcon,
 } from '@/components/icons/CustomIcons';
 import StatsSection from '@/components/blocks/StatsSection';
-import PortfolioGrid from '@/components/blocks/PortfolioGrid';
+import EventsGrid from '@/components/blocks/EventsGrid';
 import ApproachSection from '@/components/blocks/ApproachSection';
 import ClientsCarousel from '@/components/blocks/ClientsCarousel';
 import Button from '@/components/atoms/Button';
 import CornerBrackets from '@/components/atoms/CornerBrackets';
 import { useTranslation } from '@/hooks/useTranslation';
-import { getPortfolioItems, type PortfolioItem } from '@/lib/api/portfolio';
+
+interface EventItem {
+  id: string;
+  slug: string;
+  title: string;
+  date: Date | string;
+  time?: string | null;
+  location?: string | null;
+  image: string | null;
+}
 
 export default function HomePageContent() {
   const { t } = useTranslation();
-  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
-  const [portfolioLoading, setPortfolioLoading] = useState(true);
+  const [events, setEvents] = useState<EventItem[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch portfolio items for homepage
-    const fetchPortfolio = async () => {
+    // Fetch events for homepage
+    const fetchEvents = async () => {
       try {
-        const items = await getPortfolioItems(4); // Get 4 items for homepage
-        setPortfolioItems(items);
-        } catch (error) {
+        const response = await fetch('/api/events?limit=4');
+        if (response.ok) {
+          const result = await response.json();
+          setEvents(result.data || []);
+        }
+      } catch (error) {
         if (process.env.NODE_ENV === 'development') {
-          console.error('Error fetching portfolio:', error);
+          console.error('Error fetching events:', error);
         }
       } finally {
-        setPortfolioLoading(false);
+        setEventsLoading(false);
       }
     };
 
-    fetchPortfolio();
+    fetchEvents();
   }, []);
 
   return (
@@ -165,36 +177,20 @@ export default function HomePageContent() {
         title={t('clients.title')}
       />
 
-      {/* Portfolio Section */}
-      <PortfolioGrid
-        title={t('portfolio.title')}
-        items={portfolioLoading ? [] : portfolioItems.map((item) => {
-          // Extract image URL from images field
-          const getImageUrl = (media: typeof item.images): string => {
-            if (!media) return '';
-            if (typeof media === 'string') return media;
-            if (Array.isArray(media) && media.length > 0) {
-              const firstItem = media[0];
-              return typeof firstItem === 'string' ? firstItem : (firstItem as { url: string }).url || '';
-            }
-            if (typeof media === 'object' && 'url' in media) {
-              return media.url;
-            }
-            return '';
-          };
-
-          const imageUrl = getImageUrl(item.images);
-
-          return {
-            id: item.id,
-            title: item.title,
-            category: item.category || 'مشروع',
-            image: imageUrl,
-            slug: item.slug,
-          };
-        })}
+      {/* Events Section */}
+      <EventsGrid
+        title={t('events.title') || 'الفعاليات'}
+        items={eventsLoading ? [] : events.map((item) => ({
+          id: item.id,
+          title: item.title,
+          date: item.date,
+          time: item.time,
+          location: item.location,
+          image: item.image,
+          slug: item.slug,
+        }))}
         showViewAll={true}
-        viewAllLink="/portfolio"
+        viewAllLink="/events"
       />
 
       {/* Contact CTA Section */}

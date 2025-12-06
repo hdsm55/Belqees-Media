@@ -3,6 +3,7 @@
     "home": "Ana Sayfa",
     "about": "Hakkımızda",
     "services": "Hizmetler",
+    "portfolio": "Portföy",
     "events": "Etkinlikler",
     "contact": "İletişim"
   },
@@ -19,6 +20,8 @@
     "events": "Kapsanan Etkinlik"
   },
   "services": {
+    "pageTitle": "Hizmetler",
+    "pageDescription": "Belqees Media'da, medya prodüksiyonu, stüdyo kurulumu, teknik danışmanlık ve eğitim alanlarında kapsamlı bir hizmet yelpazesi sunuyoruz. Altı yılı aşkın pratik deneyimle, televizyon kanalları, prodüksiyon şirketleri ve medya kuruluşlarının ihtiyaçlarına göre özelleştirilmiş anahtar teslim çözümler sunuyoruz.",
     "title": "Büyük projelerden küçük prodüksiyonlara",
     "description": "Medya hizmetlerimizde, şirketleri üç ana aşamada yönlendiriyoruz: üretim öncesi detaylı planlama, uzman ekipler kullanarak etkili üretim ve hassas post-prodüksiyon",
     "advertising": {
@@ -37,10 +40,6 @@
       "title": "Mikro Prodüksiyonlar",
       "description": "Küçük projeler için esnek medya çözümleri"
     },
-    "liveStreaming": {
-      "title": "Canlı Yayın",
-      "description": "Haberler, etkinlikler ve canlı programlar için sorunsuz çoklu platform yayını"
-    },
     "liveEvents": {
       "title": "Canlı Etkinlik Prodüksiyonu",
       "description": "Çoklu kamera kurulumları, ses, ışıklandırma ve canlı yönetim ile konferanslar, forumlar ve halka açık etkinliklerin tam teknik uygulaması"
@@ -57,7 +56,78 @@
       "title": "Eğitim ve Geliştirme",
       "description": "Prodüksiyon ekipleri ve yayın profesyonelleri için düzenlenen kurgu, yönetmenlik, grafik ve medya yönetimi kursları"
     },
-    "mediaProduction": "Medya Prodüksiyonu"
+    "mediaProduction": "Medya Prodüksiyonu",
+    "studioSetup": {
+      "title": "Stüdyo Kurulumu ve Operasyonları",
+      "description": "Profesyonel stüdyoları kurma ve işletme konusunda uzmanız — doğru konumu belirlemeden, esnek ve işlevsel dekor tasarımından, stüdyoyu son teknoloji ile donatmaya kadar. Sorunsuz ve profesyonel günlük operasyonlar sağlıyoruz.",
+      "services": {
+        "planning": "Stüdyo düzeni planlama ve tasarım",
+        "infrastructure": "Ses yalıtımı ve elektrik altyapısı",
+        "installation": "Tam teknik kurulum",
+        "decoration": "İç dekorasyon ve video duvar kurulumu",
+        "integration": "Kontrol odası ve yayın sistemi entegrasyonu"
+      }
+    },
+    "technicalEquipment": {
+      "title": "Teknik Ekipman",
+      "description": "Aşağıdakiler dahil olmak üzere tam bir yayın ve prodüksiyon ekipmanı yelpazesi sağlıyor ve entegre ediyoruz:",
+      "items": {
+        "cameras": "Profesyonel Kameralar",
+        "lighting": "Aydınlatma Sistemleri",
+        "videoWall": "Video Duvar Teknolojisi",
+        "audio": "Gelişmiş Ses Sistemleri",
+        "controlRooms": "Tam Donanımlı Kontrol Odaları"
+      }
+    },
+    "trainingCapacity": {
+      "title": "Eğitim ve Kapasite Geliştirme",
+      "description": "Medya, yayıncılık ve prodüksiyon alanında çalışan bireyler ve ekipler için özel eğitim programları sunuyoruz.",
+      "courses": {
+        "motionGraphics": "Hareketli Grafikler ve Tasarım Yazılımı",
+        "videoEditing": "Video Düzenleme ve Montaj",
+        "directing": "Televizyon Yönetmenliği",
+        "photography": "Fotoğrafçılık ve Videografi",
+        "hr": "Medya ve TV için İnsan Kaynakları",
+        "accounting": "Prodüksiyon Şirketleri için Muhasebe"
+      }
+    },
+    "mediaConsulting": {
+      "title": "Medya Danışmanlığı",
+      "description": "Televizyon ve sanatsal prodüksiyon konusunda uzman danışmanlık sağlıyoruz — çatışma bölgelerinde bile. Hizmetlerimiz Yemen'in tamamını kapsıyor ve şunları içeriyor:",
+      "services": {
+        "networks": "Saha muhabir ağları oluşturma ve yönetme",
+        "journalists": "Profesyonel foto muhabirleri ve video kameramanları sağlama",
+        "footage": "Haber raporları ve belgeseller için yüksek kaliteli görüntü sağlama"
+      }
+    },
+    "mediaProductionServices": {
+      "title": "Medya Prodüksiyon Hizmetleri",
+      "description": "Deneyimli prodüksiyon ekibimiz uçtan uca içerik oluşturma hizmetleri sunuyor:",
+      "services": {
+        "advertising": "Ticari Reklam Prodüksiyonu",
+        "tvPrograms": "TV Program Prodüksiyonu",
+        "documentaries": "Belgesel Yapımı",
+        "postProduction": "Post-Prodüksiyon Hizmetleri (düzenleme, renk düzeltme, ses)",
+        "equipmentRental": "Ekipman Kiralama (talep üzerine)"
+      }
+    },
+    "liveStreaming": {
+      "title": "Canlı Yayın ve Etkinlik Kapsamı",
+      "description": "Konferanslar, seminerler, kültürel etkinlikler ve medya kampanyaları için yüksek prodüksiyon değeri ve güvenilir çoklu platform yayını ile sunulan profesyonel canlı yayın hizmetleri sunuyoruz.",
+      "services": {
+        "multicamera": "Çoklu kamera canlı yayın (HD/4K)",
+        "technicalTeam": "Kurulum ve operasyon için saha teknik ekibi",
+        "broadcast": "Sosyal medya ve uydu platformlarına gerçek zamanlı yayın",
+        "integration": "Etkinlik mekanlarındaki AV sistemleri ile entegrasyon",
+        "overlays": "Özelleştirilmiş katmanlar, alt üçlü ve grafikler",
+        "recording": "Kayıt ve etkinlik sonrası düzenleme seçenekleri"
+      }
+    },
+    "cta": {
+      "title": "Daha fazla bilgi mi istiyorsunuz?",
+      "description": "Medya projenizi gerçekleştirmenize nasıl yardımcı olabileceğimizi öğrenmek için bizimle iletişime geçin",
+      "button": "İletişime Geçin"
+    }
   },
   "approach": {
     "title": "Yaklaşımımız",
@@ -90,16 +160,54 @@
     "similarProject": "Benzer bir proje ister misiniz?",
     "similarProjectDescription": "Projenizi gerçekleştirmenize nasıl yardımcı olabileceğimizi öğrenmek için bizimle iletişime geçin"
   },
+  "events": {
+    "pageTitle": "Etkinlikler",
+    "pageDescription": "Seçkin etkinliklerimizi ve medya prodüksiyonlarımızı keşfedin",
+    "title": "Etkinlikler",
+    "viewAll": "Tüm Etkinlikleri Görüntüle",
+    "noEvents": "Şu anda mevcut etkinlik bulunmamaktadır",
+    "eventImage": "Etkinlik Görseli",
+    "fetchError": "Veri alınamadı",
+    "retry": "Yeniden Dene"
+  },
   "contact": {
+    "pageTitle": "İletişim",
+    "pageSubtitle": "İletişime geçin",
     "title": "İletişime Geçin",
     "description": "Medya içeriğinin iletişiminize nasıl yardımcı olabileceğini anlamamıza izin verin",
     "cta": "İletişime Geçin",
+    "getInTouch": "İletişime geçin",
+    "sendMessage": "Mesaj gönder",
+    "contactInfo": "İletişim Bilgileri",
+    "address": "Adres",
+    "addressValue": "TAHTAKALE MAH. ISPARTAKULE BLV. T2 BLOK NO:2M AVCILAR/İSTANBUL",
+    "contacts": "İletişim",
+    "phone": "Telefon",
+    "mobile": "Cep Telefonu",
     "email": "E-posta",
-    "phone": "Telefon"
+    "emailValue": "Contact@belqeesmedia.com",
+    "phone1": "+90 (212) 412 20 60",
+    "phone2": "+90 (850) 811 33 66",
+    "mobile1": "+90 (539) 334 60 32",
+    "socialMedia": "Sosyal Medyada",
+    "qrCode": "Bizimle deneyiminizi değerlendirmek için QR kodu tarayın!",
+    "form": {
+      "label": "İletişim Formu",
+      "name": "Ad",
+      "email": "E-posta",
+      "subject": "Konu",
+      "message": "Mesaj",
+      "submit": "Gönder",
+      "sending": "Gönderiliyor..."
+    },
+    "successMessage": "Mesaj başarıyla gönderildi! Yakında sizinle iletişime geçeceğiz.",
+    "errorMessage": "Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.",
+    "required": "Gerekli"
   },
   "about": {
     "pageTitle": "Hakkımızda",
     "pageSubtitle": "Belqees Media, 2015 yılında kurulmuş tam hizmet bir medya prodüksiyon şirketidir",
+    "playVideo": "VİDEOYU OYNAT",
     "title": "BELQEES MEDIA",
     "intro": {
       "title": "Şirket Hakkında",

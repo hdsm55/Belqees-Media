@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/utils/cn';
 import ThemeToggle from '@/components/atoms/ThemeToggle';
 import LanguageSwitcher from '@/components/atoms/LanguageSwitcher';
@@ -12,6 +13,10 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { t, locale } = useTranslation();
+  const pathname = usePathname();
+
+  // إخفاء الهيدر في لوحة التحكم
+  const isDashboard = pathname?.startsWith('/dashboard') || pathname?.startsWith('/(dashboard)');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +27,10 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  if (isDashboard) {
+    return null;
+  }
 
   const navItems = [
     { href: '/', label: t('nav.home') },
@@ -34,9 +43,9 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'backdrop-blur-md shadow-md fixed top-0 left-0 right-0 z-[99999] border-b transition-all duration-300 w-full',
+        'fixed top-0 left-0 right-0 z-[99999] transition-all duration-300 w-full',
         isScrolled
-          ? 'bg-white/80 dark:bg-gray-900/80 border-gray-200 dark:border-gray-800'
+          ? 'backdrop-blur-md shadow-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-800'
           : 'bg-transparent border-transparent'
       )}
       style={{
@@ -115,24 +124,37 @@ export default function Header() {
               aria-expanded={isMenuOpen}
               aria-controls="mobile-menu"
             >
-              <svg
-                className={cn(
-                  "w-6 h-6 transition-colors",
-                  isScrolled ? "text-dark dark:text-gray-300" : "text-white"
-                )}
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isMenuOpen ? (
+              {isMenuOpen ? (
+                <svg
+                  className={cn(
+                    "w-6 h-6 transition-colors",
+                    isScrolled ? "text-dark dark:text-gray-300" : "text-white"
+                  )}
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path d="M6 18L18 6M6 6l12 12" />
-                ) : (
+                </svg>
+              ) : (
+                <svg
+                  className={cn(
+                    "w-6 h-6 transition-colors",
+                    isScrolled ? "text-dark dark:text-gray-300" : "text-white"
+                  )}
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+                </svg>
+              )}
             </button>
           </div>
         </div>

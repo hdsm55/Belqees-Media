@@ -102,9 +102,9 @@ export function createCacheStore(): CacheStore {
 
         // Try to parse JSON, if fails return as string
         try {
-          return typeof value === 'string' ? JSON.parse(value) : value;
+          return typeof value === 'string' ? (JSON.parse(value) as T) : (value ?? null) as T;
         } catch {
-          return value as T;
+          return (value ?? null) as T;
         }
       },
 

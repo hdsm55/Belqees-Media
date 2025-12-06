@@ -41,18 +41,21 @@ export async function GET(
 
     if (!post) {
       return NextResponse.json(
-        { error: 'المدونة غير موجودة' },
+        { success: false, error: 'المدونة غير موجودة' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(post);
+    return NextResponse.json({
+      success: true,
+      data: post,
+    });
   } catch (error) {
     console.error('Error fetching blog post:', error);
-    return NextResponse.json(
-      { error: 'حدث خطأ أثناء جلب المدونة' },
-      { status: 500 }
-    );
+      return NextResponse.json(
+        { success: false, error: 'حدث خطأ أثناء جلب المدونة' },
+        { status: 500 }
+      );
   }
 }
 
@@ -84,7 +87,11 @@ export async function PUT(
       },
     });
 
-    return NextResponse.json(post);
+    return NextResponse.json({
+      success: true,
+      data: post,
+      message: 'تم تحديث المقال بنجاح',
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -163,7 +170,10 @@ export async function DELETE(
       where: { id },
     });
 
-    return NextResponse.json({ message: 'تم حذف المدونة بنجاح' });
+    return NextResponse.json({
+      success: true,
+      message: 'تم حذف المدونة بنجاح',
+    });
   } catch (error) {
     console.error('Error deleting blog post:', error);
     return NextResponse.json(

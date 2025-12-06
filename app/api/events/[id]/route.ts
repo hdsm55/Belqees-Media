@@ -4,6 +4,10 @@ import { requireAuth } from '@/lib/auth/session';
 import { z } from 'zod';
 import { rateLimit } from '@/lib/rate-limit';
 import { withErrorHandler, NotFoundError, ErrorCode } from '@/lib/errors';
+import { withCSRFProtection } from '@/lib/csrf/middleware';
+
+// Force dynamic rendering for API routes
+export const dynamic = 'force-dynamic';
 
 const updateEventSchema = z.object({
   slug: z.string().min(1).optional(),
@@ -40,73 +44,79 @@ export const GET = withErrorHandler(async (
   });
 });
 
-export const PUT = withErrorHandler(async (
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) => {
-  // Rate limiting
-  const { response: rateLimitResponse } = await rateLimit(request);
-  if (rateLimitResponse) return rateLimitResponse;
+export const PUT = withCSRFProtection(
+  withErrorHandler(async (
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+  ) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
 
-  await requireAuth();
-  const { id } = await params;
-  const body = await request.json();
-  const data = updateEventSchema.parse(body);
+    await requireAuth();
+    const { id } = await params;
+    const body = await request.json();
+    const data = updateEventSchema.parse(body);
 
-  const event = await prisma.event.update({
-    where: { id },
-    data,
-  });
+    const event = await prisma.event.update({
+      where: { id },
+      data,
+    });
 
-  return NextResponse.json({
-    success: true,
-    data: event,
-    message: 'تم تحديث الفعالية بنجاح',
-  });
-});
+    return NextResponse.json({
+      success: true,
+      data: event,
+      message: 'تم تحديث الفعالية بنجاح',
+    });
+  })
+);
 
-export const PATCH = withErrorHandler(async (
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) => {
-  // Rate limiting
-  const { response: rateLimitResponse } = await rateLimit(request);
-  if (rateLimitResponse) return rateLimitResponse;
+export const PATCH = withCSRFProtection(
+  withErrorHandler(async (
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+  ) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
 
-  await requireAuth();
-  const { id } = await params;
-  const body = await request.json();
-  const data = updateEventSchema.parse(body);
+    await requireAuth();
+    const { id } = await params;
+    const body = await request.json();
+    const data = updateEventSchema.parse(body);
 
-  const event = await prisma.event.update({
-    where: { id },
-    data,
-  });
+    const event = await prisma.event.update({
+      where: { id },
+      data,
+    });
 
-  return NextResponse.json({
-    success: true,
-    data: event,
-    message: 'تم تحديث الفعالية بنجاح',
-  });
-});
+    return NextResponse.json({
+      success: true,
+      data: event,
+      message: 'تم تحديث الفعالية بنجاح',
+    });
+  })
+);
 
-export const DELETE = withErrorHandler(async (
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) => {
-  // Rate limiting
-  const { response: rateLimitResponse } = await rateLimit(request);
-  if (rateLimitResponse) return rateLimitResponse;
+export const DELETE = withCSRFProtection(
+  withErrorHandler(async (
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+  ) => {
+    // Rate limiting
+    const { response: rateLimitResponse } = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
 
-  await requireAuth();
-  const { id } = await params;
-  await prisma.event.delete({
-    where: { id },
-  });
+    await requireAuth();
+    const { id } = await params;
+    await prisma.event.delete({
+      where: { id },
+    });
 
-  return NextResponse.json({
-    success: true,
-    message: 'تم حذف الفعالية بنجاح',
-  });
-});
+    return NextResponse.json({
+      success: true,
+      message: 'تم حذف الفعالية بنجاح',
+    });
+  })
+);
 

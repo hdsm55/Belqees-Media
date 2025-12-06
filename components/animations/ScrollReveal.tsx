@@ -93,12 +93,13 @@ export default function ScrollReveal({
       });
     } else {
       // Single element animation
-      const trigger = ScrollTrigger.create({
-        trigger: element,
-        start: 'top 90%',
-        end: 'bottom 10%',
-        toggleActions: once ? 'play none none none' : 'play none none reverse',
-        animation: gsap.fromTo(
+      // Check if element is already in viewport - if so, animate immediately
+      const rect = element.getBoundingClientRect();
+      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+
+      if (isInViewport) {
+        // Element is already visible, animate immediately
+        gsap.fromTo(
           element,
           animations[animation],
           {
@@ -107,15 +108,37 @@ export default function ScrollReveal({
             x: 0,
             y: 0,
             scale: 1,
-            duration: duration * 0.5, // تقليل المدة أكثر
+            duration: duration,
             delay,
-            ease: 'power1.out', // أسرع easing
+            ease: 'power2.out',
           }
-        ),
-        refreshPriority: -1,
-        fastScrollEnd: true,
-      });
-      scrollTriggerRef.current = trigger;
+        );
+      } else {
+        // Element not in viewport, use ScrollTrigger
+        const trigger = ScrollTrigger.create({
+          trigger: element,
+          start: 'top 90%',
+          end: 'bottom 10%',
+          toggleActions: once ? 'play none none none' : 'play none none reverse',
+          animation: gsap.fromTo(
+            element,
+            animations[animation],
+            {
+              ...animations[animation],
+              opacity: 1,
+              x: 0,
+              y: 0,
+              scale: 1,
+              duration: duration * 0.5, // تقليل المدة أكثر
+              delay,
+              ease: 'power1.out', // أسرع easing
+            }
+          ),
+          refreshPriority: -1,
+          fastScrollEnd: true,
+        });
+        scrollTriggerRef.current = trigger;
+      }
     }
 
     return () => {

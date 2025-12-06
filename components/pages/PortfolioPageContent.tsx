@@ -91,18 +91,45 @@ export default function PortfolioPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 pt-20 md:pt-24">
-      {/* Hero Section */}
-      <section className="py-16 md:py-20 bg-gray-50 dark:bg-gray-800 transition-colors">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10 md:mb-12">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-dark dark:text-gray-100 mb-4 md:mb-6 tracking-tight">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
+      {/* Hero Section - Compact with static image background */}
+      <section className="relative py-20 md:py-32 flex items-center justify-center overflow-hidden">
+        {/* Static Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/portfolio-hero.jpg"
+            alt="Portfolio"
+            fill
+            className="object-cover"
+            priority
+            quality={90}
+          />
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(217, 0, 0, 0.3), rgba(0, 0, 0, 0.8))' }}></div>
+        </div>
+
+        {/* Corner Brackets */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-white opacity-30"></div>
+          <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-white opacity-30"></div>
+          <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-white opacity-30"></div>
+          <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-white opacity-30"></div>
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          <div className="relative inline-block mb-4 md:mb-6">
+            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-white opacity-50"></div>
+            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-white opacity-50"></div>
+            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-white opacity-50"></div>
+            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-white opacity-50"></div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white px-6 py-3" style={{ textShadow: '0 4px 20px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4)' }}>
               {t('portfolio.title')}
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-dark-light dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              {t('portfolio.description')}
-            </p>
           </div>
+          <p className="text-base md:text-lg lg:text-xl text-white text-opacity-90 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)' }}>
+            {t('portfolio.description')}
+          </p>
         </div>
       </section>
 

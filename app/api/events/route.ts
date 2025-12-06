@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { rateLimit } from '@/lib/rate-limit';
 import { withErrorHandler } from '@/lib/errors';
 import { withCache, invalidateCacheByTags } from '@/lib/cache/middleware';
+import { withCSRFProtection } from '@/lib/csrf/middleware';
 
 const eventSchema = z.object({
     slug: z.string().min(1),
@@ -57,24 +58,29 @@ export const GET = withCache(
     }
 );
 
-export const POST = withErrorHandler(async (request: NextRequest) => {
-    // Rate limiting
-    const { response: rateLimitResponse } = await rateLimit(request);
-    if (rateLimitResponse) return rateLimitResponse;
+export const POST = withCSRFProtection(
+    withErrorHandler(async (request: NextRequest) => {
+        // Rate limiting
+        const { response: rateLimitResponse } = await rateLimit(request);
+        if (rateLimitResponse) return rateLimitResponse;
 
-    await requireAuth();
-    const body = await request.json();
-    const data = eventSchema.parse(body);
+        await requireAuth();
+        const body = await request.json();
+        const data = eventSchema.parse(body);
 
-    const event = await prisma.event.create({ data });
+        const event = await prisma.event.create({ data });
 
-    // Invalidate cache
-    await invalidateCacheByTags(['events', 'public']);
+        // Invalidate cache
+        await invalidateCacheByTags(['events', 'public']);
 
-    return NextResponse.json({
-        success: true,
-        data: event,
-        message: 'تم إنشاء الفعالية بنجاح',
-    }, { status: 201 });
-});
+        return NextResponse.json({
+            success: true,
+            data: event,
+            message: 'تم إنشاء الفعالية بنجاح',
+        }, { status: 201 });
+    }),
+    {
+        excludePaths: [], // Protect all POST requests
+    }
+);
 

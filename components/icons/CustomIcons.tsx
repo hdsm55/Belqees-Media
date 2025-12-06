@@ -331,3 +331,162 @@ export const ForwardVisionIcon: React.FC<IconProps> = ({
   );
 };
 
+// 9. أيقونة الإنتاج الإعلامي (Media Production) - كاميرا فيلم
+export const MediaProductionIcon: React.FC<IconProps> = ({
+  className = '',
+  stroke = 'currentColor',
+  fill = 'none',
+  redDotColor = '#FC473C',
+}) => {
+  return (
+    <svg
+      width="68"
+      height="52"
+      viewBox="0 0 68 52"
+      fill={fill}
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <rect x="8" y="12" width="52" height="32" rx="2" stroke={stroke} strokeWidth="2" />
+      <circle cx="34" cy="28" r="8" stroke={stroke} strokeWidth="2" />
+      <circle cx="34" cy="28" r="4" fill={redDotColor} className="recording-dot" />
+      <path d="M4 16L8 12V44L4 40V16Z" fill={stroke} />
+      <path d="M60 16L64 12V44L60 40V16Z" fill={stroke} />
+      <path d="M20 8L20 4" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      <path d="M28 8L28 4" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      <path d="M36 8L36 4" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      <path d="M44 8L44 4" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+// 10. أيقونة إنتاج الفعاليات المباشرة (Live Events) - clapperboard
+export const LiveEventsIcon: React.FC<IconProps> = ({
+  className = '',
+  stroke = 'currentColor',
+  fill = 'currentColor',
+  redDotColor = '#FC473C',
+}) => {
+  return (
+    <svg
+      width="68"
+      height="52"
+      viewBox="0 0 68 52"
+      fill={fill}
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path
+        d="M2 8L34 2L66 8V48L34 54L2 48V8Z"
+        stroke={stroke}
+        strokeWidth="2"
+        fill="none"
+      />
+      <path d="M34 2V54" stroke={stroke} strokeWidth="2" />
+      <path d="M2 8L66 8" stroke={stroke} strokeWidth="2" />
+      <path d="M2 48L66 48" stroke={stroke} strokeWidth="2" />
+      <circle cx="20" cy="28" r="6" fill={redDotColor} className="recording-dot" />
+      <circle cx="48" cy="28" r="6" fill={redDotColor} className="recording-dot" />
+    </svg>
+  );
+};
+
+// 11. أيقونة البث المباشر (Live Broadcast) - تلفزيون
+export const LiveBroadcastIcon: React.FC<IconProps> = ({
+  className = '',
+  stroke = 'currentColor',
+  fill = 'none',
+  redDotColor = '#FC473C',
+}) => {
+  return (
+    <svg
+      width="68"
+      height="52"
+      viewBox="0 0 68 52"
+      fill={fill}
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <rect x="4" y="8" width="60" height="36" rx="2" stroke={stroke} strokeWidth="2" />
+      <rect x="8" y="12" width="52" height="28" fill={stroke} opacity="0.1" />
+      <circle cx="34" cy="26" r="8" fill={redDotColor} className="recording-dot" />
+      <path d="M28 48L24 52H44L40 48" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      <path d="M30 48V52" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      <path d="M38 48V52" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+// 12. أيقونة التدريب والتطوير (Training) - شهادة تدريب
+export const TrainingIcon: React.FC<IconProps> = ({
+  className = '',
+  stroke = 'currentColor',
+  fill = 'none',
+  redDotColor = '#FC473C',
+}) => {
+  return (
+    <svg
+      width="68"
+      height="52"
+      viewBox="0 0 68 52"
+      fill={fill}
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      {/* Certificate/Document */}
+      <rect x="12" y="6" width="44" height="40" rx="2" stroke={stroke} strokeWidth="2" fill="white" />
+
+      {/* Decorative lines at top */}
+      <line x1="16" y1="16" x2="52" y2="16" stroke={stroke} strokeWidth="1.5" />
+      <line x1="16" y1="22" x2="52" y2="22" stroke={stroke} strokeWidth="1.5" />
+      <line x1="16" y1="28" x2="44" y2="28" stroke={stroke} strokeWidth="1.5" />
+
+      {/* Seal/Badge at bottom */}
+      <circle cx="34" cy="36" r="8" stroke={stroke} strokeWidth="2" fill="none" />
+      <path d="M30 36L32 38L38 32" stroke={redDotColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
+      {/* Ribbon/Banner effect */}
+      <path d="M20 6L28 2L36 6V10L28 14L20 10V6Z" fill={redDotColor} opacity="0.9" />
+      <path d="M20 6L28 2L36 6V10L28 14L20 10V6Z" stroke={stroke} strokeWidth="1.5" />
+
+      {/* Red dot indicator */}
+      <circle cx="34" cy="36" r="2" fill={redDotColor} className="recording-dot" />
+    </svg>
+  );
+};
+
+// 13. أيقونة تصميم وإعداد الاستوديوهات (Studio Design) - ميكروفون
+export const StudioDesignIcon: React.FC<IconProps> = ({
+  className = '',
+  stroke = 'currentColor',
+  fill = 'none',
+  redDotColor = '#FC473C',
+}) => {
+  return (
+    <svg
+      width="68"
+      height="52"
+      viewBox="0 0 68 52"
+      fill={fill}
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      {/* Microphone body */}
+      <rect x="28" y="12" width="12" height="24" rx="2" stroke={stroke} strokeWidth="2" />
+      <path d="M32 12V8C32 6.89543 32.8954 6 34 6C35.1046 6 36 6.89543 36 8V12" stroke={stroke} strokeWidth="2" />
+      <path d="M30 36L38 36" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      <path d="M28 40L40 40" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      <path d="M26 44L42 44" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      {/* Microphone head with lines */}
+      <ellipse cx="34" cy="18" rx="6" ry="4" stroke={stroke} strokeWidth="2" />
+      <line x1="30" y1="16" x2="30" y2="20" stroke={stroke} strokeWidth="1.5" />
+      <line x1="34" y1="16" x2="34" y2="20" stroke={stroke} strokeWidth="1.5" />
+      <line x1="38" y1="16" x2="38" y2="20" stroke={stroke} strokeWidth="1.5" />
+      <circle cx="34" cy="18" r="2" fill={redDotColor} className="recording-dot" />
+      {/* Stand */}
+      <path d="M34 44V48" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      <path d="M26 48L42 48" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+};
+
