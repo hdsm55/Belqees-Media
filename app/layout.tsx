@@ -5,6 +5,8 @@ import LenisProvider from '@/components/providers/LenisProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import PerformanceOptimizer from '@/components/PerformanceOptimizer';
 import Header from '@/components/organisms/Header';
+import Footer from '@/components/organisms/Footer';
+import PageTransition from '@/components/animations/PageTransition';
 
 // Arabic Font - Tajawal (خط عربي أنيق وحديث)
 const tajawal = Tajawal({
@@ -61,7 +63,15 @@ export default function RootLayout({
         <ThemeProvider>
           <LenisProvider>
             <PerformanceOptimizer />
-            <div id="main-content">{children}</div>
+            <div className="min-h-screen flex flex-col relative">
+              <Header />
+              <main className="flex-1 relative" style={{ zIndex: 1, position: 'relative' }}>
+                <PageTransition>
+                  <div id="main-content">{children}</div>
+                </PageTransition>
+              </main>
+              <Footer />
+            </div>
           </LenisProvider>
         </ThemeProvider>
       </body>
