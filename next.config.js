@@ -25,6 +25,7 @@ const nextConfig = {
   // Performance Optimizations
   compress: true,
   poweredByHeader: false,
+  generateEtags: true,
 
 
   // Experimental Features for Better Performance

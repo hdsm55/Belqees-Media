@@ -1,7 +1,9 @@
 /**
- * This page was moved to app/page.tsx to resolve a route group conflict 
- * causing build errors on Vercel.
+ * This file is deactivated to resolve a routing conflict with /app/page.tsx
+ * which was causing manifest generation errors during the Vercel build.
+ *
+ * If you want to use this file again, move it out of the (main) group
+ * or delete the root app/page.tsx.
  */
-export default function MovedPage() {
-  return null;
-}
+
+// export default function HiddenPage() { return null; }
