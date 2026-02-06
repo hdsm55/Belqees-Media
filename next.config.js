@@ -32,7 +32,7 @@ const nextConfig = {
   // Experimental Features for Better Performance
   experimental: {
     // optimizeCss: true, // Disabled - requires 'critters' package
-    optimizePackageImports: ['lucide-react', '@prisma/client'],
+    optimizePackageImports: ['lucide-react'],
   },
 
   // Headers for Security and Performance

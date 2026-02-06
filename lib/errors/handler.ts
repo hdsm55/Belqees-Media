@@ -5,7 +5,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { Prisma } from '@prisma/client';
 import {
   AppError,
   ErrorCode,
@@ -59,46 +58,6 @@ function handleZodError(error: z.ZodError): ValidationError {
 }
 
 /**
- * Convert Prisma Error to AppError
- */
-function handlePrismaError(error: any): AppError {
-  // Prisma Not Found Error
-  if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    if (error.code === 'P2025') {
-      return new NotFoundError('المورد');
-    }
-
-    // Unique constraint violation
-    if (error.code === 'P2002') {
-      const field = error.meta?.target as string[];
-      return new ConflictError(
-        `هذا ${field?.[0] || 'الحقل'} موجود بالفعل`,
-        { field: field?.[0] }
-      );
-    }
-
-    // Foreign key constraint violation
-    if (error.code === 'P2003') {
-      return new ValidationError('مرجع غير صحيح', {
-        field: error.meta?.field_name,
-      });
-    }
-
-    return new DatabaseError('خطأ في قاعدة البيانات', {
-      code: error.code,
-      meta: error.meta,
-    });
-  }
-
-  // Prisma Validation Error
-  if (error instanceof Prisma.PrismaClientValidationError) {
-    return new ValidationError('بيانات غير صحيحة لقاعدة البيانات');
-  }
-
-  return new DatabaseError('خطأ في قاعدة البيانات');
-}
-
-/**
  * Handle Supabase Auth Errors
  */
 function handleSupabaseError(error: any): AppError {
@@ -131,12 +90,6 @@ function normalizeError(error: unknown): AppError {
   // Zod Validation Error
   if (error instanceof z.ZodError) {
     return handleZodError(error);
-  }
-
-  // Prisma Errors
-  if (error instanceof Prisma.PrismaClientKnownRequestError ||
-      error instanceof Prisma.PrismaClientValidationError) {
-    return handlePrismaError(error);
   }
 
   // Supabase Errors (check for common patterns)

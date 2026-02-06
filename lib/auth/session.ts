@@ -13,7 +13,14 @@ export interface UserSession {
  */
 export async function getCurrentUser(): Promise<UserSession | null> {
     try {
-        const supabase = await createClient();
+        let supabase;
+        try {
+            supabase = await createClient();
+        } catch (cookieError) {
+            // Cookies might not be available in some contexts (e.g. during build or some background requests)
+            return null;
+        }
+
         const {
             data: { user: supabaseUser },
             error: supabaseError,
