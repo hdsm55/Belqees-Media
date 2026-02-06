@@ -1,0 +1,68 @@
+{
+    "nav": {
+        "home": "Anasayfa",
+        "about": "Hakkımızda",
+        "services": "Hizmetler",
+        "portfolio": "Portfolyo",
+        "events": "Etkinlikler",
+        "contact": "İletişim",
+        "mainMenu": "Ana Menü",
+        "closeMenu": "Menüyü Kapat",
+        "openMenu": "Menüyü Aç"
+    },
+    "hero": {
+        "title": "İhtiyaçlarınıza Uygun Medya İçeriği Üretiyoruz",
+        "subtitle": "Büyük Projelerden Küçük Yapımlara",
+        "cta": "İletişime Geçin"
+    },
+    "stats": {
+        "years": "Yıllık Deneyim",
+        "projects": "Tamamlanan Proje",
+        "clients": "Mutlu Müşteri",
+        "events": "Kapsanan Etkinlik"
+    },
+    "services": {
+        "title": "Büyük Projelerden Küçük Yapımlara",
+        "description": "Medya hizmetlerimizde şirketlere üç ana aşamada rehberlik ediyoruz: detaylı üretim öncesi planlama, uzman ekiplerle verimli üretim ve hassas üretim sonrası.",
+        "advertising": {
+            "title": "Reklam",
+            "description": "TV ve dijital mecralar için yüksek kaliteli reklam üretimi"
+        },
+        "corporate": {
+            "title": "Kurumsal İçerik",
+            "description": "Şirketler ve kurumlar için profesyonel videolar"
+        },
+        "documentaries": {
+            "title": "Belgeseller",
+            "description": "Profesyonel belgesel ve etkileyici hikaye üretimi"
+        },
+        "microproductions": {
+            "title": "Mikro Prodüksiyonlar",
+            "description": "Küçük projeler için esnek medya çözümleri"
+        }
+    },
+    "clients": {
+        "title": "Bize Güvenen Şirketler"
+    },
+    "portfolio": {
+        "title": "Son Projelerimiz",
+        "viewAll": "Hepsini Gör"
+    },
+    "events": {
+        "title": "Etkinlikler",
+        "viewAll": "Tüm Etkinlikleri Gör"
+    },
+    "contact": {
+        "title": "İletişime Geçin",
+        "description": "Medya içeriğinin iletişiminize nasıl yardımcı olabileceğini anlayalım",
+        "cta": "İletişime Geçin"
+    },
+    "footer": {
+        "description": "2015 yılında kurulmuş, TV kanalları, dijital platformlar ve canlı etkinlikler için yüksek kaliteli çözümler sunmaya adanmış tam hizmet medya prodüksiyon şirketi.",
+        "allRightsReserved": "Tüm hakları saklıdır"
+    },
+    "common": {
+        "learnMore": "Daha Fazla Bilgi",
+        "changeLanguage": "Dili Değiştir"
+    }
+}

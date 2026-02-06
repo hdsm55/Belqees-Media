@@ -1,0 +1,235 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "services": "Services",
+        "portfolio": "Portfolio",
+        "events": "Events",
+        "contact": "Contact Us",
+        "mainMenu": "Main Menu",
+        "closeMenu": "Close Menu",
+        "openMenu": "Open Menu"
+    },
+    "hero": {
+        "title": "We Create Media Content That Suits Your Needs",
+        "subtitle": "From Big Projects to Small Productions",
+        "description": "In our media services, we guide companies through three main phases: detailed pre-production planning, efficient production with expert teams, and precise post-production to create a final product that not only looks great but also communicates effectively.",
+        "cta": "Contact Us"
+    },
+    "stats": {
+        "years": "Years of Experience",
+        "projects": "Completed Projects",
+        "clients": "Happy Clients",
+        "events": "Events Covered"
+    },
+    "services": {
+        "pageTitle": "Our Services",
+        "pageDescription": "At Belqees Media, we offer a comprehensive range of services in media production, studio setup, technical consultancy, and training. With over six years of hands-on experience, we provide integrated solutions tailored to the needs of TV channels, production companies, and media organizations.",
+        "title": "From Big Projects to Small Productions",
+        "description": "In our media services, we guide companies through three main phases: detailed pre-production planning, efficient production with expert teams, and precise post-production",
+        "advertising": {
+            "title": "Advertising",
+            "description": "High-quality production for TV and digital advertisements"
+        },
+        "corporate": {
+            "title": "Corporate Content",
+            "description": "Professional videos for companies and institutions"
+        },
+        "documentaries": {
+            "title": "Documentaries",
+            "description": "Professional production of documentaries and impactful stories"
+        },
+        "microproductions": {
+            "title": "Microproductions",
+            "description": "Flexible media solutions for small projects"
+        },
+        "liveEvents": {
+            "title": "Live Events Production",
+            "description": "Full technical execution for conferences, forums, and public events with multi-camera systems, sound, lighting, and live directing"
+        },
+        "studioDesign": {
+            "title": "Studio Design & Setup",
+            "description": "From planning and construction to technical integration and decoration"
+        },
+        "technicalConsultancy": {
+            "title": "Technical Consultancy",
+            "description": "Supporting channels and production companies with reliable, customized advice for studio operations and broadcast infrastructure"
+        },
+        "training": {
+            "title": "Training & Development",
+            "description": "Courses in editing, directing, graphics, and media management tailored for production teams and broadcast professionals"
+        },
+        "mediaProduction": "Media Production"
+    },
+    "clients": {
+        "title": "Companies That Trusted Us",
+        "partner1": "Partner 1",
+        "partner2": "Partner 2",
+        "partner3": "Partner 3",
+        "partner4": "Partner 4",
+        "partner5": "Partner 5",
+        "partner6": "Partner 6",
+        "partner7": "Partner 7",
+        "partner8": "Partner 8"
+    },
+    "portfolio": {
+        "title": "Our Latest Projects",
+        "viewAll": "View All",
+        "description": "Browse a collection of our best projects in media production and live broadcasting",
+        "all": "All",
+        "viewAllProjects": "View All Projects",
+        "viewProjectDetails": "View Details",
+        "projectImage": "Project Image",
+        "projectCategory": "Project Category",
+        "noProjects": "No projects available at the moment",
+        "retry": "Retry",
+        "fetchError": "Failed to fetch data",
+        "errorOccurred": "An error occurred while fetching data",
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page",
+        "backToPortfolio": "Back to Portfolio",
+        "gallery": "Gallery",
+        "viewImage": "View Image",
+        "videoNotSupported": "Your browser does not support video",
+        "similarProject": "Want a similar project?",
+        "similarProjectDescription": "Contact us to find out how we can help you achieve your project",
+        "galleryAriaLabel": "Projects Gallery"
+    },
+    "events": {
+        "pageTitle": "Events",
+        "pageDescription": "Explore our featured events and media productions",
+        "title": "Events",
+        "viewAll": "View All Events",
+        "noEvents": "No events available at the moment",
+        "eventImage": "Event Image",
+        "fetchError": "Failed to fetch data",
+        "retry": "Retry",
+        "noImage": "No Image"
+    },
+    "contact": {
+        "pageTitle": "Contact Us",
+        "pageSubtitle": "Get In Touch",
+        "title": "Contact Us",
+        "description": "Let's understand how media content can help your communication",
+        "cta": "Contact Us",
+        "getInTouch": "Get In Touch",
+        "sendMessage": "Send a Message",
+        "contactInfo": "Contact Information",
+        "address": "Address",
+        "addressValue": "TAHTAKALE MAH. ISPARTAKULE BLV. T2 BLOK NO:2M AVCILAR/İSTANBUL",
+        "contacts": "Contacts",
+        "phone": "Phone",
+        "mobile": "Mobile",
+        "email": "Email",
+        "emailValue": "Contact@belqeesmedia.com",
+        "phone1": "+90 (212) 412 20 60",
+        "phone2": "+90 (850) 811 33 66",
+        "mobile1": "+90 (539) 334 60 32",
+        "socialMedia": "On Social Media",
+        "qrCode": "Scan the QR code to rate your experience with us!",
+        "form": {
+            "label": "Contact Form",
+            "name": "Name",
+            "email": "Email",
+            "subject": "Subject",
+            "message": "Message",
+            "submit": "Send",
+            "sending": "Sending..."
+        },
+        "successMessage": "Message sent successfully! We will contact you soon.",
+        "errorMessage": "An error occurred while sending the message. Please try again.",
+        "required": "Required",
+        "sendEmailTo": "Send email to",
+        "callNumber": "Call number"
+    },
+    "about": {
+        "pageTitle": "About",
+        "pageSubtitle": "Belqees Media is a full-service media production company founded in 2015",
+        "heroAlt": "Belqees Media - Production Team",
+        "playVideo": "PLAY VIDEO",
+        "title": "BELQEES MEDIA",
+        "intro": {
+            "title": "About Company",
+            "description": "Founded in 2015, Belqees Media is a dynamic and forward-looking media production company providing high-quality services within and outside Turkey. With years of experience and a multi-national team, we blend creative, editorial, and technical expertise to support a diverse range of clients and media partners.",
+            "services": "We offer a wide range of services including live streaming, event coverage, studio setup, media production, and technical consultancy tailored for TV channels and organizations."
+        },
+        "channel": {
+            "title": "Belqees Channel",
+            "description": "We operate Belqees Channel, a 24/7 satellite news station, supported by three fully-equipped studios, modern broadcasting technologies, and an integrated headquarters connecting all editorial and technical departments for a seamless production workflow."
+        },
+        "systems": {
+            "title": "Our Broadcast & Media Systems",
+            "description": "We rely on sophisticated media systems to ensure a seamless, professional, and fully integrated workflow - from content creation to final broadcast.",
+            "octopus": {
+                "title": "Octopus Newsroom",
+                "description": "A modern Newsroom Computer System (NRCS) that streamlines news planning, scriptwriting, and rundown management from the field to the broadcast."
+            },
+            "metus": {
+                "title": "Metus MAM",
+                "description": "A media asset management and archiving solution used to efficiently organize, store, and retrieve video content across production teams."
+            },
+            "brainstorm": {
+                "title": "Brainstorm 3D",
+                "description": "Real-time 3D graphics and virtual studio solutions for dynamic and high-quality broadcast visuals."
+            },
+            "adobe": {
+                "title": "Adobe Creative Cloud",
+                "description": "A professional suite of tools for video editing, motion graphics, and design, used to produce high-end visual content."
+            }
+        },
+        "values": {
+            "title": "Our Values",
+            "subtitle": "The principles that guide our work",
+            "innovativeEfficiency": {
+                "title": "Innovative Efficiency",
+                "description": "We use the latest technologies and innovative methods to ensure high efficiency in every project"
+            },
+            "buildingConnections": {
+                "title": "Building Connections",
+                "description": "We believe in the power of long-term relationships with our clients and partners to achieve mutual success"
+            },
+            "forwardVision": {
+                "title": "Forward Vision",
+                "description": "We always look to the future and prepare for upcoming challenges and opportunities in the media world"
+            }
+        },
+        "gallery": {
+            "title": "Gallery",
+            "subtitle": "Explore our stunning media projects"
+        }
+    },
+    "footer": {
+        "description": "Full-service media production company founded in 2015, dedicated to providing high-quality solutions for TV channels, digital platforms, and live events.",
+        "quickLinks": "Quick Links",
+        "services": "Services",
+        "contactUs": "Contact Us",
+        "liveStreaming": "Live Streaming",
+        "eventProduction": "Event Production",
+        "mediaProduction": "Media Production",
+        "studioDesign": "Studio Design",
+        "technicalConsultancy": "Technical Consultancy",
+        "training": "Training & Development",
+        "allRightsReserved": "All rights reserved"
+    },
+    "common": {
+        "learnMore": "Learn More",
+        "companyStats": "Company Stats",
+        "visitWebsite": "Visit Website",
+        "clientLogo": "Logo",
+        "companyName": "BELQEES MEDIA",
+        "logoAlt": "Belqees Media Logo",
+        "homeAlt": "Belqees Media Home",
+        "viewDetail": "View Details",
+        "galleryImage": "Gallery Image",
+        "changeLanguage": "Change Language",
+        "tryAgainLater": "Please try again later",
+        "noImage": "No image",
+        "galleryImage1": "Nobel Peace Prize Event Coverage",
+        "galleryImage2": "Yemen Researchers Conference",
+        "galleryImage3": "Professional Media Production Approach",
+        "galleryImage4": "Media Events & Conferences Coverage",
+        "galleryImage5": "Integrated Media Solutions Services",
+        "galleryImage6": "Advanced Newsroom System"
+    }
+}
