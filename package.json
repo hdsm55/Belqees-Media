@@ -15,7 +15,8 @@
     "db:reset": "node scripts/reset-database.js",
     "db:verify": "node scripts/verify-schema.js",
     "db:seed-services": "npx tsx scripts/seed-services.ts",
-    "db:seed-events": "npx tsx scripts/seed-events.ts"
+    "db:seed-events": "npx tsx scripts/seed-events.ts",
+    "postbuild": "node scripts/fix-client-manifest.js"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
