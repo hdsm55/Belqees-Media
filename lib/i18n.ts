@@ -1,6 +1,6 @@
-import arTranslations from '@/app/locales/ar/common.json';
-import enTranslations from '@/app/locales/en/common.json';
-import trTranslations from '@/app/locales/tr/common.json';
+import arTranslations from '@/locales/ar/common.json';
+import enTranslations from '@/locales/en/common.json';
+import trTranslations from '@/locales/tr/common.json';
 
 export type Locale = 'ar' | 'en' | 'tr';
 
