@@ -21,7 +21,7 @@ export default function AboutPageContent() {
         <div className="absolute inset-0">
           <Image
             src="/images/about-hero.jpg"
-            alt="About Belqees Media"
+            alt={t('about.heroAlt')}
             fill
             className="object-cover"
             priority
@@ -266,12 +266,12 @@ export default function AboutPageContent() {
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {[
-                    { src: '/images/nobel-peace-prize.jpg', alt: 'Nobel Peace Prize Event' },
-                    { src: '/images/yemen-researchers-conference.jpg', alt: 'Yemen Researchers Conference' },
-                    { src: '/images/approach.jpg', alt: 'Media Production Approach' },
-                    { src: '/images/events-hero.jpg', alt: 'Media Events' },
-                    { src: '/images/services-hero.jpg', alt: 'Professional Media Services' },
-                    { src: '/images/systems/octopus-newsroom.jpg', alt: 'Octopus Newsroom System' },
+                    { src: '/images/nobel-peace-prize.jpg', key: 'common.galleryImage1' },
+                    { src: '/images/yemen-researchers-conference.jpg', key: 'common.galleryImage2' },
+                    { src: '/images/approach.jpg', key: 'common.galleryImage3' },
+                    { src: '/images/events-hero.jpg', key: 'common.galleryImage4' },
+                    { src: '/images/services-hero.jpg', key: 'common.galleryImage5' },
+                    { src: '/images/systems/octopus-newsroom.jpg', key: 'common.galleryImage6' },
                   ].map((img, i) => (
                     <div
                       key={i}
@@ -279,7 +279,7 @@ export default function AboutPageContent() {
                     >
                       <Image
                         src={img.src}
-                        alt={img.alt}
+                        alt={t(img.key)}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                         sizes="(max-width: 768px) 50vw, 33vw"
