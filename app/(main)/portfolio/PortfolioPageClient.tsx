@@ -99,11 +99,10 @@ export default function PortfolioPageClient({
             <div className="flex flex-wrap gap-3 justify-center">
               <button
                 onClick={() => setSelectedCategory('all')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedCategory === 'all'
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === 'all'
                     ? 'bg-primary-500 text-white'
                     : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                }`}
+                  }`}
                 aria-label={t('portfolio.viewAllProjects')}
               >
                 {t('portfolio.all')}
@@ -112,11 +111,10 @@ export default function PortfolioPageClient({
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    selectedCategory === category
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === category
                       ? 'bg-primary-500 text-white'
                       : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                  }`}
+                    }`}
                   aria-label={`${t('portfolio.viewProjectDetails')} ${category}`}
                 >
                   {category}
@@ -174,8 +172,6 @@ export default function PortfolioPageClient({
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           loading="lazy"
-                          placeholder="blur"
-                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                         />
                       ) : (
                         <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" aria-hidden="true">
@@ -245,11 +241,10 @@ export default function PortfolioPageClient({
                         {showEllipsisBefore && <span className="px-2">...</span>}
                         <button
                           onClick={() => setCurrentPage(page)}
-                          className={`px-4 py-2 rounded-lg transition-colors ${
-                            currentPage === page
+                          className={`px-4 py-2 rounded-lg transition-colors ${currentPage === page
                               ? 'bg-primary-500 text-white'
                               : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                          }`}
+                            }`}
                           aria-label={`${t('portfolio.page')} ${page}`}
                           aria-current={currentPage === page ? 'page' : undefined}
                         >
