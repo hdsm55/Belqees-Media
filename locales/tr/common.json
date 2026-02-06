@@ -13,7 +13,13 @@
     "hero": {
         "title": "İhtiyaçlarınıza Uygun Medya İçeriği Üretiyoruz",
         "subtitle": "Büyük Projelerden Küçük Yapımlara",
+        "description": "Medya hizmetlerimizde şirketlere üç ana aşamada rehberlik ediyoruz: detaylı üretim öncesi planlama, uzman ekiplerle verimli üretim ve nihai ürünün sadece harika görünmesini değil, aynı zamanda etkili bir şekilde iletişim kurmasını sağlayan hassas üretim sonrası.",
         "cta": "İletişime Geçin"
+    },
+    "approach": {
+        "title": "Yaratıcı Yaklaşımımız",
+        "description": "Kalıcı bir etki bırakan içerikler sunmak için teknik yeniliği editöryal mükemmellikle birleştiriyoruz. Konseptten yayına kadar en yüksek kalite ve profesyonellik standartlarını sağlıyoruz.",
+        "linkText": "Hakkımızda Daha Fazlasını Öğrenin"
     },
     "stats": {
         "years": "Yıllık Deneyim",
@@ -22,6 +28,8 @@
         "events": "Kapsanan Etkinlik"
     },
     "services": {
+        "pageTitle": "Hizmetlerimiz",
+        "pageDescription": "Belqees Media olarak, medya prodüksiyonu, stüdyo kurulumu, teknik danışmanlık ve eğitim alanlarında kapsamlı bir hizmet yelpazesi sunuyoruz. Altı yılı aşkın pratik deneyimimizle, TV kanallarının, yapım şirketlerinin ve medya kuruluşlarının ihtiyaçlarına özel entegre çözümler sağlıyoruz.",
         "title": "Büyük Projelerden Küçük Yapımlara",
         "description": "Medya hizmetlerimizde şirketlere üç ana aşamada rehberlik ediyoruz: detaylı üretim öncesi planlama, uzman ekiplerle verimli üretim ve hassas üretim sonrası.",
         "advertising": {
@@ -39,30 +47,194 @@
         "microproductions": {
             "title": "Mikro Prodüksiyonlar",
             "description": "Küçük projeler için esnek medya çözümleri"
-        }
+        },
+        "liveEvents": {
+            "title": "Canlı Etkinlik Prodüksiyonu",
+            "description": "Çok kameralı sistemler, ses, ışık ve canlı yönetmenlik ile konferanslar, forumlar ve halka açık etkinlikler için tam teknik uygulama"
+        },
+        "studioDesign": {
+            "title": "Stüdyo Tasarımı ve Kurulumu",
+            "description": "Planlama ve inşaattan teknik entegrasyona ve dekorasyona kadar"
+        },
+        "technicalConsultancy": {
+            "title": "Teknik Danışmanlık",
+            "description": "Stüdyo operasyonları ve yayın altyapısı için güvenilir ve özelleştirilmiş tavsiyelerle kanalları ve yapım şirketlerini desteklemek"
+        },
+        "training": {
+            "title": "Eğitim ve Gelişim",
+            "description": "Yapım ekipleri ve yayın profesyonelleri için özel olarak tasarlanmış kurgu, yönetmenlik, grafik ve medya yönetimi kursları"
+        },
+        "mediaProduction": "Medya Prodüksiyonu"
     },
     "clients": {
-        "title": "Bize Güvenen Şirketler"
+        "title": "Bize Güvenen Şirketler",
+        "partner1": "Partner 1",
+        "partner2": "Partner 2",
+        "partner3": "Partner 3",
+        "partner4": "Partner 4",
+        "partner5": "Partner 5",
+        "partner6": "Partner 6",
+        "partner7": "Partner 7",
+        "partner8": "Partner 8"
     },
     "portfolio": {
         "title": "Son Projelerimiz",
-        "viewAll": "Hepsini Gör"
+        "viewAll": "Hepsini Gör",
+        "description": "Medya prodüksiyonu ve canlı yayın alanındaki en iyi projelerimizden oluşan koleksiyona göz atın",
+        "all": "Hepsi",
+        "viewAllProjects": "Tüm Projeleri Gör",
+        "viewProjectDetails": "Detayları Gör",
+        "projectImage": "Proje Görseli",
+        "projectCategory": "Proje Kategorisi",
+        "noProjects": "Şu anda mevcut proje bulunmamaktadır",
+        "retry": "Tekrar Dene",
+        "fetchError": "Veri alınamadı",
+        "errorOccurred": "Veri alınırken bir hata oluştu",
+        "previous": "Önceki",
+        "next": "Sonraki",
+        "page": "Sayfa",
+        "backToPortfolio": "Portfolyoya Dön",
+        "gallery": "Galeri",
+        "viewImage": "Resmi Görüntüle",
+        "videoNotSupported": "Tarayıcınız videoyu desteklemiyor",
+        "similarProject": "Benzer bir proje mi istiyorsunuz?",
+        "similarProjectDescription": "Projenizi gerçekleştirmenize nasıl yardımcı olabileceğimizi öğrenmek için bizimle iletişime geçin",
+        "galleryAriaLabel": "Projeler Galerisi"
     },
     "events": {
+        "pageTitle": "Etkinlikler",
+        "pageDescription": "Öne çıkan etkinliklerimizi ve medya yapımlarımızı keşfedin",
         "title": "Etkinlikler",
-        "viewAll": "Tüm Etkinlikleri Gör"
+        "viewAll": "Tüm Etkinlikleri Gör",
+        "noEvents": "Şu anda mevcut etkinlik bulunmamaktadır",
+        "eventImage": "Etkinlik Görseli",
+        "fetchError": "Veri alınamadı",
+        "retry": "Tekrar Dene",
+        "noImage": "Resim Yok"
     },
     "contact": {
+        "pageTitle": "İletişim",
+        "pageSubtitle": "Bize Ulaşın",
         "title": "İletişime Geçin",
         "description": "Medya içeriğinin iletişiminize nasıl yardımcı olabileceğini anlayalım",
-        "cta": "İletişime Geçin"
+        "cta": "İletişime Geçin",
+        "getInTouch": "Bize Ulaşın",
+        "sendMessage": "Mesaj Gönder",
+        "contactInfo": "İletişim Bilgileri",
+        "address": "Adres",
+        "addressValue": "TAHTAKALE MAH. ISPARTAKULE BLV. T2 BLOK NO:2M AVCILAR/İSTANBUL",
+        "contacts": "İletişim",
+        "phone": "Telefon",
+        "mobile": "Mobil",
+        "email": "E-posta",
+        "emailValue": "Contact@belqeesmedia.com",
+        "phone1": "+90 (212) 412 20 60",
+        "phone2": "+90 (850) 811 33 66",
+        "mobile1": "+90 (539) 334 60 32",
+        "socialMedia": "Sosyal Medyada",
+        "qrCode": "Bizimle olan deneyiminizi değerlendirmek için QR kodunu tarayın!",
+        "form": {
+            "label": "İletişim Formu",
+            "name": "İsim",
+            "email": "E-posta",
+            "subject": "Konu",
+            "message": "Mesaj",
+            "submit": "Gönder",
+            "sending": "Gönderiliyor..."
+        },
+        "successMessage": "Mesaj başarıyla gönderildi! Yakında sizinle iletişime geçeceğiz.",
+        "errorMessage": "Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.",
+        "required": "Gerekli",
+        "sendEmailTo": "E-posta gönder",
+        "callNumber": "Numarayı ara"
+    },
+    "about": {
+        "pageTitle": "Hakkımızda",
+        "pageSubtitle": "Belqees Media, 2015 yılında kurulmuş tam hizmet sunan bir medya prodüksiyon şirketidir",
+        "heroAlt": "Belqees Media - Prodüksiyon Ekibi",
+        "playVideo": "VİDEOYU OYNAT",
+        "title": "BELQEES MEDIA",
+        "intro": {
+            "title": "Şirket Hakkında",
+            "description": "2015 yılında kurulan Belqees Media, Türkiye içinde ve dışında yüksek kaliteli hizmetler sunan dinamik ve geleceğe bakan bir medya prodüksiyon şirketidir. Yılların deneyimi ve çok uluslu ekibimizle, çeşitli müşterileri ve medya ortaklarını desteklemek için yaratıcı, editöryal ve teknik uzmanlığı harmanlıyoruz.",
+            "services": "Canlı yayın, etkinlik kapsamı, stüdyo kurulumu, medya prodüksiyonu ve TV kanalları ile kuruluşlar için özelleştirilmiş teknik danışmanlık dahil olmak üzere geniş bir hizmet yelpazesi sunuyoruz."
+        },
+        "channel": {
+            "title": "Belqees Kanalı",
+            "description": "Üç tam donanımlı stüdyo, modern yayın teknolojileri ve tüm editöryal ve teknik departmanları kesintisiz bir prodüksiyon iş akışı için birbirine bağlayan entegre bir merkez tarafından desteklenen 7/24 uydu haber istasyonu olan Belqees Kanalı'nı işletiyoruz."
+        },
+        "systems": {
+            "title": "Yayın ve Medya Sistemlerimiz",
+            "description": "İçerik oluşturmadan final yayına kadar kesintisiz, profesyonel ve tam entegre bir iş akışı sağlamak için sofistike medya sistemlerine güveniyoruz.",
+            "octopus": {
+                "title": "Octopus Newsroom",
+                "description": "Haber planlamasını, senaryo yazımını ve bültenden yayına kadar olan akış yönetimini modernize eden güncel bir Haber Odası Bilgisayar Sistemi (NRCS)."
+            },
+            "metus": {
+                "title": "Metus MAM",
+                "description": "Video içeriklerini yapım ekipleri arasında verimli bir şekilde düzenlemek, depolamak ve geri çağırmak için kullanılan bir medya varlık yönetimi ve arşivleme çözümü."
+            },
+            "brainstorm": {
+                "title": "Brainstorm 3D",
+                "description": "Dinamik ve yüksek kaliteli yayın görselleri için gerçek zamanlı 3D grafikler ve sanal stüdyo çözümleri."
+            },
+            "adobe": {
+                "title": "Adobe Creative Cloud",
+                "description": "Üst düzey görsel içerik üretmek için kullanılan video kurgu, hareketli grafikler ve tasarım için profesyonel bir araç seti."
+            }
+        },
+        "values": {
+            "title": "Değerlerimiz",
+            "subtitle": "İşimize yön veren ilkeler",
+            "innovativeEfficiency": {
+                "title": "Yenilikçi Verimlilik",
+                "description": "Her projede yüksek verimlilik sağlamak için en son teknolojileri ve yenilikçi yöntemleri kullanıyoruz"
+            },
+            "buildingConnections": {
+                "title": "Bağlantılar Kurmak",
+                "description": "Karşılıklı başarıya ulaşmak için müşterilerimiz ve ortaklarımızla uzun vadeli ilişkilerin gücüne inanıyoruz"
+            },
+            "forwardVision": {
+                "title": "Gelecek Vizyonu",
+                "description": "Her zaman geleceğe bakıyor ve medya dünyasındaki yaklaşan zorluklara ve fırsatlara hazırlanıyoruz"
+            }
+        },
+        "gallery": {
+            "title": "Galeri",
+            "subtitle": "Çarpıcı medya projelerimizi keşfedin"
+        }
     },
     "footer": {
         "description": "2015 yılında kurulmuş, TV kanalları, dijital platformlar ve canlı etkinlikler için yüksek kaliteli çözümler sunmaya adanmış tam hizmet medya prodüksiyon şirketi.",
+        "quickLinks": "Hızlı Bağlantılar",
+        "services": "Hizmetler",
+        "contactUs": "İletişim",
+        "liveStreaming": "Canlı Yayın",
+        "eventProduction": "Etkinlik Prodüksiyonu",
+        "mediaProduction": "Medya Prodüksiyonu",
+        "studioDesign": "Stüdyo Tasarımı",
+        "technicalConsultancy": "Teknik Danışmanlık",
+        "training": "Eğitim ve Gelişim",
         "allRightsReserved": "Tüm hakları saklıdır"
     },
     "common": {
         "learnMore": "Daha Fazla Bilgi",
-        "changeLanguage": "Dili Değiştir"
+        "companyStats": "Şirket İstatistikleri",
+        "visitWebsite": "Web Sitesini Ziyaret Et",
+        "clientLogo": "Logo",
+        "companyName": "BELQEES MEDIA",
+        "logoAlt": "Belqees Media Logosu",
+        "homeAlt": "Belqees Media Anasayfa",
+        "viewDetail": "Detayları Gör",
+        "galleryImage": "Galeri Görseli",
+        "changeLanguage": "Dili Değiştir",
+        "tryAgainLater": "Lütfen daha sonra tekrar deneyiniz",
+        "noImage": "Resim yok",
+        "galleryImage1": "Nobel Barış Ödülü Etkinlik Kapsamı",
+        "galleryImage2": "Yemen Araştırmacıları Konferansı",
+        "galleryImage3": "Profesyonel Medya Prodüksiyon Yaklaşımı",
+        "galleryImage4": "Medya Etkinlikleri ve Konferans Kapsamı",
+        "galleryImage5": "Entegre Medya Çözümleri Hizmetleri",
+        "galleryImage6": "Gelişmiş Haber Odası Sistemi"
     }
 }

@@ -16,6 +16,11 @@
         "description": "In our media services, we guide companies through three main phases: detailed pre-production planning, efficient production with expert teams, and precise post-production to create a final product that not only looks great but also communicates effectively.",
         "cta": "Contact Us"
     },
+    "approach": {
+        "title": "Our Creative Approach",
+        "description": "We combine technical innovation with editorial excellence to deliver content that leaves a lasting impact. From concept to broadcast, we ensure the highest standards of quality and professionalism.",
+        "linkText": "Learn More About Us"
+    },
     "stats": {
         "years": "Years of Experience",
         "projects": "Completed Projects",
