@@ -1,54 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { requireAuth } from '@/lib/auth/session';
-import { z } from 'zod';
-import { rateLimit } from '@/lib/rate-limit';
+import { serviceService } from '@/lib/services/service.service';
 import { withErrorHandler } from '@/lib/errors';
-import { withCache, invalidateCacheByTags } from '@/lib/cache/middleware';
-import { withCSRFProtection } from '@/lib/csrf/middleware';
-
-const serviceSchema = z.object({
-    slug: z.string().min(1),
-    title: z.string().min(1),
-    description: z.string().optional(),
-    icon: z.string().optional(),
-    image: z.string().optional(),
-    content: z.any().optional(),
-    published: z.boolean().default(false),
-});
+import { withCache } from '@/lib/cache/middleware';
 
 export const GET = withCache(
     withErrorHandler(async (request: NextRequest) => {
-        // Rate limiting
-        const { response: rateLimitResponse } = await rateLimit(request);
-        if (rateLimitResponse) return rateLimitResponse;
-
         const { searchParams } = new URL(request.url);
-        const published = searchParams.get('published');
+        const limit = searchParams.get('limit');
 
-        const where: any = {};
-
-        // Filter by published status (default: only published)
-        if (published === 'all') {
-            // Show all (for admin)
-        } else {
-            where.published = true;
-        }
-
-        const services = await prisma.service.findMany({
-            where,
-            orderBy: { createdAt: 'desc' },
-            select: {
-                id: true,
-                slug: true,
-                title: true,
-                description: true,
-                icon: true,
-                image: true,
-                published: true,
-                createdAt: true,
-            },
-        });
+        const services = await serviceService.getPublishedServices(limit ? parseInt(limit) : undefined);
 
         return NextResponse.json({
             success: true,
@@ -56,34 +16,13 @@ export const GET = withCache(
         });
     }),
     {
-        type: 'services',
-        skip: (request: NextRequest) => {
-            const url = new URL(request.url);
-            return url.searchParams.get('published') === 'all';
-        }
+        type: 'services'
     }
 );
 
-export const POST = withCSRFProtection(
-    withErrorHandler(async (request: NextRequest) => {
-        // Rate limiting
-        const { response: rateLimitResponse } = await rateLimit(request);
-        if (rateLimitResponse) return rateLimitResponse;
-
-        await requireAuth();
-        const body = await request.json();
-        const data = serviceSchema.parse(body);
-
-        const service = await prisma.service.create({ data });
-
-        // Invalidate cache
-        await invalidateCacheByTags(['services', 'public']);
-
-        return NextResponse.json({
-            success: true,
-            data: service,
-            message: 'تم إنشاء الخدمة بنجاح',
-        }, { status: 201 });
-    })
-);
-
+export const POST = withErrorHandler(async (request: NextRequest) => {
+    return NextResponse.json({
+        success: false,
+        message: 'Management features are disabled in static mode',
+    }, { status: 403 });
+});

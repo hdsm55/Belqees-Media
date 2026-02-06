@@ -1,12 +1,10 @@
 /**
- * Event Service
- * طبقة الخدمات للتعامل مع الفعاليات
+ * Event Service (Static Version)
+ * طبقة الخدمات للتعامل مع الفعاليات - نسخة ثابتة
  */
 
-import { prisma } from '@/lib/prisma';
-import { retryDatabaseOperation } from '@/lib/prisma';
+import { events } from '@/data/events';
 import { NotFoundError } from '@/lib/errors';
-import type { Prisma } from '@prisma/client';
 
 export interface EventFilters {
     published?: boolean;
@@ -33,25 +31,13 @@ export class EventService {
      * الحصول على الفعاليات المنشورة
      */
     async getPublishedEvents(limit?: number): Promise<any[]> {
-        return retryDatabaseOperation(async () => {
-            return await prisma.event.findMany({
-                where: { published: true },
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    date: true,
-                    time: true,
-                    location: true,
-                    image: true,
-                    published: true,
-                    createdAt: true,
-                },
-                orderBy: { date: 'desc' },
-                take: limit,
-            });
-        });
+        let items = events.map(e => ({ ...e, published: true })); // Static data is all published
+
+        if (limit) {
+            items = items.slice(0, limit);
+        }
+
+        return items;
     }
 
     /**
@@ -61,169 +47,42 @@ export class EventService {
         events: any[];
         total: number;
     }> {
-        return retryDatabaseOperation(async () => {
-            const where: Prisma.EventWhereInput = {};
+        let items = events.map(e => ({ ...e, published: true }));
 
-            if (filters?.published !== undefined) {
-                where.published = filters.published;
-            }
+        const total = items.length;
+        const offset = filters?.offset || 0;
+        const limit = filters?.limit || 10;
 
-            const [events, total] = await Promise.all([
-                prisma.event.findMany({
-                    where,
-                    select: {
-                        id: true,
-                        slug: true,
-                        title: true,
-                        description: true,
-                        date: true,
-                        time: true,
-                        location: true,
-                        image: true,
-                        published: true,
-                        createdAt: true,
-                    },
-                    orderBy: { date: 'desc' },
-                    take: filters?.limit,
-                    skip: filters?.offset,
-                }),
-                prisma.event.count({ where }),
-            ]);
-
-            return { events, total };
-        });
+        return {
+            events: items.slice(offset, offset + limit),
+            total
+        };
     }
 
     /**
      * الحصول على فعالية واحدة بالـ ID
      */
     async getEventById(id: string): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            const event = await prisma.event.findUnique({
-                where: { id },
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    date: true,
-                    time: true,
-                    location: true,
-                    image: true,
-                    registrations: true,
-                    published: true,
-                    createdAt: true,
-                    updatedAt: true,
-                },
-            });
-
-            if (!event) {
-                throw new NotFoundError('الفعالية');
-            }
-
-            return event;
-        });
+        const item = events.find(e => e.id === id);
+        if (!item) throw new NotFoundError('الفعالية');
+        return item;
     }
 
     /**
      * الحصول على فعالية واحدة بالـ Slug
      */
     async getEventBySlug(slug: string): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            const event = await prisma.event.findUnique({
-                where: { slug },
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    date: true,
-                    time: true,
-                    location: true,
-                    image: true,
-                    registrations: true,
-                    published: true,
-                    createdAt: true,
-                    updatedAt: true,
-                },
-            });
-
-            if (!event) {
-                throw new NotFoundError('الفعالية');
-            }
-
-            return event;
-        });
+        // Since static data doesn't have slugs, we'll try to find by ID or name
+        const item = events.find(e => e.id === slug);
+        if (!item) throw new NotFoundError('الفعالية');
+        return item;
     }
 
-    /**
-     * إنشاء فعالية جديدة
-     */
-    async createEvent(data: CreateEventData): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            return await prisma.event.create({
-                data: {
-                    ...data,
-                    date: typeof data.date === 'string' ? new Date(data.date) : data.date,
-                },
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    date: true,
-                    time: true,
-                    location: true,
-                    image: true,
-                    published: true,
-                    createdAt: true,
-                },
-            });
-        });
-    }
-
-    /**
-     * تحديث فعالية
-     */
-    async updateEvent(id: string, data: UpdateEventData): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            const updateData: Prisma.EventUpdateInput = { ...data };
-
-            if (data.date) {
-                updateData.date = typeof data.date === 'string' ? new Date(data.date) : data.date;
-            }
-
-            return await prisma.event.update({
-                where: { id },
-                data: updateData,
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    date: true,
-                    time: true,
-                    location: true,
-                    image: true,
-                    published: true,
-                    updatedAt: true,
-                },
-            });
-        });
-    }
-
-    /**
-     * حذف فعالية
-     */
-    async deleteEvent(id: string): Promise<void> {
-        return retryDatabaseOperation(async () => {
-            await prisma.event.delete({
-                where: { id },
-            });
-        });
-    }
+    // Placeholder methods for management
+    async createEvent(data: CreateEventData): Promise<any> { return null; }
+    async updateEvent(id: string, data: UpdateEventData): Promise<any> { return null; }
+    async deleteEvent(id: string): Promise<void> { }
 }
 
 // Export singleton instance
 export const eventService = new EventService();
-

@@ -1,58 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { contactSchema } from '@/lib/validations/contact';
-import { rateLimit } from '@/lib/rate-limit';
-import { withErrorHandler, ValidationError } from '@/lib/errors';
-import { withCSRFProtection } from '@/lib/csrf/middleware';
 
-export const POST = withCSRFProtection(
-  withErrorHandler(async (request: NextRequest) => {
-    // Rate limiting (خاص بنموذج الاتصال - 3 requests/hour)
-    const { response: rateLimitResponse } = await rateLimit(request);
-    if (rateLimitResponse) return rateLimitResponse;
-
+/**
+ * Simplified contact route for a presentation-only website.
+ * Removes database storage and complex middleware dependencies.
+ */
+export async function POST(request: NextRequest) {
+  try {
     const body = await request.json();
+    const { name, email, message, subject } = body;
 
-    // Validate with Zod
-    const result = contactSchema.safeParse(body);
-
-    if (!result.success) {
-      throw new ValidationError('خطأ في التحقق من البيانات', result.error.errors);
+    // Basic validation
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { success: false, message: 'يرجى ملء جميع الحقول المطلوبة' },
+        { status: 400 }
+      );
     }
 
-    const { name, email, message, subject } = result.data;
+    // In a real production scenario, you would use a service like Resend or SendGrid here:
+    // await resend.emails.send({ ... });
 
-    const contactMessage = await prisma.contactMessage.create({
-      data: {
-        name,
-        email,
-        message,
-        subject: subject || null,
-      },
-    });
+    console.log('--- New Contact Form Submission ---');
+    console.log('From:', name, `(${email})`);
+    console.log('Subject:', subject || 'No Subject');
+    console.log('Message:', message);
+    console.log('-----------------------------------');
 
     return NextResponse.json(
       {
         success: true,
-        message: 'تم إرسال الرسالة بنجاح',
-        data: contactMessage,
+        message: 'تم إرسال رسالتك بنجاح، سنقوم بالرد عليك قريباً.',
       },
-      { status: 201 }
+      { status: 200 }
     );
-  })
-);
+  } catch (error) {
+    console.error('Contact Form Error:', error);
+    return NextResponse.json(
+      { success: false, message: 'حدث خطأ أثناء إرسال الرسالة، يرجى المحاولة لاحقاً' },
+      { status: 500 }
+    );
+  }
+}
 
-export const GET = withErrorHandler(async (request: NextRequest) => {
-  // Rate limiting
-  const { response: rateLimitResponse } = await rateLimit(request);
-  if (rateLimitResponse) return rateLimitResponse;
-
-  const messages = await prisma.contactMessage.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
-
-  return NextResponse.json({
-    success: true,
-    data: messages,
-  });
-});
+// Redirect GET requests as they are no longer needed for public display
+export async function GET() {
+  return NextResponse.json(
+    { success: false, message: 'Method Not Allowed' },
+    { status: 405 }
+  );
+}

@@ -1,12 +1,10 @@
 /**
- * Service Service
- * طبقة الخدمات للتعامل مع الخدمات
+ * Service Service (Static Version)
+ * طبقة الخدمات للتعامل مع الخدمات - نسخة ثابتة
  */
 
-import { prisma } from '@/lib/prisma';
-import { retryDatabaseOperation } from '@/lib/prisma';
+import { services } from '@/data/services';
 import { NotFoundError } from '@/lib/errors';
-import type { Prisma } from '@prisma/client';
 
 export interface ServiceFilters {
     published?: boolean;
@@ -31,23 +29,13 @@ export class ServiceService {
      * الحصول على الخدمات المنشورة
      */
     async getPublishedServices(limit?: number): Promise<any[]> {
-        return retryDatabaseOperation(async () => {
-            return await prisma.service.findMany({
-                where: { published: true },
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    icon: true,
-                    image: true,
-                    published: true,
-                    createdAt: true,
-                },
-                orderBy: { createdAt: 'desc' },
-                take: limit,
-            });
-        });
+        let items = services.map(s => ({ ...s, published: true }));
+
+        if (limit) {
+            items = items.slice(0, limit);
+        }
+
+        return items;
     }
 
     /**
@@ -57,150 +45,41 @@ export class ServiceService {
         services: any[];
         total: number;
     }> {
-        return retryDatabaseOperation(async () => {
-            const where: Prisma.ServiceWhereInput = {};
+        let items = services.map(s => ({ ...s, published: true }));
 
-            if (filters?.published !== undefined) {
-                where.published = filters.published;
-            }
+        const total = items.length;
+        const offset = filters?.offset || 0;
+        const limit = filters?.limit || 10;
 
-            const [services, total] = await Promise.all([
-                prisma.service.findMany({
-                    where,
-                    select: {
-                        id: true,
-                        slug: true,
-                        title: true,
-                        description: true,
-                        icon: true,
-                        image: true,
-                        published: true,
-                        createdAt: true,
-                    },
-                    orderBy: { createdAt: 'desc' },
-                    take: filters?.limit,
-                    skip: filters?.offset,
-                }),
-                prisma.service.count({ where }),
-            ]);
-
-            return { services, total };
-        });
+        return {
+            services: items.slice(offset, offset + limit),
+            total
+        };
     }
 
     /**
      * الحصول على خدمة واحدة بالـ ID
      */
     async getServiceById(id: string): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            const service = await prisma.service.findUnique({
-                where: { id },
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    icon: true,
-                    image: true,
-                    content: true,
-                    published: true,
-                    createdAt: true,
-                    updatedAt: true,
-                },
-            });
-
-            if (!service) {
-                throw new NotFoundError('الخدمة');
-            }
-
-            return service;
-        });
+        const item = services.find(s => s.id === id);
+        if (!item) throw new NotFoundError('الخدمة');
+        return item;
     }
 
     /**
      * الحصول على خدمة واحدة بالـ Slug
      */
     async getServiceBySlug(slug: string): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            const service = await prisma.service.findUnique({
-                where: { slug },
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    icon: true,
-                    image: true,
-                    content: true,
-                    published: true,
-                    createdAt: true,
-                    updatedAt: true,
-                },
-            });
-
-            if (!service) {
-                throw new NotFoundError('الخدمة');
-            }
-
-            return service;
-        });
+        const item = services.find(s => s.id === slug); // Using ID as slug for static data
+        if (!item) throw new NotFoundError('الخدمة');
+        return item;
     }
 
-    /**
-     * إنشاء خدمة جديدة
-     */
-    async createService(data: CreateServiceData): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            return await prisma.service.create({
-                data,
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    icon: true,
-                    image: true,
-                    published: true,
-                    createdAt: true,
-                },
-            });
-        });
-    }
-
-    /**
-     * تحديث خدمة
-     */
-    async updateService(id: string, data: UpdateServiceData): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            return await prisma.service.update({
-                where: { id },
-                data,
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    icon: true,
-                    image: true,
-                    published: true,
-                    updatedAt: true,
-                },
-            });
-        });
-    }
-
-    /**
-     * حذف خدمة
-     */
-    async deleteService(id: string): Promise<void> {
-        return retryDatabaseOperation(async () => {
-            await prisma.service.delete({
-                where: { id },
-            });
-        });
-    }
+    // Placeholder methods for management
+    async createService(data: CreateServiceData): Promise<any> { return null; }
+    async updateService(id: string, data: UpdateServiceData): Promise<any> { return null; }
+    async deleteService(id: string): Promise<void> { }
 }
 
 // Export singleton instance
 export const serviceService = new ServiceService();
-

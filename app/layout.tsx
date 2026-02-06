@@ -3,7 +3,6 @@ import { Tajawal, IBM_Plex_Sans_Arabic } from 'next/font/google';
 import './globals.css';
 import LenisProvider from '@/components/providers/LenisProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
-import CustomCursor from '@/components/atoms/CustomCursor';
 import PerformanceOptimizer from '@/components/PerformanceOptimizer';
 import Header from '@/components/organisms/Header';
 
@@ -62,7 +61,6 @@ export default function RootLayout({
         <ThemeProvider>
           <LenisProvider>
             <PerformanceOptimizer />
-            <CustomCursor />
             {/* Header */}
             <Header />
             <div id="main-content">{children}</div>

@@ -1,12 +1,9 @@
-import type { Metadata } from 'next';
-import { eventService } from '@/lib/services';
+import { events } from '@/data/events';
 import PageHeroSection from '@/components/blocks/PageHeroSection';
 import EventsPageClient from './EventsPageClient';
 
-// ISR: Revalidate every 5 minutes
-export const revalidate = 300;
-
 export const metadata: Metadata = {
+// ...
   title: 'الفعاليات - Belqees Media',
   description: 'استكشف فعالياتنا وإنتاجاتنا الإعلامية المميزة',
   keywords: ['فعاليات', 'events', 'إنتاج إعلامي', 'بث مباشر', 'فعاليات مباشرة'],
@@ -27,8 +24,9 @@ export const metadata: Metadata = {
 };
 
 export default async function EventsPage() {
-  // Fetch events directly from database (Server Component)
-  const events = await eventService.getPublishedEvents();
+  // Using static events data
+  const eventsData = events;
+
 
   return (
     <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen">
@@ -43,7 +41,7 @@ export default async function EventsPage() {
       <section className="py-16 bg-white dark:bg-gray-900 transition-colors" aria-labelledby="events-heading">
         <div className="container mx-auto px-4">
           <h2 id="events-heading" className="sr-only">الفعاليات</h2>
-          <EventsPageClient events={events} />
+          <EventsPageClient events={eventsData as any} />
         </div>
       </section>
     </div>

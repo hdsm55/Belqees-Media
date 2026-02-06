@@ -1,12 +1,10 @@
 /**
- * Portfolio Service
- * طبقة الخدمات للتعامل مع الأعمال
+ * Portfolio Service (Static Version)
+ * طبقة الخدمات للتعامل مع الأعمال - نسخة ثابتة
  */
 
-import { prisma } from '@/lib/prisma';
-import { retryDatabaseOperation } from '@/lib/prisma';
+import { portfolioItems, portfolioCategories } from '@/data/portfolio';
 import { NotFoundError } from '@/lib/errors';
-import type { Prisma } from '@prisma/client';
 
 export interface PortfolioFilters {
     published?: boolean;
@@ -32,32 +30,17 @@ export class PortfolioService {
      * الحصول على الأعمال المنشورة
      */
     async getPublishedPortfolio(limit?: number, category?: string): Promise<any[]> {
-        return retryDatabaseOperation(async () => {
-            const where: Prisma.PortfolioWhereInput = {
-                published: true,
-            };
+        let items = portfolioItems.filter(item => item.published);
 
-            if (category) {
-                where.category = category;
-            }
+        if (category) {
+            items = items.filter(item => item.category === category);
+        }
 
-            return await prisma.portfolio.findMany({
-                where,
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    images: true,
-                    videos: true,
-                    category: true,
-                    published: true,
-                    createdAt: true,
-                },
-                orderBy: { createdAt: 'desc' },
-                take: limit,
-            });
-        });
+        if (limit) {
+            items = items.slice(0, limit);
+        }
+
+        return items;
     }
 
     /**
@@ -67,180 +50,56 @@ export class PortfolioService {
         portfolio: any[];
         total: number;
     }> {
-        return retryDatabaseOperation(async () => {
-            const where: Prisma.PortfolioWhereInput = {};
+        let items = [...portfolioItems];
 
-            if (filters?.published !== undefined) {
-                where.published = filters.published;
-            }
+        if (filters?.published !== undefined) {
+            items = items.filter(item => item.published === filters.published);
+        }
 
-            if (filters?.category) {
-                where.category = filters.category;
-            }
+        if (filters?.category) {
+            items = items.filter(item => item.category === filters.category);
+        }
 
-            const [portfolio, total] = await Promise.all([
-                prisma.portfolio.findMany({
-                    where,
-                    select: {
-                        id: true,
-                        slug: true,
-                        title: true,
-                        description: true,
-                        images: true,
-                        videos: true,
-                        category: true,
-                        published: true,
-                        createdAt: true,
-                    },
-                    orderBy: { createdAt: 'desc' },
-                    take: filters?.limit,
-                    skip: filters?.offset,
-                }),
-                prisma.portfolio.count({ where }),
-            ]);
+        const total = items.length;
+        const offset = filters?.offset || 0;
+        const limit = filters?.limit || 12;
 
-            return { portfolio, total };
-        });
+        return {
+            portfolio: items.slice(offset, offset + limit),
+            total
+        };
     }
 
     /**
      * الحصول على عمل واحد بالـ ID
      */
     async getPortfolioById(id: string): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            const item = await prisma.portfolio.findUnique({
-                where: { id },
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    images: true,
-                    videos: true,
-                    category: true,
-                    published: true,
-                    createdAt: true,
-                    updatedAt: true,
-                },
-            });
-
-            if (!item) {
-                throw new NotFoundError('العمل');
-            }
-
-            return item;
-        });
+        const item = portfolioItems.find(i => i.id === id);
+        if (!item) throw new NotFoundError('العمل');
+        return item;
     }
 
     /**
      * الحصول على عمل واحد بالـ Slug
      */
     async getPortfolioBySlug(slug: string): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            const item = await prisma.portfolio.findUnique({
-                where: { slug },
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    images: true,
-                    videos: true,
-                    category: true,
-                    published: true,
-                    createdAt: true,
-                    updatedAt: true,
-                },
-            });
-
-            if (!item) {
-                throw new NotFoundError('العمل');
-            }
-
-            return item;
-        });
-    }
-
-    /**
-     * إنشاء عمل جديد
-     */
-    async createPortfolio(data: CreatePortfolioData): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            return await prisma.portfolio.create({
-                data,
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    images: true,
-                    videos: true,
-                    category: true,
-                    published: true,
-                    createdAt: true,
-                },
-            });
-        });
-    }
-
-    /**
-     * تحديث عمل
-     */
-    async updatePortfolio(id: string, data: UpdatePortfolioData): Promise<any> {
-        return retryDatabaseOperation(async () => {
-            return await prisma.portfolio.update({
-                where: { id },
-                data,
-                select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    description: true,
-                    images: true,
-                    videos: true,
-                    category: true,
-                    published: true,
-                    updatedAt: true,
-                },
-            });
-        });
-    }
-
-    /**
-     * حذف عمل
-     */
-    async deletePortfolio(id: string): Promise<void> {
-        return retryDatabaseOperation(async () => {
-            await prisma.portfolio.delete({
-                where: { id },
-            });
-        });
+        const item = portfolioItems.find(i => i.slug === slug);
+        if (!item) throw new NotFoundError('العمل');
+        return item;
     }
 
     /**
      * الحصول على جميع الفئات (Categories) للأعمال المنشورة
      */
     async getPublishedCategories(): Promise<string[]> {
-        return retryDatabaseOperation(async () => {
-            const items = await prisma.portfolio.findMany({
-                where: {
-                    published: true,
-                },
-                select: {
-                    category: true,
-                },
-            });
-
-            // Extract unique categories
-            const uniqueCategories = Array.from(
-                new Set(items.map(item => item.category).filter(Boolean))
-            ) as string[];
-
-            return uniqueCategories;
-        });
+        return portfolioCategories;
     }
+
+    // Placeholder methods for management (not used in static version)
+    async createPortfolio(data: CreatePortfolioData): Promise<any> { return null; }
+    async updatePortfolio(id: string, data: UpdatePortfolioData): Promise<any> { return null; }
+    async deletePortfolio(id: string): Promise<void> { }
 }
 
 // Export singleton instance
 export const portfolioService = new PortfolioService();
-

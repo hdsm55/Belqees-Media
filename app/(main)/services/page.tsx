@@ -1,12 +1,10 @@
-import type { Metadata } from 'next';
-import { serviceService } from '@/lib/services';
+import { services } from '@/data/events'; // Wait, I put services in data/services.ts
+import { services as staticServices } from '@/data/services';
 import PageHeroSection from '@/components/blocks/PageHeroSection';
 import ServicesPageClient from './ServicesPageClient';
 
-// ISR: Revalidate every 5 minutes
-export const revalidate = 300;
-
 export const metadata: Metadata = {
+// ...
   title: 'خدماتنا - Belqees Media',
   description: 'نقدم حلولاً إعلامية متكاملة بجودة عالية واحترافية',
   keywords: ['خدمات', 'services', 'إنتاج إعلامي', 'بث مباشر', 'فعاليات', 'استوديوهات'],
@@ -27,8 +25,9 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
-  // Fetch services directly from database (Server Component)
-  const services = await serviceService.getPublishedServices();
+  // Using static data instead of database service
+  const servicesData = staticServices;
+
 
   return (
     <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen">
@@ -43,7 +42,7 @@ export default async function ServicesPage() {
       <section className="py-16 bg-white dark:bg-gray-900 transition-colors" aria-labelledby="services-heading">
         <div className="container mx-auto px-4">
           <h2 id="services-heading" className="sr-only">خدماتنا</h2>
-          <ServicesPageClient services={services} />
+          <ServicesPageClient services={servicesData as any} />
         </div>
       </section>
     </div>

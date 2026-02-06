@@ -33,80 +33,42 @@ html.lenis {
     --color-dark-light: #666666;
   }
 
-  /* Custom Cursor Support */
-  @media (min-width: 768px) {
-    * {
-      cursor: none !important;
+  /* Recording Dot Pulse Animation - لمعة بدون توهج (مثل ضوء التسجيل في الكاميرات) */
+  @keyframes recordingDotPulse {
+    0%,
+    100% {
+      opacity: 1;
     }
-
-    a,
-    button,
-    [role="button"],
-    [data-cursor="pointer"] {
-      cursor: none !important;
+    50% {
+      opacity: 0.3;
     }
+  }
 
-    img {
-      cursor: none !important;
+  /* Recording Dot Pulse Animation for SVG elements */
+  @keyframes recordingDotPulseSvg {
+    0%,
+    100% {
+      opacity: 1;
     }
-
-    p,
-    span,
-    div[contenteditable],
-    input,
-    textarea {
-      cursor: none !important;
+    50% {
+      opacity: 0.3;
     }
+  }
 
-    /* Recording Dot Pulse Animation - لمعة بدون توهج (مثل ضوء التسجيل في الكاميرات) */
-    @keyframes recordingDotPulse {
+  /* Recording dot pulse animation - لمعة بدون توهج */
+  .recording-dot-pulse {
+    animation: recordingDotPulse 1.2s ease-in-out infinite;
+  }
 
-      0%,
-      100% {
-        opacity: 1;
-      }
+  /* Recording dot animation for all red dots in SVG icons */
+  .recording-dot,
+  [class*="recording-dot"] {
+    animation: recordingDotPulseSvg 1.2s ease-in-out infinite;
+  }
 
-      50% {
-        opacity: 0.3;
-      }
-    }
-
-    /* Recording Dot Pulse Animation for SVG elements */
-    @keyframes recordingDotPulseSvg {
-
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0.3;
-      }
-    }
-
-    .cursor-recording-dot {
-      animation: none;
-    }
-
-    .cursor-recording-dot:hover {
-      animation: none;
-    }
-
-    /* Recording dot pulse animation - لمعة بدون توهج */
-    .recording-dot-pulse {
-      animation: recordingDotPulse 1.2s ease-in-out infinite;
-    }
-
-    /* Recording dot animation for all red dots in SVG icons */
-    .recording-dot,
-    [class*="recording-dot"] {
-      animation: recordingDotPulseSvg 1.2s ease-in-out infinite;
-    }
-
-    /* Apply to SVG elements with recording-dot class */
-    svg .recording-dot {
-      animation: recordingDotPulseSvg 1.2s ease-in-out infinite;
-    }
+  /* Apply to SVG elements with recording-dot class */
+  svg .recording-dot {
+    animation: recordingDotPulseSvg 1.2s ease-in-out infinite;
   }
 
   /* Light Mode */
