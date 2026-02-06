@@ -222,6 +222,7 @@
   "about": {
     "pageTitle": "About",
     "pageSubtitle": "Belqees Media is a full-service media production company founded in 2015",
+    "heroAlt": "Belqees Media - Production Team",
     "playVideo": "PLAY VIDEO",
     "title": "BELQEES MEDIA",
     "intro": {
@@ -305,6 +306,12 @@
     "galleryImage": "Gallery Image",
     "changeLanguage": "Change Language",
     "tryAgainLater": "Please try again later",
-    "noImage": "No image"
+    "noImage": "No image",
+    "galleryImage1": "Nobel Peace Prize Event Coverage",
+    "galleryImage2": "Yemen Researchers Conference",
+    "galleryImage3": "Professional Media Production Approach",
+    "galleryImage4": "Media Events & Conferences Coverage",
+    "galleryImage5": "Integrated Media Solutions Services",
+    "galleryImage6": "Advanced Newsroom System"
   }
 }
