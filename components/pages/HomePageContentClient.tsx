@@ -146,12 +146,12 @@ export default function HomePageContentClient({ events }: HomePageContentClientP
       {/* Clients Section */}
       <ClientsCarousel
         clients={[
-          { id: '1', name: 'شريك 1', logo: '/images/partner-1.png' },
-          { id: '2', name: 'شريك 2', logo: '/images/partner-2.png' },
-          { id: '3', name: 'شريك 3', logo: '/images/partner-3.png' },
-          { id: '4', name: 'شريك 4', logo: '/images/partner-4.png' },
-          { id: '5', name: 'شريك 5', logo: '/images/partner-5.png' },
-          { id: '6', name: 'شريك 6', logo: '/images/partner-6.png' },
+          { id: '1', name: t('clients.partner1'), logo: '/images/partner-1.png' },
+          { id: '2', name: t('clients.partner2'), logo: '/images/partner-2.png' },
+          { id: '3', name: t('clients.partner3'), logo: '/images/partner-3.png' },
+          { id: '4', name: t('clients.partner4'), logo: '/images/partner-4.png' },
+          { id: '5', name: t('clients.partner5'), logo: '/images/partner-5.png' },
+          { id: '6', name: t('clients.partner6'), logo: '/images/partner-6.png' },
         ]}
         title={t('clients.title')}
       />

@@ -5,7 +5,10 @@
     "services": "الخدمات",
     "portfolio": "معرض الأعمال",
     "events": "الفعاليات",
-    "contact": "اتصل بنا"
+    "contact": "اتصل بنا",
+    "mainMenu": "القائمة الرئيسية",
+    "closeMenu": "إغلاق القائمة",
+    "openMenu": "فتح القائمة"
   },
   "hero": {
     "title": "نصنع المحتوى الإعلامي الذي يناسب احتياجاتك",
@@ -135,7 +138,15 @@
     "linkText": "اعرف المزيد"
   },
   "clients": {
-    "title": "الشركات التي وثقت بنا"
+    "title": "الشركات التي وثقت بنا",
+    "partner1": "شريك 1",
+    "partner2": "شريك 2",
+    "partner3": "شريك 3",
+    "partner4": "شريك 4",
+    "partner5": "شريك 5",
+    "partner6": "شريك 6",
+    "partner7": "شريك 7",
+    "partner8": "شريك 8"
   },
   "portfolio": {
     "title": "أحدث مشاريعنا",
@@ -158,7 +169,8 @@
     "viewImage": "عرض الصورة",
     "videoNotSupported": "متصفحك لا يدعم الفيديو",
     "similarProject": "هل تريد مشروعاً مشابهاً؟",
-    "similarProjectDescription": "تواصل معنا لمعرفة كيف يمكننا مساعدتك في تحقيق مشروعك"
+    "similarProjectDescription": "تواصل معنا لمعرفة كيف يمكننا مساعدتك في تحقيق مشروعك",
+    "galleryAriaLabel": "معرض المشاريع"
   },
   "events": {
     "pageTitle": "الفعاليات",
@@ -168,7 +180,8 @@
     "noEvents": "لا توجد فعاليات متاحة حالياً",
     "eventImage": "صورة الفعالية",
     "fetchError": "فشل في جلب البيانات",
-    "retry": "إعادة المحاولة"
+    "retry": "إعادة المحاولة",
+    "noImage": "بدون صورة"
   },
   "contact": {
     "pageTitle": "اتصل بنا",
@@ -202,7 +215,9 @@
     },
     "successMessage": "تم إرسال الرسالة بنجاح! سنتواصل معك قريباً.",
     "errorMessage": "حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.",
-    "required": "مطلوب"
+    "required": "مطلوب",
+    "sendEmailTo": "إرسال بريد إلكتروني إلى",
+    "callNumber": "اتصال برقم"
   },
   "about": {
     "pageTitle": "من نحن",
@@ -282,6 +297,14 @@
     "learnMore": "اعرف المزيد",
     "companyStats": "إحصائيات الشركة",
     "visitWebsite": "زيارة موقع",
-    "clientLogo": "شعار"
+    "clientLogo": "شعار",
+    "companyName": "بلقيس ميديا",
+    "logoAlt": "شعار بلقيس ميديا",
+    "homeAlt": "الرئيسية بلقيس ميديا",
+    "viewDetail": "عرض التفاصيل",
+    "galleryImage": "صورة المعرض",
+    "changeLanguage": "تغيير اللغة",
+    "tryAgainLater": "يرجى المحاولة لاحقاً",
+    "noImage": "بدون صورة"
   }
 }

@@ -26,8 +26,6 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
 
-  // Output configuration
-  output: 'standalone',
 
   // Experimental Features for Better Performance
   experimental: {

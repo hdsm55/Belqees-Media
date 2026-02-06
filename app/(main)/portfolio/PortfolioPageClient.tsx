@@ -100,8 +100,8 @@ export default function PortfolioPageClient({
               <button
                 onClick={() => setSelectedCategory('all')}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === 'all'
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
                 aria-label={t('portfolio.viewAllProjects')}
               >
@@ -112,8 +112,8 @@ export default function PortfolioPageClient({
                   key={category}
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === category
-                      ? 'bg-primary-500 text-white'
-                      : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                     }`}
                   aria-label={`${t('portfolio.viewProjectDetails')} ${category}`}
                 >
@@ -126,7 +126,7 @@ export default function PortfolioPageClient({
       )}
 
       {/* Portfolio Grid */}
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-900 transition-colors" aria-label="معرض المشاريع">
+      <section className="py-12 md:py-16 bg-white dark:bg-gray-900 transition-colors" aria-label={t('portfolio.galleryAriaLabel')}>
         <div className="container mx-auto px-4">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -242,8 +242,8 @@ export default function PortfolioPageClient({
                         <button
                           onClick={() => setCurrentPage(page)}
                           className={`px-4 py-2 rounded-lg transition-colors ${currentPage === page
-                              ? 'bg-primary-500 text-white'
-                              : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                            ? 'bg-primary-500 text-white'
+                            : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                             }`}
                           aria-label={`${t('portfolio.page')} ${page}`}
                           aria-current={currentPage === page ? 'page' : undefined}

@@ -69,11 +69,11 @@ export default function Header() {
           <Link
             href="/"
             className="flex items-center gap-2 md:gap-3 group"
-            aria-label="Belqees Media Home"
+            aria-label={t('common.homeAlt')}
           >
             <Image
               src="/images/logo.avif"
-              alt="Belqees Media Logo"
+              alt={t('common.logoAlt')}
               width={120}
               height={48}
               priority
@@ -90,7 +90,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-6" aria-label="القائمة الرئيسية" role="navigation">
+          <nav className="hidden md:flex items-center gap-4 lg:gap-6" aria-label={t('nav.mainMenu')} role="navigation">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -120,7 +120,7 @@ export default function Header() {
             <button
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? 'إغلاق القائمة' : 'فتح القائمة'}
+              aria-label={isMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-menu"
             >
@@ -166,7 +166,7 @@ export default function Header() {
             'md:hidden overflow-hidden transition-all duration-300 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800',
             isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
           )}
-          aria-label="القائمة الرئيسية"
+          aria-label={t('nav.mainMenu')}
           role="navigation"
         >
           <div className="py-4 space-y-1">

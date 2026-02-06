@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { cn } from '@/utils/cn';
 import { type Locale, locales, defaultLocale } from '@/lib/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const languageNames: Record<Locale, string> = {
   ar: 'العربية',
@@ -15,6 +16,7 @@ interface LanguageSwitcherProps {
 }
 
 export default function LanguageSwitcher({ isScrolled = false }: LanguageSwitcherProps) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [currentLocale, setCurrentLocale] = useState<Locale>(defaultLocale);
 
@@ -45,7 +47,7 @@ export default function LanguageSwitcher({ isScrolled = false }: LanguageSwitche
             ? "hover:bg-gray-100 dark:hover:bg-gray-800"
             : "hover:bg-white/10"
         )}
-        aria-label="Change language"
+        aria-label={t('common.changeLanguage')}
         aria-expanded={isOpen}
       >
         <svg

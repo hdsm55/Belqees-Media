@@ -21,12 +21,17 @@ interface EventsPageClientProps {
 }
 
 export default function EventsPageClient({ events }: EventsPageClientProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
 
   const formatDate = (date: Date | string): string => {
     try {
       const dateObj = typeof date === 'string' ? new Date(date) : date;
-      return new Intl.DateTimeFormat('ar-SA', {
+      const localeMap = {
+        ar: 'ar-SA',
+        en: 'en-US',
+        tr: 'tr-TR',
+      };
+      return new Intl.DateTimeFormat(localeMap[locale] || 'ar-SA', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -39,8 +44,8 @@ export default function EventsPageClient({ events }: EventsPageClientProps) {
   if (events.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">لا توجد فعاليات متاحة حالياً</p>
-        <p className="text-sm text-gray-400 dark:text-gray-500">يرجى المحاولة لاحقاً</p>
+        <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">{t('events.noEvents')}</p>
+        <p className="text-sm text-gray-400 dark:text-gray-500">{t('common.tryAgainLater')}</p>
       </div>
     );
   }
@@ -67,7 +72,7 @@ export default function EventsPageClient({ events }: EventsPageClientProps) {
               </div>
             ) : (
               <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <span className="text-gray-400 dark:text-gray-500">بدون صورة</span>
+                <span className="text-gray-400 dark:text-gray-500">{t('events.noImage')}</span>
               </div>
             )}
             <div className="p-6">
