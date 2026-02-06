@@ -265,14 +265,31 @@ export default function AboutPageContent() {
                   {t('about.gallery.subtitle')}
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                  {[
+                    { src: '/images/nobel-peace-prize.jpg', alt: 'Nobel Peace Prize Event' },
+                    { src: '/images/yemen-researchers-conference.jpg', alt: 'Yemen Researchers Conference' },
+                    { src: '/images/approach.jpg', alt: 'Media Production Approach' },
+                    { src: '/images/events-hero.jpg', alt: 'Media Events' },
+                    { src: '/images/services-hero.jpg', alt: 'Professional Media Services' },
+                    { src: '/images/systems/octopus-newsroom.jpg', alt: 'Octopus Newsroom System' },
+                  ].map((img, i) => (
                     <div
                       key={i}
-                      className="aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center"
+                      className="relative aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden group cursor-pointer"
                     >
-                      <span className="text-gray-400 dark:text-gray-500 text-sm">
-                        {t('about.gallery.title')} {i}
-                      </span>
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span className="text-white text-xs font-medium border border-white/40 px-3 py-1 scale-90 group-hover:scale-100 transition-transform duration-300">
+                          {t('common.viewDetail') || 'عرض التفاصيل'}
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>

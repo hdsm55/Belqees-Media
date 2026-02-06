@@ -1,9 +1,10 @@
+import { Metadata } from 'next';
 import { events } from '@/data/events';
 import PageHeroSection from '@/components/blocks/PageHeroSection';
 import EventsPageClient from './EventsPageClient';
 
 export const metadata: Metadata = {
-// ...
+  // ...
   title: 'الفعاليات - Belqees Media',
   description: 'استكشف فعالياتنا وإنتاجاتنا الإعلامية المميزة',
   keywords: ['فعاليات', 'events', 'إنتاج إعلامي', 'بث مباشر', 'فعاليات مباشرة'],

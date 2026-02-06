@@ -1,10 +1,10 @@
-import { services } from '@/data/events'; // Wait, I put services in data/services.ts
+import { Metadata } from 'next';
 import { services as staticServices } from '@/data/services';
 import PageHeroSection from '@/components/blocks/PageHeroSection';
 import ServicesPageClient from './ServicesPageClient';
 
 export const metadata: Metadata = {
-// ...
+  // ...
   title: 'خدماتنا - Belqees Media',
   description: 'نقدم حلولاً إعلامية متكاملة بجودة عالية واحترافية',
   keywords: ['خدمات', 'services', 'إنتاج إعلامي', 'بث مباشر', 'فعاليات', 'استوديوهات'],

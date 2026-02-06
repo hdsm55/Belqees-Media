@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import ScrollReveal from '@/components/animations/ScrollReveal';
@@ -31,11 +31,7 @@ export default function PortfolioPageContent() {
     setCurrentPage(1); // Reset to first page when category changes
   }, [selectedCategory]);
 
-  useEffect(() => {
-    fetchPortfolio();
-  }, [selectedCategory, currentPage]);
-
-  const fetchPortfolio = async () => {
+  const fetchPortfolio = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -67,15 +63,19 @@ export default function PortfolioPageContent() {
           setCategories(uniqueCategories);
         }
       }
-      } catch (err) {
-        setError(t('portfolio.errorOccurred'));
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Error fetching portfolio:', err);
-        }
-      } finally {
+    } catch (err) {
+      setError(t('portfolio.errorOccurred'));
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error fetching portfolio:', err);
+      }
+    } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory, currentPage, t]);
+
+  useEffect(() => {
+    fetchPortfolio();
+  }, [fetchPortfolio]);
 
   const getImageUrl = (media: PortfolioMedia | null): string | null => {
     if (!media) return null;
@@ -140,11 +140,10 @@ export default function PortfolioPageContent() {
             <div className="flex flex-wrap gap-3 justify-center">
               <button
                 onClick={() => setSelectedCategory('all')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedCategory === 'all'
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                }`}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === 'all'
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
                 aria-label={t('portfolio.viewAllProjects')}
               >
                 {t('portfolio.all')}
@@ -153,11 +152,10 @@ export default function PortfolioPageContent() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    selectedCategory === category
-                      ? 'bg-primary-500 text-white'
-                      : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                  }`}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === category
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    }`}
                   aria-label={`${t('portfolio.viewProjectDetails')} ${category}`}
                 >
                   {category}
@@ -215,8 +213,6 @@ export default function PortfolioPageContent() {
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           loading="lazy"
-                          placeholder="blur"
-                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                         />
                       ) : (
                         <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" aria-hidden="true">
@@ -286,11 +282,10 @@ export default function PortfolioPageContent() {
                         {showEllipsisBefore && <span className="px-2">...</span>}
                         <button
                           onClick={() => setCurrentPage(page)}
-                          className={`px-4 py-2 rounded-lg transition-colors ${
-                            currentPage === page
-                              ? 'bg-primary-500 text-white'
-                              : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                          }`}
+                          className={`px-4 py-2 rounded-lg transition-colors ${currentPage === page
+                            ? 'bg-primary-500 text-white'
+                            : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                            }`}
                           aria-label={`${t('portfolio.page')} ${page}`}
                           aria-current={currentPage === page ? 'page' : undefined}
                         >
