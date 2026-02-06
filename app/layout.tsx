@@ -61,8 +61,6 @@ export default function RootLayout({
         <ThemeProvider>
           <LenisProvider>
             <PerformanceOptimizer />
-            {/* Header */}
-            <Header />
             <div id="main-content">{children}</div>
           </LenisProvider>
         </ThemeProvider>
