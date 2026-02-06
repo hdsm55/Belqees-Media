@@ -1,16 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { withErrorHandler } from '@/lib/errors';
+import { NextResponse } from 'next/server';
 
-export const DELETE = withErrorHandler(async (request: NextRequest) => {
-    return NextResponse.json({
-        success: false,
-        message: 'Static mode',
-    }, { status: 403 });
-});
+export async function GET(
+    request: Request,
+    { params }: { params: { id: string } }
+) {
+    const id = params.id;
+    return NextResponse.json({ id, message: 'Media item fetch' });
+}
 
-export const GET = withErrorHandler(async (request: NextRequest) => {
-    return NextResponse.json({
-        success: false,
-        message: 'File not found',
-    }, { status: 404 });
-});
+export async function DELETE(
+    request: Request,
+    { params }: { params: { id: string } }
+) {
+    const id = params.id;
+    return NextResponse.json({ id, message: 'Media item deleted' });
+}
