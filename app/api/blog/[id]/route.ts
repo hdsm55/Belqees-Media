@@ -1,43 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { requireAuth } from '@/lib/auth/session';
-import { z } from 'zod';
-import { rateLimit } from '@/lib/rate-limit';
-
-const updateBlogPostSchema = z.object({
-  slug: z.string().min(1).optional(),
-  title: z.string().min(1).optional(),
-  excerpt: z.string().optional(),
-  content: z.string().optional(),
-  featuredImage: z.string().optional(),
-  categoryId: z.string().optional().nullable(),
-  published: z.boolean().optional(),
-  publishedAt: z.string().or(z.date()).optional().nullable(),
-});
+import { blogPosts } from '@/data/blog';
+import { withErrorHandler } from '@/lib/errors';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // Rate limiting
-  const { response: rateLimitResponse } = await rateLimit(request);
-  if (rateLimitResponse) return rateLimitResponse;
-
-  try {
+  return withErrorHandler(async () => {
     const { id } = await params;
-    const post = await prisma.blogPost.findUnique({
-      where: { id },
-      include: {
-        author: {
-          select: {
-            id: true,
-            email: true,
-          },
-        },
-        category: true,
-        tags: true,
-      },
-    });
+    const post = blogPosts.find(p => p.id === id || p.slug === id);
 
     if (!post) {
       return NextResponse.json(
@@ -50,136 +21,17 @@ export async function GET(
       success: true,
       data: post,
     });
-  } catch (error) {
-    console.error('Error fetching blog post:', error);
-      return NextResponse.json(
-        { success: false, error: 'حدث خطأ أثناء جلب المدونة' },
-        { status: 500 }
-      );
-  }
+  })(request);
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  // Rate limiting
-  const { response: rateLimitResponse } = await rateLimit(request);
-  if (rateLimitResponse) return rateLimitResponse;
-
-  try {
-    await requireAuth();
-    const { id } = await params;
-    const body = await request.json();
-    const data = updateBlogPostSchema.parse(body);
-
-    const post = await prisma.blogPost.update({
-      where: { id },
-      data,
-      include: {
-        author: {
-          select: {
-            id: true,
-            email: true,
-          },
-        },
-        category: true,
-      },
-    });
-
-    return NextResponse.json({
-      success: true,
-      data: post,
-      message: 'تم تحديث المقال بنجاح',
-    });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: error.errors[0].message },
-        { status: 400 }
-      );
-    }
-    console.error('Error updating blog post:', error);
-    return NextResponse.json(
-      { error: 'حدث خطأ أثناء تحديث المدونة' },
-      { status: 500 }
-    );
-  }
+export async function PUT(request: NextRequest) {
+  return NextResponse.json({ success: false, message: 'Static mode' }, { status: 403 });
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  // Rate limiting
-  const { response: rateLimitResponse } = await rateLimit(request);
-  if (rateLimitResponse) return rateLimitResponse;
-
-  try {
-    await requireAuth();
-    const { id } = await params;
-    const body = await request.json();
-    const data = updateBlogPostSchema.parse(body);
-
-    const post = await prisma.blogPost.update({
-      where: { id },
-      data,
-      include: {
-        author: {
-          select: {
-            id: true,
-            email: true,
-          },
-        },
-        category: true,
-      },
-    });
-
-    return NextResponse.json({
-      success: true,
-      data: post,
-      message: 'تم تحديث المقال بنجاح',
-    });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: error.errors[0].message },
-        { status: 400 }
-      );
-    }
-    console.error('Error updating blog post:', error);
-    return NextResponse.json(
-      { error: 'حدث خطأ أثناء تحديث المقال' },
-      { status: 500 }
-    );
-  }
+export async function PATCH(request: NextRequest) {
+  return NextResponse.json({ success: false, message: 'Static mode' }, { status: 403 });
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  // Rate limiting
-  const { response: rateLimitResponse } = await rateLimit(request);
-  if (rateLimitResponse) return rateLimitResponse;
-
-  try {
-    await requireAuth();
-    const { id } = await params;
-    await prisma.blogPost.delete({
-      where: { id },
-    });
-
-    return NextResponse.json({
-      success: true,
-      message: 'تم حذف المدونة بنجاح',
-    });
-  } catch (error) {
-    console.error('Error deleting blog post:', error);
-    return NextResponse.json(
-      { error: 'حدث خطأ أثناء حذف المدونة' },
-      { status: 500 }
-    );
-  }
+export async function DELETE(request: NextRequest) {
+  return NextResponse.json({ success: false, message: 'Static mode' }, { status: 403 });
 }
-
