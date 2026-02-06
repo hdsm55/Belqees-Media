@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// Last Update: 2026-02-06 20:45 - Force Cache Invalidation
 const nextConfig = {
   reactStrictMode: true,
 
