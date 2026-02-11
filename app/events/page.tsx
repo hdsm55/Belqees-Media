@@ -28,20 +28,26 @@ export default async function EventsPage() {
   // Using static events data
   const eventsData = events;
 
-
   return (
     <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen">
       {/* Hero Section */}
       <PageHeroSection
         title="الفعاليات"
+        titleKey="events.pageTitle"
         subtitle="استكشف فعالياتنا وإنتاجاتنا الإعلامية المميزة"
+        subtitleKey="events.pageDescription"
         backgroundImage="/images/events-hero.jpg"
       />
 
       {/* Events Grid */}
-      <section className="py-16 bg-white dark:bg-gray-900 transition-colors" aria-labelledby="events-heading">
+      <section
+        className="py-16 bg-white dark:bg-gray-900 transition-colors"
+        aria-labelledby="events-heading"
+      >
         <div className="container mx-auto px-4">
-          <h2 id="events-heading" className="sr-only">الفعاليات</h2>
+          <h2 id="events-heading" className="sr-only">
+            الفعاليات
+          </h2>
           <EventsPageClient events={eventsData as any} />
         </div>
       </section>

@@ -32,6 +32,7 @@
         "pageDescription": "Belqees Media olarak, medya prodüksiyonu, stüdyo kurulumu, teknik danışmanlık ve eğitim alanlarında kapsamlı bir hizmet yelpazesi sunuyoruz. Altı yılı aşkın pratik deneyimimizle, TV kanallarının, yapım şirketlerinin ve medya kuruluşlarının ihtiyaçlarına özel entegre çözümler sağlıyoruz.",
         "title": "Büyük Projelerden Küçük Yapımlara",
         "description": "Medya hizmetlerimizde şirketlere üç ana aşamada rehberlik ediyoruz: detaylı üretim öncesi planlama, uzman ekiplerle verimli üretim ve hassas üretim sonrası.",
+        "noServices": "Şu anda mevcut hizmet bulunmamaktadır",
         "advertising": {
             "title": "Reklam",
             "description": "TV ve dijital mecralar için yüksek kaliteli reklam üretimi"
@@ -64,7 +65,12 @@
             "title": "Eğitim ve Gelişim",
             "description": "Yapım ekipleri ve yayın profesyonelleri için özel olarak tasarlanmış kurgu, yönetmenlik, grafik ve medya yönetimi kursları"
         },
-        "mediaProduction": "Medya Prodüksiyonu"
+        "mediaProduction": "Medya Prodüksiyonu",
+        "cta": {
+            "title": "Daha fazlasını öğrenmek ister misiniz?",
+            "description": "Size nasıl yardımcı olabileceğimizi öğrenmek için bizimle iletişime geçin",
+            "button": "İletişime Geçin"
+        }
     },
     "clients": {
         "title": "Bize Güvenen Şirketler",
@@ -78,6 +84,8 @@
         "partner8": "Partner 8"
     },
     "portfolio": {
+        "pageTitle": "Portfolyo",
+        "pageDescription": "Belqees Media portföyünü keşfedin - medya prodüksiyonu, canlı yayın, etkinlikler ve reklam projelerimiz.",
         "title": "Son Projelerimiz",
         "viewAll": "Hepsini Gör",
         "description": "Medya prodüksiyonu ve canlı yayın alanındaki en iyi projelerimizden oluşan koleksiyona göz atın",
@@ -106,6 +114,7 @@
         "pageDescription": "Öne çıkan etkinliklerimizi ve medya yapımlarımızı keşfedin",
         "title": "Etkinlikler",
         "viewAll": "Tüm Etkinlikleri Gör",
+        "viewDetails": "Detayları gör",
         "noEvents": "Şu anda mevcut etkinlik bulunmamaktadır",
         "eventImage": "Etkinlik Görseli",
         "fetchError": "Veri alınamadı",
@@ -228,6 +237,7 @@
         "viewDetail": "Detayları Gör",
         "galleryImage": "Galeri Görseli",
         "changeLanguage": "Dili Değiştir",
+        "backToTop": "Yukarı çık",
         "tryAgainLater": "Lütfen daha sonra tekrar deneyiniz",
         "noImage": "Resim yok",
         "galleryImage1": "Nobel Barış Ödülü Etkinlik Kapsamı",

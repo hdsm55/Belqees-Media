@@ -102,7 +102,8 @@ export default function PortfolioPageContent() {
             fill
             className="object-cover"
             priority
-            quality={90}
+            quality={80}
+            sizes="100vw"
           />
           {/* Overlay for better text readability */}
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(217, 0, 0, 0.3), rgba(0, 0, 0, 0.8))' }}></div>
@@ -213,6 +214,7 @@ export default function PortfolioPageContent() {
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           loading="lazy"
+                          quality={75}
                         />
                       ) : (
                         <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" aria-hidden="true">

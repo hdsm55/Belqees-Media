@@ -4,13 +4,18 @@ import Image from 'next/image';
 import Button from '@/components/atoms/Button';
 import Link from 'next/link';
 import ScrollReveal from '@/components/animations/ScrollReveal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface PageHeroSectionProps {
   title: string;
+  titleKey?: string;
   subtitle?: string;
+  subtitleKey?: string;
   description?: string;
+  descriptionKey?: string;
   backgroundImage?: string;
   buttonText?: string;
+  buttonTextKey?: string;
   buttonLink?: string;
   overlay?: boolean;
   className?: string;
@@ -18,14 +23,30 @@ interface PageHeroSectionProps {
 
 export default function PageHeroSection({
   title,
+  titleKey,
   subtitle,
+  subtitleKey,
   description,
+  descriptionKey,
   backgroundImage,
   buttonText,
+  buttonTextKey,
   buttonLink,
   overlay = true,
   className = '',
 }: PageHeroSectionProps) {
+  const { t } = useTranslation();
+
+  const resolveText = (key: string | undefined, fallback?: string) => {
+    if (!key) return fallback;
+    const value = t(key);
+    return value === key ? fallback : value;
+  };
+
+  const resolvedTitle = resolveText(titleKey, title) || '';
+  const resolvedSubtitle = resolveText(subtitleKey, subtitle);
+  const resolvedDescription = resolveText(descriptionKey, description);
+  const resolvedButtonText = resolveText(buttonTextKey, buttonText);
   // Removed GSAP animation - using ScrollReveal instead
 
   // Compact height like About page
@@ -47,11 +68,18 @@ export default function PageHeroSection({
             fill
             className="object-cover"
             priority
-            quality={90}
+            quality={80}
+            sizes="100vw"
             aria-hidden="true"
           />
           {overlay && (
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(217, 0, 0, 0.3), rgba(0, 0, 0, 0.8))' }} />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(217, 0, 0, 0.3), rgba(0, 0, 0, 0.8))',
+              }}
+            />
           )}
         </div>
       )}
@@ -125,16 +153,17 @@ export default function PageHeroSection({
             <h1
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 px-6 py-3"
               style={{
-                textShadow: '0 4px 20px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4)',
+                textShadow:
+                  '0 4px 20px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4)',
               }}
             >
-              {title}
+              {resolvedTitle}
             </h1>
           </div>
         </ScrollReveal>
 
         {/* Subtitle */}
-        {subtitle && (
+        {resolvedSubtitle && (
           <ScrollReveal animation="fadeInUp" delay={200} once={true}>
             <p
               className="text-base md:text-lg lg:text-xl text-white text-opacity-90 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed"
@@ -142,13 +171,13 @@ export default function PageHeroSection({
                 textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
               }}
             >
-              {subtitle}
+              {resolvedSubtitle}
             </p>
           </ScrollReveal>
         )}
 
         {/* Description */}
-        {description && (
+        {resolvedDescription && (
           <ScrollReveal animation="fadeInUp" delay={300} once={true}>
             <p
               className="text-base md:text-lg text-white text-opacity-90 max-w-2xl mx-auto leading-relaxed"
@@ -156,13 +185,13 @@ export default function PageHeroSection({
                 textShadow: '0 1px 5px rgba(0, 0, 0, 0.4)',
               }}
             >
-              {description}
+              {resolvedDescription}
             </p>
           </ScrollReveal>
         )}
 
         {/* Button */}
-        {buttonText && buttonLink && (
+        {resolvedButtonText && buttonLink && (
           <ScrollReveal animation="fadeInUp" delay={400} once={true}>
             <div className="pt-4 flex justify-center">
               <Link href={buttonLink} className="inline-block">
@@ -173,7 +202,7 @@ export default function PageHeroSection({
                   showBrackets={true}
                   continuousGlow={true}
                 >
-                  {buttonText}
+                  {resolvedButtonText}
                 </Button>
               </Link>
             </div>
@@ -183,4 +212,3 @@ export default function PageHeroSection({
     </section>
   );
 }
-

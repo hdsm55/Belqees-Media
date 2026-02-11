@@ -56,6 +56,7 @@ export default function PortfolioGrid({
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       loading="lazy"
+                      quality={75}
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" aria-hidden="true">

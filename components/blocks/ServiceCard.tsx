@@ -44,18 +44,25 @@ export default function ServiceCard({
             alt={title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            loading="lazy"
+            quality={80}
           />
         </div>
       )}
       <h3 className="text-lg md:text-xl font-heading font-semibold text-dark dark:text-gray-100 mb-3 md:mb-4 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors">
         {title}
       </h3>
-      <p className="text-sm md:text-base font-sans text-dark-light dark:text-gray-300 flex-grow leading-relaxed">{description}</p>
+      <p className="text-sm md:text-base font-sans text-dark-light dark:text-gray-300 flex-grow leading-relaxed">
+        {description}
+      </p>
       {slug && (
         <div className="mt-4 md:mt-6">
           <span className="text-sm md:text-base text-primary-500 dark:text-primary-400 font-medium group-hover:underline inline-flex items-center gap-2">
             {t('common.learnMore')}
-            <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+            <span className="group-hover:translate-x-1 transition-transform duration-300">
+              →
+            </span>
           </span>
         </div>
       )}
@@ -72,4 +79,3 @@ export default function ServiceCard({
 
   return content;
 }
-

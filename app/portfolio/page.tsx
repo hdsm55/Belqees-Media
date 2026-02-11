@@ -8,18 +8,29 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: 'معرض الأعمال - Belqees Media',
-  description: 'استعرض معرض أعمال Belqees Media - مشاريعنا في الإنتاج الإعلامي، البث المباشر، الفعاليات، والإعلانات. أمثلة من أفضل أعمالنا.',
-  keywords: ['معرض الأعمال', 'portfolio', 'مشاريع', 'إنتاج إعلامي', 'بث مباشر', 'فعاليات', 'إعلانات'],
+  description:
+    'استعرض معرض أعمال Belqees Media - مشاريعنا في الإنتاج الإعلامي، البث المباشر، الفعاليات، والإعلانات. أمثلة من أفضل أعمالنا.',
+  keywords: [
+    'معرض الأعمال',
+    'portfolio',
+    'مشاريع',
+    'إنتاج إعلامي',
+    'بث مباشر',
+    'فعاليات',
+    'إعلانات',
+  ],
   openGraph: {
     title: 'معرض الأعمال - Belqees Media',
-    description: 'استعرض معرض أعمال Belqees Media - مشاريعنا في الإنتاج الإعلامي والبث المباشر',
+    description:
+      'استعرض معرض أعمال Belqees Media - مشاريعنا في الإنتاج الإعلامي والبث المباشر',
     type: 'website',
     url: '/portfolio',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'معرض الأعمال - Belqees Media',
-    description: 'استعرض معرض أعمال Belqees Media - مشاريعنا في الإنتاج الإعلامي والبث المباشر',
+    description:
+      'استعرض معرض أعمال Belqees Media - مشاريعنا في الإنتاج الإعلامي والبث المباشر',
   },
   alternates: {
     canonical: '/portfolio',
@@ -43,7 +54,9 @@ export default async function PortfolioPage() {
       {/* Hero Section */}
       <PageHeroSection
         title="معرض الأعمال"
+        titleKey="portfolio.pageTitle"
         subtitle="استعرض معرض أعمال Belqees Media - مشاريعنا في الإنتاج الإعلامي، البث المباشر، الفعاليات، والإعلانات"
+        subtitleKey="portfolio.pageDescription"
         backgroundImage="/images/portfolio-hero.jpg"
       />
 
@@ -57,4 +70,3 @@ export default async function PortfolioPage() {
     </div>
   );
 }
-

@@ -71,49 +71,23 @@ export default function HeroBlock({
     if (videoRef.current && backgroundVideo) {
       const video = videoRef.current;
 
-      // Set video to load only metadata initially (not the full video)
-      video.preload = 'metadata';
+      // Hero is above the fold, so load immediately for faster start
+      video.preload = 'auto';
+      video.load();
 
-      // Use Intersection Observer to load video only when visible
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              // Video is visible, start loading
-              video.preload = 'auto';
-
-              // Load video progressively
-              const playPromise = video.play();
-
-              if (playPromise !== undefined) {
-                playPromise
-                  .then(() => {
-                    // Video is playing
-                  })
-                  .catch((error) => {
-                    // Auto-play was prevented
-                    const handleUserInteraction = () => {
-                      video.play();
-                      document.removeEventListener('click', handleUserInteraction);
-                      document.removeEventListener('touchstart', handleUserInteraction);
-                    };
-                    document.addEventListener('click', handleUserInteraction);
-                    document.addEventListener('touchstart', handleUserInteraction);
-                  });
-              }
-
-              // Unobserve after loading starts
-              observer.unobserve(video);
-            }
-          });
-        },
-        {
-          rootMargin: '50px', // Start loading 50px before video is visible
-          threshold: 0.1,
-        }
-      );
-
-      observer.observe(video);
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Auto-play was prevented
+          const handleUserInteraction = () => {
+            video.play();
+            document.removeEventListener('click', handleUserInteraction);
+            document.removeEventListener('touchstart', handleUserInteraction);
+          };
+          document.addEventListener('click', handleUserInteraction);
+          document.addEventListener('touchstart', handleUserInteraction);
+        });
+      }
 
       // Ensure video loops
       video.loop = videoLoop !== false;
@@ -136,7 +110,6 @@ export default function HeroBlock({
       }, 1000);
 
       return () => {
-        observer.disconnect();
         clearInterval(checkPlaying);
       };
     }

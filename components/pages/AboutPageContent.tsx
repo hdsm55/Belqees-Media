@@ -25,7 +25,8 @@ export default function AboutPageContent() {
             fill
             className="object-cover"
             priority
-            quality={90}
+            quality={80}
+            sizes="100vw"
           />
           {/* Overlay for better text readability */}
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(217, 0, 0, 0.3), rgba(0, 0, 0, 0.8))' }}></div>
@@ -182,6 +183,7 @@ export default function AboutPageContent() {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        quality={80}
                       />
                     </div>
                     <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
@@ -202,6 +204,7 @@ export default function AboutPageContent() {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        quality={80}
                       />
                     </div>
                     <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
@@ -222,6 +225,7 @@ export default function AboutPageContent() {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        quality={80}
                       />
                     </div>
                     <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
@@ -242,6 +246,7 @@ export default function AboutPageContent() {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        quality={80}
                       />
                     </div>
                     <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
@@ -284,6 +289,7 @@ export default function AboutPageContent() {
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                         sizes="(max-width: 768px) 50vw, 33vw"
                         loading="lazy"
+                        quality={80}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                         <span className="text-white text-xs font-medium border border-white/40 px-3 py-1 scale-90 group-hover:scale-100 transition-transform duration-300">

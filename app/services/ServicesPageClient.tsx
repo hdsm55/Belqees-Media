@@ -27,7 +27,9 @@ interface ServicesPageClientProps {
   services: Service[];
 }
 
-export default function ServicesPageClient({ services }: ServicesPageClientProps) {
+export default function ServicesPageClient({
+  services,
+}: ServicesPageClientProps) {
   const { t } = useTranslation();
 
   // Helper function to get icon component for a service
@@ -60,8 +62,12 @@ export default function ServicesPageClient({ services }: ServicesPageClientProps
   if (services.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">لا توجد خدمات متاحة حالياً</p>
-        <p className="text-sm text-gray-400 dark:text-gray-500">يرجى المحاولة لاحقاً</p>
+        <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
+          {t('services.noServices')}
+        </p>
+        <p className="text-sm text-gray-400 dark:text-gray-500">
+          {t('common.tryAgainLater')}
+        </p>
       </div>
     );
   }
@@ -69,13 +75,20 @@ export default function ServicesPageClient({ services }: ServicesPageClientProps
   return (
     <>
       <ScrollReveal animation="fadeIn" stagger={0.1}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
-          {services.map((service) => (
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          role="list"
+        >
+          {services.map(service => (
             <div key={service.id} role="listitem">
               <ServiceCard
                 title={service.title}
                 description={service.description || ''}
-                icon={service.slug ? getServiceIcon(service.slug) : (service.icon || undefined)}
+                icon={
+                  service.slug
+                    ? getServiceIcon(service.slug)
+                    : service.icon || undefined
+                }
                 image={service.image || undefined}
                 slug={service.slug}
               />
@@ -88,14 +101,14 @@ export default function ServicesPageClient({ services }: ServicesPageClientProps
       <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors mt-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-dark dark:text-gray-100 mb-4">
-            {t('services.cta.title') || 'هل تريد معرفة المزيد؟'}
+            {t('services.cta.title')}
           </h2>
           <p className="text-lg text-dark-light dark:text-gray-300 mb-8">
-            {t('services.cta.description') || 'تواصل معنا لمعرفة كيف يمكننا مساعدتك'}
+            {t('services.cta.description')}
           </p>
           <Link href="/contact">
             <button className="px-8 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 dark:hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-              {t('services.cta.button') || 'اتصل بنا'}
+              {t('services.cta.button')}
             </button>
           </Link>
         </div>
@@ -103,4 +116,3 @@ export default function ServicesPageClient({ services }: ServicesPageClientProps
     </>
   );
 }
-

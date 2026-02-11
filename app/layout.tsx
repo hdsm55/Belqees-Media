@@ -7,6 +7,7 @@ import PerformanceOptimizer from '@/components/PerformanceOptimizer';
 import Header from '@/components/organisms/Header';
 import Footer from '@/components/organisms/Footer';
 import PageTransition from '@/components/animations/PageTransition';
+import BackToTop from '@/components/atoms/BackToTop';
 
 // Arabic Font - Tajawal (خط عربي أنيق وحديث)
 const tajawal = Tajawal({
@@ -29,8 +30,16 @@ export const metadata: Metadata = {
     default: 'بلقيس ميديا - Belqees Media',
     template: '%s | بلقيس ميديا',
   },
-  description: 'منصة رقمية متكاملة لبلقيس ميديا - شركة إنتاج إعلامي متكاملة الخدمات تأسست عام 2015',
-  keywords: ['Belqees Media', 'إنتاج إعلامي', 'بث مباشر', 'فعاليات', 'استوديوهات', 'إعلام'],
+  description:
+    'منصة رقمية متكاملة لبلقيس ميديا - شركة إنتاج إعلامي متكاملة الخدمات تأسست عام 2015',
+  keywords: [
+    'Belqees Media',
+    'إنتاج إعلامي',
+    'بث مباشر',
+    'فعاليات',
+    'استوديوهات',
+    'إعلام',
+  ],
   authors: [{ name: 'Belqees Media' }],
   creator: 'Belqees Media',
   publisher: 'Belqees Media',
@@ -58,19 +67,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="rtl" className={`${tajawal.variable} ${ibmPlexSansArabic.variable}`} suppressHydrationWarning>
+    <html
+      lang="ar"
+      dir="rtl"
+      className={`${tajawal.variable} ${ibmPlexSansArabic.variable}`}
+      suppressHydrationWarning
+    >
       <body className="font-arabic antialiased bg-white text-dark dark:bg-gray-900 dark:text-gray-100 transition-colors">
         <ThemeProvider>
           <LenisProvider>
             <PerformanceOptimizer />
             <div className="min-h-screen flex flex-col relative">
               <Header />
-              <main className="flex-1 relative" style={{ zIndex: 1, position: 'relative' }}>
+              <main
+                className="flex-1 relative"
+                style={{ zIndex: 1, position: 'relative' }}
+              >
                 <PageTransition>
                   <div id="main-content">{children}</div>
                 </PageTransition>
               </main>
               <Footer />
+              <BackToTop />
             </div>
           </LenisProvider>
         </ThemeProvider>

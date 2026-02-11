@@ -28,13 +28,18 @@ export default function EventsGrid({
   showViewAll = true,
   viewAllLink = '/events',
 }: EventsGridProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const displayTitle = title || t('events.title') || 'الفعاليات';
 
   const formatDate = (date: Date | string): string => {
     try {
       const dateObj = typeof date === 'string' ? new Date(date) : date;
-      return new Intl.DateTimeFormat('ar-SA', {
+      const localeMap = {
+        ar: 'ar-SA',
+        en: 'en-US',
+        tr: 'tr-TR',
+      };
+      return new Intl.DateTimeFormat(localeMap[locale] || 'ar-SA', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -45,17 +50,25 @@ export default function EventsGrid({
   };
 
   return (
-    <section className="py-20 bg-white dark:bg-gray-900 transition-colors" aria-label="الفعاليات">
+    <section
+      className="py-20 bg-white dark:bg-gray-900 transition-colors"
+      aria-label={t('events.title')}
+    >
       <div className="container mx-auto px-4">
         {displayTitle && (
           <div className="text-center mb-10 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dark dark:text-gray-100 mb-3 md:mb-4">{displayTitle}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dark dark:text-gray-100 mb-3 md:mb-4">
+              {displayTitle}
+            </h2>
           </div>
         )}
 
         <ScrollReveal animation="fadeIn" stagger={0.1}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" role="list">
-            {items.map((item) => {
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            role="list"
+          >
+            {items.map(item => {
               const content = (
                 <div
                   className="project-card project-card-wrapper group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[4/3] cursor-pointer"
@@ -70,10 +83,16 @@ export default function EventsGrid({
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       loading="lazy"
+                      quality={75}
                     />
                   ) : (
-                    <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" aria-hidden="true">
-                      <span className="text-gray-400 dark:text-gray-500 text-sm">بدون صورة</span>
+                    <div
+                      className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center"
+                      aria-hidden="true"
+                    >
+                      <span className="text-gray-400 dark:text-gray-500 text-sm">
+                        {t('events.noImage')}
+                      </span>
                     </div>
                   )}
 
@@ -95,14 +114,31 @@ export default function EventsGrid({
                       </div>
                       {item.location && (
                         <div className="text-xs text-white/80 mb-2 flex items-center gap-1">
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <svg
+                            className="w-3 h-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
                           </svg>
                           {item.location}
                         </div>
                       )}
-                      <h3 className="text-xl font-bold text-white">{item.title}</h3>
+                      <h3 className="text-xl font-bold text-white">
+                        {item.title}
+                      </h3>
                     </div>
                   </div>
                 </div>
@@ -113,7 +149,7 @@ export default function EventsGrid({
                   <Link
                     key={item.id}
                     href={`/events/${item.slug}`}
-                    aria-label={`عرض تفاصيل ${item.title}`}
+                    aria-label={`${t('events.viewDetails')} ${item.title}`}
                   >
                     {content}
                   </Link>
@@ -130,7 +166,7 @@ export default function EventsGrid({
             <Link
               href={viewAllLink}
               className="inline-block text-dark dark:text-gray-100 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium text-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
-              aria-label="عرض جميع الفعاليات"
+              aria-label={t('events.viewAll')}
             >
               {t('events.viewAll') || 'عرض جميع الفعاليات'} →
             </Link>
@@ -140,4 +176,3 @@ export default function EventsGrid({
     </section>
   );
 }
-

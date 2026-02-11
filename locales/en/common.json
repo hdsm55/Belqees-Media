@@ -32,6 +32,7 @@
         "pageDescription": "At Belqees Media, we offer a comprehensive range of services in media production, studio setup, technical consultancy, and training. With over six years of hands-on experience, we provide integrated solutions tailored to the needs of TV channels, production companies, and media organizations.",
         "title": "From Big Projects to Small Productions",
         "description": "In our media services, we guide companies through three main phases: detailed pre-production planning, efficient production with expert teams, and precise post-production",
+        "noServices": "No services available at the moment",
         "advertising": {
             "title": "Advertising",
             "description": "High-quality production for TV and digital advertisements"
@@ -64,7 +65,12 @@
             "title": "Training & Development",
             "description": "Courses in editing, directing, graphics, and media management tailored for production teams and broadcast professionals"
         },
-        "mediaProduction": "Media Production"
+        "mediaProduction": "Media Production",
+        "cta": {
+            "title": "Want to learn more?",
+            "description": "Contact us to learn how we can help you",
+            "button": "Contact Us"
+        }
     },
     "clients": {
         "title": "Companies That Trusted Us",
@@ -78,6 +84,8 @@
         "partner8": "Partner 8"
     },
     "portfolio": {
+        "pageTitle": "Portfolio",
+        "pageDescription": "Explore Belqees Media portfolio - our projects in media production, live broadcasting, events, and advertising.",
         "title": "Our Latest Projects",
         "viewAll": "View All",
         "description": "Browse a collection of our best projects in media production and live broadcasting",
@@ -106,6 +114,7 @@
         "pageDescription": "Explore our featured events and media productions",
         "title": "Events",
         "viewAll": "View All Events",
+        "viewDetails": "View details",
         "noEvents": "No events available at the moment",
         "eventImage": "Event Image",
         "fetchError": "Failed to fetch data",
@@ -228,6 +237,7 @@
         "viewDetail": "View Details",
         "galleryImage": "Gallery Image",
         "changeLanguage": "Change Language",
+        "backToTop": "Back to top",
         "tryAgainLater": "Please try again later",
         "noImage": "No image",
         "galleryImage1": "Nobel Peace Prize Event Coverage",

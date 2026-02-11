@@ -8,37 +8,40 @@ import { useEffect } from 'react';
  */
 export default function PerformanceOptimizer() {
   useEffect(() => {
+    const appendLink = (
+      rel: string,
+      href: string,
+      as?: string,
+      type?: string
+    ) => {
+      const selector = `link[rel="${rel}"][href="${href}"]`;
+      if (document.head.querySelector(selector)) return;
+      const link = document.createElement('link');
+      link.rel = rel;
+      link.href = href;
+      if (as) link.as = as;
+      if (type) link.type = type;
+      document.head.appendChild(link);
+    };
+
     // Preload critical resources
     const preloadCriticalResources = () => {
       // Preload hero video if exists
-      const heroVideo = document.querySelector('video[src*="hero-video"]');
+      const heroVideo = document.querySelector('video[src*="hero-video"], video source[src*="hero-video"]');
       if (heroVideo) {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'video';
-        link.href = '/videos/hero-video.mp4';
-        link.type = 'video/mp4';
-        document.head.appendChild(link);
+        appendLink('preload', '/videos/hero-video.mp4', 'video', 'video/mp4');
       }
 
       // Preload logo
-      const logoLink = document.createElement('link');
-      logoLink.rel = 'preload';
-      logoLink.as = 'image';
-      logoLink.href = '/images/logo.avif';
-      logoLink.type = 'image/avif';
-      document.head.appendChild(logoLink);
+      appendLink('preload', '/images/logo.avif', 'image', 'image/avif');
     };
 
     // Prefetch likely next pages
     const prefetchNextPages = () => {
       const prefetchLinks = ['/about', '/services', '/contact', '/portfolio'];
 
-      prefetchLinks.forEach((href) => {
-        const link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = href;
-        document.head.appendChild(link);
+      prefetchLinks.forEach(href => {
+        appendLink('prefetch', href);
       });
     };
 
@@ -51,11 +54,8 @@ export default function PerformanceOptimizer() {
         'https://www.linkedin.com',
       ];
 
-      domains.forEach((domain) => {
-        const link = document.createElement('link');
-        link.rel = 'dns-prefetch';
-        link.href = domain;
-        document.head.appendChild(link);
+      domains.forEach(domain => {
+        appendLink('dns-prefetch', domain);
       });
     };
 
@@ -71,4 +71,3 @@ export default function PerformanceOptimizer() {
 
   return null;
 }
-

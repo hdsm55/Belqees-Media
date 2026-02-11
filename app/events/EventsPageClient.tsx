@@ -68,6 +68,7 @@ export default function EventsPageClient({ events }: EventsPageClientProps) {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   loading="lazy"
+                  quality={75}
                 />
               </div>
             ) : (

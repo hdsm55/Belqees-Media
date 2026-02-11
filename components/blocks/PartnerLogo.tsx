@@ -15,6 +15,9 @@ export default function PartnerLogo({ name, logo, url }: PartnerLogoProps) {
         width={120}
         height={48}
         className="object-contain max-h-16 w-auto opacity-70 hover:opacity-100 transition-opacity"
+        sizes="120px"
+        loading="lazy"
+        quality={80}
       />
     </div>
   );
