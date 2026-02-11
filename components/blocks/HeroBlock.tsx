@@ -181,15 +181,20 @@ export default function HeroBlock({
 
       {/* Background Video or Image */}
       {backgroundVideo && (
-        <div className="absolute inset-0 z-0" style={{ zIndex: 0 }}>
+        <div 
+          className="absolute inset-0 z-0" 
+          style={{ 
+            zIndex: 0,
+            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d0a0a 50%, #1a1a1a 100%)'
+          }}
+        >
           <video
             ref={videoRef}
             autoPlay
             loop={videoLoop}
             muted={videoMuted}
             playsInline
-            preload="metadata"
-            poster={videoPoster || backgroundImage}
+            preload="auto"
             className="absolute inset-0 w-full h-full object-cover scale-105"
             style={{ filter: 'brightness(0.75) contrast(1.1)' }}
             onCanPlay={e => {

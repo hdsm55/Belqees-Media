@@ -64,7 +64,6 @@ export default function HomePageContent() {
         ctaText={t('hero.cta')}
         ctaLink="/contact"
         backgroundVideo="/videos/hero-video.mp4"
-        backgroundImage="/images-optimized/approach.jpg"
         videoLoop={true}
         videoMuted={true}
       />

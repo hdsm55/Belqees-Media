@@ -273,7 +273,8 @@ export default function AboutPageContent() {
                   {t('about.gallery.title') || 'معرض الصور'}
                 </h2>
                 <p className="text-base md:text-lg text-dark-light dark:text-gray-300 mb-6 md:mb-8">
-                  {t('about.gallery.subtitle') || 'نظرة على بعض أعمالنا وفعالياتنا'}
+                  {t('about.gallery.subtitle') ||
+                    'نظرة على بعض أعمالنا وفعالياتنا'}
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {[
