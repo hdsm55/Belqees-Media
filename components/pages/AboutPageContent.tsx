@@ -20,7 +20,7 @@ export default function AboutPageContent() {
         {/* Static Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/about-hero.jpg"
+            src="/images-optimized/about-hero.jpg"
             alt={t('about.heroAlt')}
             fill
             className="object-cover"
@@ -184,7 +184,7 @@ export default function AboutPageContent() {
                     <CornerBrackets showOnHover={true} />
                     <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
                       <Image
-                        src="/images/systems/octopus-newsroom.jpg"
+                        src="/images-optimized/systems/octopus-newsroom.jpg"
                         alt={t('about.systems.octopus.title')}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -205,7 +205,7 @@ export default function AboutPageContent() {
                     <CornerBrackets showOnHover={true} />
                     <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
                       <Image
-                        src="/images/systems/metus-mam.jpg"
+                        src="/images-optimized/systems/metus-mam.jpg"
                         alt={t('about.systems.metus.title')}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -226,7 +226,7 @@ export default function AboutPageContent() {
                     <CornerBrackets showOnHover={true} />
                     <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
                       <Image
-                        src="/images/systems/brainstorm-3d.jpg"
+                        src="/images-optimized/systems/brainstorm-3d.jpg"
                         alt={t('about.systems.brainstorm.title')}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -247,7 +247,7 @@ export default function AboutPageContent() {
                     <CornerBrackets showOnHover={true} />
                     <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
                       <Image
-                        src="/images/systems/adobe-creative-cloud.jpg"
+                        src="/images-optimized/systems/adobe-creative-cloud.jpg"
                         alt={t('about.systems.adobe.title')}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -266,12 +266,12 @@ export default function AboutPageContent() {
               </div>
             </ScrollReveal>
 
-            {/* Gallery Placeholder */}
-            <ScrollReveal animation="fadeInUp">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-heading font-bold text-dark dark:text-gray-100 mb-4 md:mb-6">
-                  {t('about.gallery.title')}
-                </h2>
+                    { src: '/images-optimized/nobel-peace-prize.jpg', key: 'common.galleryImage1' },
+                    { src: '/images-optimized/yemen-researchers-conference.jpg', key: 'common.galleryImage2' },
+                    { src: '/images-optimized/approach.jpg', key: 'common.galleryImage3' },
+                    { src: '/images-optimized/events-hero.jpg', key: 'common.galleryImage4' },
+                    { src: '/images-optimized/services-hero.jpg', key: 'common.galleryImage5' },
+                    { src: '/images-optimized/systems/octopus-newsroom.jpg', key: 'common.galleryImage6' },
                 <p className="text-base md:text-lg text-dark-light dark:text-gray-300 mb-6 md:mb-8">
                   {t('about.gallery.subtitle')}
                 </p>

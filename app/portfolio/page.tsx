@@ -57,7 +57,7 @@ export default async function PortfolioPage() {
         titleKey="portfolio.pageTitle"
         subtitle="استعرض معرض أعمال Belqees Media - مشاريعنا في الإنتاج الإعلامي، البث المباشر، الفعاليات، والإعلانات"
         subtitleKey="portfolio.pageDescription"
-        backgroundImage="/images/portfolio-hero.jpg"
+        backgroundImage="/images-optimized/portfolio-hero.jpg"
       />
 
       {/* Portfolio Content */}

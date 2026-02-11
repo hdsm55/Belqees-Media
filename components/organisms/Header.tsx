@@ -83,6 +83,8 @@ export default function Header() {
                   ? "brightness-0 dark:brightness-100"
                   : "brightness-0 invert"
               )}
+              sizes="120px"
+              quality={80}
               style={{
                 filter: isScrolled ? undefined : 'brightness(0) invert(1)',
               }}

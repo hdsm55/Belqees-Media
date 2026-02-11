@@ -81,7 +81,7 @@ export default function ContactPage() {
       <PageHeroSection
         title={t('contact.pageTitle')}
         subtitle={t('contact.pageSubtitle')}
-        backgroundImage="/images/contact-hero.jpg"
+        backgroundImage="/images-optimized/contact-hero.jpg"
       />
 
       {/* Contact Section */}

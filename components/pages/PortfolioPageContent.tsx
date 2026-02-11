@@ -100,7 +100,7 @@ export default function PortfolioPageContent() {
         {/* Static Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/portfolio-hero.jpg"
+            src="/images-optimized/portfolio-hero.jpg"
             alt="Portfolio"
             fill
             className="object-cover"

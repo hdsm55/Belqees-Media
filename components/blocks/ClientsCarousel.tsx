@@ -100,6 +100,7 @@ export default function ClientsCarousel({
           className="partner-logo max-w-[240px] md:max-w-[300px] max-h-[120px] md:max-h-[140px] object-contain transition-all duration-500"
           loading="lazy"
           sizes="(max-width: 768px) 240px, 300px"
+          quality={80}
           onError={(e) => {
             console.error(`Failed to load image: ${client.logo}`);
           }}

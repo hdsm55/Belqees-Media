@@ -43,7 +43,7 @@ export default async function ServicesPage() {
         titleKey="services.pageTitle"
         subtitle="نقدم حلولاً إعلامية متكاملة بجودة عالية واحترافية"
         subtitleKey="services.pageDescription"
-        backgroundImage="/images/services-hero.jpg"
+        backgroundImage="/images-optimized/services-hero.jpg"
       />
 
       {/* Services Grid */}

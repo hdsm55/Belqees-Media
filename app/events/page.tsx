@@ -36,7 +36,7 @@ export default async function EventsPage() {
         titleKey="events.pageTitle"
         subtitle="استكشف فعالياتنا وإنتاجاتنا الإعلامية المميزة"
         subtitleKey="events.pageDescription"
-        backgroundImage="/images/events-hero.jpg"
+        backgroundImage="/images-optimized/events-hero.jpg"
       />
 
       {/* Events Grid */}

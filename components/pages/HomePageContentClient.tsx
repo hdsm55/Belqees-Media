@@ -44,6 +44,7 @@ export default function HomePageContentClient({ events }: HomePageContentClientP
         ctaText={t('hero.cta')}
         ctaLink="/contact"
         backgroundVideo="/videos/hero-video.mp4"
+        backgroundImage="/images-optimized/approach.jpg"
         videoLoop={true}
         videoMuted={true}
       />
@@ -138,7 +139,7 @@ export default function HomePageContentClient({ events }: HomePageContentClientP
       <ApproachSection
         title={t('approach.title')}
         description={t('approach.description')}
-        image="/images/approach.jpg"
+        image="/images-optimized/approach.jpg"
         linkText={t('approach.linkText')}
         linkHref="/about"
       />
@@ -146,12 +147,12 @@ export default function HomePageContentClient({ events }: HomePageContentClientP
       {/* Clients Section */}
       <ClientsCarousel
         clients={[
-          { id: '1', name: t('clients.partner1'), logo: '/images/partner-1.png' },
-          { id: '2', name: t('clients.partner2'), logo: '/images/partner-2.png' },
-          { id: '3', name: t('clients.partner3'), logo: '/images/partner-3.png' },
-          { id: '4', name: t('clients.partner4'), logo: '/images/partner-4.png' },
-          { id: '5', name: t('clients.partner5'), logo: '/images/partner-5.png' },
-          { id: '6', name: t('clients.partner6'), logo: '/images/partner-6.png' },
+          { id: '1', name: t('clients.partner1'), logo: '/images-optimized/partner-1.png' },
+          { id: '2', name: t('clients.partner2'), logo: '/images-optimized/partner-2.png' },
+          { id: '3', name: t('clients.partner3'), logo: '/images-optimized/partner-3.png' },
+          { id: '4', name: t('clients.partner4'), logo: '/images-optimized/partner-4.png' },
+          { id: '5', name: t('clients.partner5'), logo: '/images-optimized/partner-5.png' },
+          { id: '6', name: t('clients.partner6'), logo: '/images-optimized/partner-6.png' },
         ]}
         title={t('clients.title')}
       />

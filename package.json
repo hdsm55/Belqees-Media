@@ -16,7 +16,8 @@
     "db:verify": "node scripts/verify-schema.js",
     "db:seed-services": "npx tsx scripts/seed-services.ts",
     "db:seed-events": "npx tsx scripts/seed-events.ts",
-    "postbuild": "node scripts/fix-client-manifest.js"
+    "postbuild": "node scripts/fix-client-manifest.js",
+    "optimize:images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
@@ -51,6 +52,7 @@
     "postcss": "^8.4.32",
     "prettier": "^3.1.0",
     "prisma": "^5.7.1",
+    "sharp": "^0.33.5",
     "tailwindcss": "^3.3.6",
     "typescript": "^5.3.2"
   },
