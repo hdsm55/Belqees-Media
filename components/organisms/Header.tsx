@@ -16,7 +16,8 @@ export default function Header() {
   const pathname = usePathname();
 
   // إخفاء الهيدر في لوحة التحكم
-  const isDashboard = pathname?.startsWith('/dashboard') || pathname?.startsWith('/(dashboard)');
+  const isDashboard =
+    pathname?.startsWith('/dashboard') || pathname?.startsWith('/(dashboard)');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,10 +79,10 @@ export default function Header() {
               height={48}
               priority
               className={cn(
-                "h-10 md:h-12 w-auto transition-all duration-300 group-hover:scale-105 border-0 outline-none",
+                'h-10 md:h-12 w-auto transition-all duration-300 group-hover:scale-105 border-0 outline-none',
                 isScrolled
-                  ? "brightness-0 dark:brightness-100"
-                  : "brightness-0 invert"
+                  ? 'brightness-0 dark:brightness-100'
+                  : 'brightness-0 invert'
               )}
               sizes="120px"
               quality={80}
@@ -92,24 +93,34 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-6" aria-label={t('nav.mainMenu')} role="navigation">
-            {navItems.map((item) => (
+          <nav
+            className="hidden md:flex items-center gap-4 lg:gap-6"
+            aria-label={t('nav.mainMenu')}
+            role="navigation"
+          >
+            {navItems.map(item => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "text-sm lg:text-base hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium relative group",
-                  isScrolled ? "text-dark-light dark:text-gray-300" : "text-white"
+                  'text-sm lg:text-base hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium relative group',
+                  isScrolled
+                    ? 'text-dark-light dark:text-gray-300'
+                    : 'text-white'
                 )}
               >
                 {item.label}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 dark:bg-primary-400 transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
-            <div className={cn(
-              "ml-2 lg:ml-4 pl-2 lg:pl-4 flex items-center gap-2",
-              isScrolled ? "border-r border-gray-200 dark:border-gray-700" : "border-r border-white/20"
-            )}>
+            <div
+              className={cn(
+                'ml-2 lg:ml-4 pl-2 lg:pl-4 flex items-center gap-2',
+                isScrolled
+                  ? 'border-r border-gray-200 dark:border-gray-700'
+                  : 'border-r border-white/20'
+              )}
+            >
               <LanguageSwitcher isScrolled={isScrolled} />
               <ThemeToggle isScrolled={isScrolled} />
             </div>
@@ -129,8 +140,8 @@ export default function Header() {
               {isMenuOpen ? (
                 <svg
                   className={cn(
-                    "w-6 h-6 transition-colors",
-                    isScrolled ? "text-dark dark:text-gray-300" : "text-white"
+                    'w-6 h-6 transition-colors',
+                    isScrolled ? 'text-dark dark:text-gray-300' : 'text-white'
                   )}
                   fill="none"
                   strokeLinecap="round"
@@ -144,8 +155,8 @@ export default function Header() {
               ) : (
                 <svg
                   className={cn(
-                    "w-6 h-6 transition-colors",
-                    isScrolled ? "text-dark dark:text-gray-300" : "text-white"
+                    'w-6 h-6 transition-colors',
+                    isScrolled ? 'text-dark dark:text-gray-300' : 'text-white'
                   )}
                   fill="none"
                   strokeLinecap="round"
@@ -172,7 +183,7 @@ export default function Header() {
           role="navigation"
         >
           <div className="py-4 space-y-1">
-            {navItems.map((item) => (
+            {navItems.map(item => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -188,4 +199,3 @@ export default function Header() {
     </header>
   );
 }
-

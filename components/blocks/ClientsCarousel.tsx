@@ -33,7 +33,9 @@ export default function ClientsCarousel({
   const swiperRef = useRef<SwiperType | null>(null);
 
   // Filter out clients without logos for better display
-  const validClients = clients.filter(client => client.logo && client.logo.trim() !== '');
+  const validClients = clients.filter(
+    client => client.logo && client.logo.trim() !== ''
+  );
 
   // Duplicate clients multiple times to ensure loop works properly
   // Swiper needs enough slides for loop mode
@@ -56,7 +58,8 @@ export default function ClientsCarousel({
       const newTranslate = currentTranslate - speed;
 
       // Get the width of one set of slides
-      const slideWidth = swiperRef.current.width / (swiperRef.current.slides.length / 3);
+      const slideWidth =
+        swiperRef.current.width / (swiperRef.current.slides.length / 3);
       const resetPoint = -slideWidth * validClients.length;
 
       // Reset position when we've scrolled one full set
@@ -89,7 +92,10 @@ export default function ClientsCarousel({
   // Render a single logo item
   const renderLogoItem = (client: ClientLogo) => {
     const content = (
-      <div className="logo-wrapper relative border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 md:p-8 flex items-center justify-center h-40 md:h-52 w-full group" role="listitem">
+      <div
+        className="logo-wrapper relative border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 md:p-8 flex items-center justify-center h-40 md:h-52 w-full group"
+        role="listitem"
+      >
         <CornerBrackets showOnHover={false} />
         <Image
           src={client.logo}
@@ -101,7 +107,7 @@ export default function ClientsCarousel({
           loading="lazy"
           sizes="(max-width: 768px) 240px, 300px"
           quality={80}
-          onError={(e) => {
+          onError={e => {
             console.error(`Failed to load image: ${client.logo}`);
           }}
         />
@@ -126,18 +132,26 @@ export default function ClientsCarousel({
   };
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors overflow-hidden" aria-labelledby="clients-heading">
+    <section
+      className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors overflow-hidden"
+      aria-labelledby="clients-heading"
+    >
       <div className="container mx-auto px-4">
         {displayTitle && (
           <div className="text-center mb-10 md:mb-12">
-            <h2 id="clients-heading" className="text-2xl sm:text-3xl font-bold text-dark dark:text-gray-100 mb-3 md:mb-4">{displayTitle}</h2>
+            <h2
+              id="clients-heading"
+              className="text-2xl sm:text-3xl font-bold text-dark dark:text-gray-100 mb-3 md:mb-4"
+            >
+              {displayTitle}
+            </h2>
           </div>
         )}
 
         <ScrollReveal animation="fadeIn">
           <div className="relative w-full overflow-hidden">
             <Swiper
-              onSwiper={(swiper) => {
+              onSwiper={swiper => {
                 swiperRef.current = swiper;
               }}
               modules={[Autoplay]}

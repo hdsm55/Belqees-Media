@@ -64,6 +64,7 @@ export default function HomePageContent() {
         ctaText={t('hero.cta')}
         ctaLink="/contact"
         backgroundVideo="/videos/hero-video.mp4"
+        backgroundImage="/images-optimized/approach.jpg"
         videoLoop={true}
         videoMuted={true}
       />
@@ -158,7 +159,7 @@ export default function HomePageContent() {
       <ApproachSection
         title={t('approach.title')}
         description={t('approach.description')}
-        image="/images/approach.jpg"
+        image="/images-optimized/approach.jpg"
         linkText={t('approach.linkText')}
         linkHref="/about"
       />
@@ -166,14 +167,13 @@ export default function HomePageContent() {
       {/* Clients Section */}
       <ClientsCarousel
         clients={[
-
-          { id: '1', name: 'شريك 1', logo: '/images/partner-1.png' },
-          { id: '2', name: 'شريك 2', logo: '/images/partner-2.png' },
-          { id: '3', name: 'شريك 3', logo: '/images/partner-3.png' },
-          { id: '4', name: 'شريك 4', logo: '/images/partner-4.png' },
-          { id: '5', name: 'شريك 5', logo: '/images/partner-5.png' },
-          { id: '6', name: 'شريك 6', logo: '/images/partner-6.png' },
-             ]}
+          { id: '1', name: 'شريك 1', logo: '/images-optimized/partner-1.png' },
+          { id: '2', name: 'شريك 2', logo: '/images-optimized/partner-2.png' },
+          { id: '3', name: 'شريك 3', logo: '/images-optimized/partner-3.png' },
+          { id: '4', name: 'شريك 4', logo: '/images-optimized/partner-4.png' },
+          { id: '5', name: 'شريك 5', logo: '/images-optimized/partner-5.png' },
+          { id: '6', name: 'شريك 6', logo: '/images-optimized/partner-6.png' },
+        ]}
         title={t('clients.title')}
       />
 

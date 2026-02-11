@@ -7,7 +7,7 @@ export const events = [
     description: 'تغطية شاملة لأكبر مؤتمر تقني في المنطقة بمشاركة رواد القطاع.',
     description_en: 'Comprehensive coverage of the region\'s largest tech conference featuring industry leaders.',
     description_tr: 'Sektör liderlerinin katılımıyla bölgenin en büyük teknoloji konferansının kapsamlı kapsamı.',
-    image: '/images/yemen-researchers-conference.jpg',
+    image: '/images-optimized/yemen-researchers-conference.jpg',
     date: '2024-10-15',
     location: 'Istanbul, TR',
     category: 'Conference'
@@ -20,7 +20,7 @@ export const events = [
     description: 'توثيق حدث إطلاق الهوية الجديدة والرؤية الاستراتيجية للعشر سنوات القادمة.',
     description_en: 'Documenting the launch event of the new identity and strategic vision for the next ten years.',
     description_tr: 'Önümüzdeki on yıl için yeni kimliğin ve stratejik vizyonun lansman etkinliğinin belgelenmesi.',
-    image: '/images/events-hero.jpg',
+    image: '/images-optimized/events-hero.jpg',
     date: '2024-09-20',
     location: 'Dubai, UAE',
     category: 'Corporate'
@@ -33,7 +33,7 @@ export const events = [
     description: 'إنتاج إعلامي متكامل لفعاليات المهرجان بما في ذلك البث المباشر والمقابلات.',
     description_en: 'Integrated media production for festival events including live broadcasting and interviews.',
     description_tr: 'Canlı yayın ve röportajlar dahil olmak üzere festival etkinlikleri için entegre medya prodüksiyonu.',
-    image: '/images/nobel-peace-prize.jpg',
+    image: '/images-optimized/nobel-peace-prize.jpg',
     date: '2024-08-05',
     location: 'Riyadh, KSA',
     category: 'Festival'
@@ -46,7 +46,7 @@ export const events = [
     description: 'تغطية حية ومباشرة للنهائيات مع تقنيات تصوير متقدمة.',
     description_en: 'Live coverage of the finals with advanced filming techniques.',
     description_tr: 'Gelişmiş çekim teknikleriyle finallerin canlı yayını.',
-    image: '/images/services-hero.jpg',
+    image: '/images-optimized/services-hero.jpg',
     date: '2024-07-12',
     location: 'Cairo, EG',
     category: 'Sports'
