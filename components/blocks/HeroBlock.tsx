@@ -181,11 +181,12 @@ export default function HeroBlock({
 
       {/* Background Video or Image */}
       {backgroundVideo && (
-        <div 
-          className="absolute inset-0 z-0" 
-          style={{ 
+        <div
+          className="absolute inset-0 z-0"
+          style={{
             zIndex: 0,
-            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d0a0a 50%, #1a1a1a 100%)'
+            background:
+              'linear-gradient(135deg, #1a1a1a 0%, #2d0a0a 50%, #1a1a1a 100%)',
           }}
         >
           <video
