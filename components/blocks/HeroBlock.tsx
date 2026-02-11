@@ -116,9 +116,15 @@ export default function HeroBlock({
   }, [backgroundVideo, videoLoop, videoMuted]);
 
   return (
-    <section className="hero-section relative min-h-[90vh] md:min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors" style={{ zIndex: 0 }}>
+    <section
+      className="hero-section relative min-h-[90vh] md:min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors"
+      style={{ zIndex: 0 }}
+    >
       {/* Hero Corner Brackets - أركان الهيرو (متداخلة في مساحة الهيدر) */}
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 99998 }}>
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 99998 }}
+      >
         {/* Top Left - متداخلة في مساحة الهيدر */}
         <div
           className="absolute"
@@ -186,7 +192,7 @@ export default function HeroBlock({
             poster={videoPoster || backgroundImage}
             className="absolute inset-0 w-full h-full object-cover scale-105"
             style={{ filter: 'brightness(0.75) contrast(1.1)' }}
-            onCanPlay={(e) => {
+            onCanPlay={e => {
               // Start playing when enough data is loaded (progressive loading)
               const video = e.currentTarget;
               if (video.readyState >= 2) {
@@ -200,7 +206,11 @@ export default function HeroBlock({
             }}
             onPause={() => {
               // Try to resume if paused unexpectedly
-              if (videoRef.current && !videoRef.current.ended && videoRef.current.readyState >= 2) {
+              if (
+                videoRef.current &&
+                !videoRef.current.ended &&
+                videoRef.current.readyState >= 2
+              ) {
                 setTimeout(() => {
                   videoRef.current?.play().catch(() => {
                     // Silent fail
@@ -211,7 +221,7 @@ export default function HeroBlock({
             onWaiting={() => {
               // Video is buffering - this is normal for progressive loading
             }}
-            onError={(e) => {
+            onError={e => {
               // Fallback to poster image if video fails to load
               const video = e.currentTarget;
               if (videoPoster || backgroundImage) {
@@ -220,7 +230,10 @@ export default function HeroBlock({
             }}
           >
             <source src={backgroundVideo} type="video/mp4" />
-            <source src={backgroundVideo.replace('.mp4', '.webm')} type="video/webm" />
+            <source
+              src={backgroundVideo.replace('.mp4', '.webm')}
+              type="video/webm"
+            />
             <p className="text-white">متصفحك لا يدعم الفيديو.</p>
           </video>
           {/* Gradient Overlay - خفيف لإظهار الفيديو */}
@@ -269,9 +282,10 @@ export default function HeroBlock({
                 ref={titleRef}
                 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold opacity-0 leading-tight tracking-tight w-full ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-white' : 'text-dark dark:text-gray-100'}`}
                 style={{
-                  textShadow: backgroundVideo || youtubeVideoId || backgroundImage
-                    ? '0 4px 20px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4)'
-                    : 'none',
+                  textShadow:
+                    backgroundVideo || youtubeVideoId || backgroundImage
+                      ? '0 4px 20px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4)'
+                      : 'none',
                 }}
               >
                 {title}
@@ -283,9 +297,10 @@ export default function HeroBlock({
                   ref={subtitleRef}
                   className={`text-sm sm:text-base md:text-lg lg:text-xl opacity-0 font-medium w-full max-w-3xl leading-relaxed ${backgroundVideo || youtubeVideoId || backgroundImage ? 'text-gray-100' : 'text-dark-light dark:text-gray-300'}`}
                   style={{
-                    textShadow: backgroundVideo || youtubeVideoId || backgroundImage
-                      ? '0 2px 10px rgba(0, 0, 0, 0.5)'
-                      : 'none',
+                    textShadow:
+                      backgroundVideo || youtubeVideoId || backgroundImage
+                        ? '0 2px 10px rgba(0, 0, 0, 0.5)'
+                        : 'none',
                   }}
                 >
                   {subtitle}
@@ -294,7 +309,10 @@ export default function HeroBlock({
 
               {/* CTA Button - زر التواصل */}
               {ctaText && (
-                <div ref={ctaRef} className="opacity-0 pt-4 flex justify-center w-full">
+                <div
+                  ref={ctaRef}
+                  className="opacity-0 pt-4 flex justify-center w-full"
+                >
                   <Link href={ctaLink} className="inline-block">
                     <Button
                       variant="recording"
@@ -315,4 +333,3 @@ export default function HeroBlock({
     </section>
   );
 }
-

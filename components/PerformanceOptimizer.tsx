@@ -27,7 +27,9 @@ export default function PerformanceOptimizer() {
     // Preload critical resources
     const preloadCriticalResources = () => {
       // Preload hero video if exists
-      const heroVideo = document.querySelector('video[src*="hero-video"], video source[src*="hero-video"]');
+      const heroVideo = document.querySelector(
+        'video[src*="hero-video"], video source[src*="hero-video"]'
+      );
       if (heroVideo) {
         appendLink('preload', '/videos/hero-video.mp4', 'video', 'video/mp4');
       }

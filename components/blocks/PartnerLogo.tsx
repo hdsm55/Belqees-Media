@@ -24,12 +24,7 @@ export default function PartnerLogo({ name, logo, url }: PartnerLogoProps) {
 
   if (url) {
     return (
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
-      >
+      <a href={url} target="_blank" rel="noopener noreferrer" className="block">
         {content}
       </a>
     );
@@ -37,4 +32,3 @@ export default function PartnerLogo({ name, logo, url }: PartnerLogoProps) {
 
   return content;
 }
-

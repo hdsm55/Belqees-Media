@@ -29,7 +29,13 @@ export default function AboutPageContent() {
             sizes="100vw"
           />
           {/* Overlay for better text readability */}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(217, 0, 0, 0.3), rgba(0, 0, 0, 0.8))' }}></div>
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(217, 0, 0, 0.3), rgba(0, 0, 0, 0.8))',
+            }}
+          ></div>
         </div>
 
         {/* Corner Brackets - White borders */}
@@ -271,12 +277,30 @@ export default function AboutPageContent() {
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {[
-                    { src: '/images/nobel-peace-prize.jpg', key: 'common.galleryImage1' },
-                    { src: '/images/yemen-researchers-conference.jpg', key: 'common.galleryImage2' },
-                    { src: '/images/approach.jpg', key: 'common.galleryImage3' },
-                    { src: '/images/events-hero.jpg', key: 'common.galleryImage4' },
-                    { src: '/images/services-hero.jpg', key: 'common.galleryImage5' },
-                    { src: '/images/systems/octopus-newsroom.jpg', key: 'common.galleryImage6' },
+                    {
+                      src: '/images/nobel-peace-prize.jpg',
+                      key: 'common.galleryImage1',
+                    },
+                    {
+                      src: '/images/yemen-researchers-conference.jpg',
+                      key: 'common.galleryImage2',
+                    },
+                    {
+                      src: '/images/approach.jpg',
+                      key: 'common.galleryImage3',
+                    },
+                    {
+                      src: '/images/events-hero.jpg',
+                      key: 'common.galleryImage4',
+                    },
+                    {
+                      src: '/images/services-hero.jpg',
+                      key: 'common.galleryImage5',
+                    },
+                    {
+                      src: '/images/systems/octopus-newsroom.jpg',
+                      key: 'common.galleryImage6',
+                    },
                   ].map((img, i) => (
                     <div
                       key={i}
@@ -304,7 +328,6 @@ export default function AboutPageContent() {
           </div>
         </div>
       </section>
-
     </>
   );
 }

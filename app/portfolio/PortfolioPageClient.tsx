@@ -28,7 +28,8 @@ export default function PortfolioPageClient({
   itemsPerPage = 12,
 }: PortfolioPageClientProps) {
   const { t } = useTranslation();
-  const [portfolio, setPortfolio] = useState<PortfolioItemFromService[]>(initialPortfolio);
+  const [portfolio, setPortfolio] =
+    useState<PortfolioItemFromService[]>(initialPortfolio);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -54,9 +55,10 @@ export default function PortfolioPageClient({
       setError(null);
 
       const offset = (currentPage - 1) * itemsPerPage;
-      const url = selectedCategory === 'all'
-        ? `/api/portfolio?published=true&limit=${itemsPerPage}&offset=${offset}`
-        : `/api/portfolio?published=true&category=${selectedCategory}&limit=${itemsPerPage}&offset=${offset}`;
+      const url =
+        selectedCategory === 'all'
+          ? `/api/portfolio?published=true&limit=${itemsPerPage}&offset=${offset}`
+          : `/api/portfolio?published=true&category=${selectedCategory}&limit=${itemsPerPage}&offset=${offset}`;
 
       const response = await fetch(url);
 
@@ -82,7 +84,9 @@ export default function PortfolioPageClient({
     if (typeof media === 'string') return media;
     if (Array.isArray(media) && media.length > 0) {
       const firstItem = media[0];
-      return typeof firstItem === 'string' ? firstItem : (firstItem as { url: string }).url || null;
+      return typeof firstItem === 'string'
+        ? firstItem
+        : (firstItem as { url: string }).url || null;
     }
     if (typeof media === 'object' && 'url' in media) {
       return media.url;
@@ -99,22 +103,24 @@ export default function PortfolioPageClient({
             <div className="flex flex-wrap gap-3 justify-center">
               <button
                 onClick={() => setSelectedCategory('all')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === 'all'
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                  }`}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedCategory === 'all'
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
                 aria-label={t('portfolio.viewAllProjects')}
               >
                 {t('portfolio.all')}
               </button>
-              {categories.map((category) => (
+              {categories.map(category => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === category
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                    }`}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedCategory === category
+                      ? 'bg-primary-500 text-white'
+                      : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
                   aria-label={`${t('portfolio.viewProjectDetails')} ${category}`}
                 >
                   {category}
@@ -126,7 +132,10 @@ export default function PortfolioPageClient({
       )}
 
       {/* Portfolio Grid */}
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-900 transition-colors" aria-label={t('portfolio.galleryAriaLabel')}>
+      <section
+        className="py-12 md:py-16 bg-white dark:bg-gray-900 transition-colors"
+        aria-label={t('portfolio.galleryAriaLabel')}
+      >
         <div className="container mx-auto px-4">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -136,7 +145,9 @@ export default function PortfolioPageClient({
             </div>
           ) : error ? (
             <div className="text-center py-12">
-              <p className="text-red-500 dark:text-red-400 text-lg mb-4">{error}</p>
+              <p className="text-red-500 dark:text-red-400 text-lg mb-4">
+                {error}
+              </p>
               <button
                 onClick={fetchPortfolio}
                 className="px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
@@ -152,8 +163,11 @@ export default function PortfolioPageClient({
             </div>
           ) : (
             <ScrollReveal animation="fadeIn" stagger={0.1}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
-                {portfolio.map((item) => {
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                role="list"
+              >
+                {portfolio.map(item => {
                   const imageUrl = getImageUrl(item.images);
 
                   return (
@@ -175,8 +189,13 @@ export default function PortfolioPageClient({
                           quality={75}
                         />
                       ) : (
-                        <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" aria-hidden="true">
-                          <span className="text-gray-400 dark:text-gray-500 text-sm">{t('portfolio.projectImage')}</span>
+                        <div
+                          className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center"
+                          aria-hidden="true"
+                        >
+                          <span className="text-gray-400 dark:text-gray-500 text-sm">
+                            {t('portfolio.projectImage')}
+                          </span>
                         </div>
                       )}
 
@@ -193,13 +212,20 @@ export default function PortfolioPageClient({
                       <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
                         <div>
                           {item.category && (
-                            <div className="text-sm text-white/90 mb-2 font-medium" aria-label={t('portfolio.projectCategory')}>
+                            <div
+                              className="text-sm text-white/90 mb-2 font-medium"
+                              aria-label={t('portfolio.projectCategory')}
+                            >
                               {item.category}
                             </div>
                           )}
-                          <h3 className="text-xl font-bold text-white">{item.title}</h3>
+                          <h3 className="text-xl font-bold text-white">
+                            {item.title}
+                          </h3>
                           {item.description && (
-                            <p className="text-sm text-white/80 mt-2 line-clamp-2">{item.description}</p>
+                            <p className="text-sm text-white/80 mt-2 line-clamp-2">
+                              {item.description}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -211,65 +237,84 @@ export default function PortfolioPageClient({
           )}
 
           {/* Pagination */}
-          {!loading && !error && portfolio.length > 0 && total > itemsPerPage && (
-            <div className="flex justify-center items-center gap-2 mt-12">
-              <button
-                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                disabled={currentPage === 1}
-                className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                aria-label={t('portfolio.previous')}
-              >
-                {t('portfolio.previous')}
-              </button>
+          {!loading &&
+            !error &&
+            portfolio.length > 0 &&
+            total > itemsPerPage && (
+              <div className="flex justify-center items-center gap-2 mt-12">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  aria-label={t('portfolio.previous')}
+                >
+                  {t('portfolio.previous')}
+                </button>
 
-              <div className="flex gap-1">
-                {Array.from({ length: Math.ceil(total / itemsPerPage) }, (_, i) => i + 1)
-                  .filter(page => {
-                    // Show first page, last page, current page, and pages around current
-                    return (
-                      page === 1 ||
-                      page === Math.ceil(total / itemsPerPage) ||
-                      (page >= currentPage - 1 && page <= currentPage + 1)
-                    );
-                  })
-                  .map((page, index, array) => {
-                    // Add ellipsis
-                    const showEllipsisBefore = index > 0 && array[index - 1] !== page - 1;
-                    const showEllipsisAfter = index < array.length - 1 && array[index + 1] !== page + 1;
+                <div className="flex gap-1">
+                  {Array.from(
+                    { length: Math.ceil(total / itemsPerPage) },
+                    (_, i) => i + 1
+                  )
+                    .filter(page => {
+                      // Show first page, last page, current page, and pages around current
+                      return (
+                        page === 1 ||
+                        page === Math.ceil(total / itemsPerPage) ||
+                        (page >= currentPage - 1 && page <= currentPage + 1)
+                      );
+                    })
+                    .map((page, index, array) => {
+                      // Add ellipsis
+                      const showEllipsisBefore =
+                        index > 0 && array[index - 1] !== page - 1;
+                      const showEllipsisAfter =
+                        index < array.length - 1 &&
+                        array[index + 1] !== page + 1;
 
-                    return (
-                      <div key={page} className="flex items-center gap-1">
-                        {showEllipsisBefore && <span className="px-2">...</span>}
-                        <button
-                          onClick={() => setCurrentPage(page)}
-                          className={`px-4 py-2 rounded-lg transition-colors ${currentPage === page
-                            ? 'bg-primary-500 text-white'
-                            : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                      return (
+                        <div key={page} className="flex items-center gap-1">
+                          {showEllipsisBefore && (
+                            <span className="px-2">...</span>
+                          )}
+                          <button
+                            onClick={() => setCurrentPage(page)}
+                            className={`px-4 py-2 rounded-lg transition-colors ${
+                              currentPage === page
+                                ? 'bg-primary-500 text-white'
+                                : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                             }`}
-                          aria-label={`${t('portfolio.page')} ${page}`}
-                          aria-current={currentPage === page ? 'page' : undefined}
-                        >
-                          {page}
-                        </button>
-                        {showEllipsisAfter && <span className="px-2">...</span>}
-                      </div>
-                    );
-                  })}
-              </div>
+                            aria-label={`${t('portfolio.page')} ${page}`}
+                            aria-current={
+                              currentPage === page ? 'page' : undefined
+                            }
+                          >
+                            {page}
+                          </button>
+                          {showEllipsisAfter && (
+                            <span className="px-2">...</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                </div>
 
-              <button
-                onClick={() => setCurrentPage(prev => Math.min(Math.ceil(total / itemsPerPage), prev + 1))}
-                disabled={currentPage >= Math.ceil(total / itemsPerPage)}
-                className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                aria-label={t('portfolio.next')}
-              >
-                {t('portfolio.next')}
-              </button>
-            </div>
-          )}
+                <button
+                  onClick={() =>
+                    setCurrentPage(prev =>
+                      Math.min(Math.ceil(total / itemsPerPage), prev + 1)
+                    )
+                  }
+                  disabled={currentPage >= Math.ceil(total / itemsPerPage)}
+                  className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  aria-label={t('portfolio.next')}
+                >
+                  {t('portfolio.next')}
+                </button>
+              </div>
+            )}
         </div>
       </section>
     </div>
   );
 }
-
