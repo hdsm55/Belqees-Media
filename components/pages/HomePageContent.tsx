@@ -81,10 +81,16 @@ export default function HomePageContent() {
 
       {/* Services Section */}
       <ScrollReveal animation="fadeInUp">
-        <section className="py-16 md:py-20 bg-white dark:bg-gray-900 transition-colors" aria-labelledby="services-heading">
+        <section
+          className="py-16 md:py-20 bg-white dark:bg-gray-900 transition-colors"
+          aria-labelledby="services-heading"
+        >
           <div className="container mx-auto px-4">
             <div className="text-center mb-10 md:mb-12">
-              <h2 id="services-heading" className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-dark dark:text-gray-100 mb-3 md:mb-4 tracking-tight">
+              <h2
+                id="services-heading"
+                className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-dark dark:text-gray-100 mb-3 md:mb-4 tracking-tight"
+              >
                 {t('services.title')}
               </h2>
               <p className="text-sm sm:text-base md:text-lg font-sans text-dark-light dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
@@ -92,7 +98,10 @@ export default function HomePageContent() {
               </p>
             </div>
             <ScrollReveal animation="fadeIn" stagger={0.1}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" role="list">
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                role="list"
+              >
                 <div role="listitem">
                   <ServiceCard
                     title={t('services.advertising.title')}
@@ -180,28 +189,38 @@ export default function HomePageContent() {
       {/* Events Section */}
       <EventsGrid
         title={t('events.title') || 'الفعاليات'}
-        items={eventsLoading ? [] : events.map((item) => ({
-          id: item.id,
-          title: item.title,
-          date: item.date,
-          time: item.time,
-          location: item.location,
-          image: item.image,
-          slug: item.slug,
-        }))}
+        items={
+          eventsLoading
+            ? []
+            : events.map(item => ({
+                id: item.id,
+                title: item.title,
+                date: item.date,
+                time: item.time,
+                location: item.location,
+                image: item.image,
+                slug: item.slug,
+              }))
+        }
         showViewAll={true}
         viewAllLink="/events"
       />
 
       {/* Contact CTA Section */}
       <ScrollReveal animation="fadeInUp">
-        <section className="py-16 md:py-20 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 transition-colors" aria-labelledby="contact-heading">
+        <section
+          className="py-16 md:py-20 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 transition-colors"
+          aria-labelledby="contact-heading"
+        >
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="relative bg-white dark:bg-gray-800 p-8 border border-gray-200 dark:border-gray-700 group">
                   <CornerBrackets showOnHover={true} />
-                  <h2 id="contact-heading" className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-dark dark:text-gray-100">
+                  <h2
+                    id="contact-heading"
+                    className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-dark dark:text-gray-100"
+                  >
                     {t('contact.title')}
                   </h2>
                   <p className="text-sm sm:text-base md:text-lg text-dark-light dark:text-gray-300 mb-6 md:mb-8 leading-relaxed">
@@ -263,4 +282,3 @@ export default function HomePageContent() {
     </>
   );
 }
-

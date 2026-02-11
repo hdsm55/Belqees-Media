@@ -266,39 +266,39 @@ export default function AboutPageContent() {
               </div>
             </ScrollReveal>
 
-                    { src: '/images-optimized/nobel-peace-prize.jpg', key: 'common.galleryImage1' },
-                    { src: '/images-optimized/yemen-researchers-conference.jpg', key: 'common.galleryImage2' },
-                    { src: '/images-optimized/approach.jpg', key: 'common.galleryImage3' },
-                    { src: '/images-optimized/events-hero.jpg', key: 'common.galleryImage4' },
-                    { src: '/images-optimized/services-hero.jpg', key: 'common.galleryImage5' },
-                    { src: '/images-optimized/systems/octopus-newsroom.jpg', key: 'common.galleryImage6' },
+            {/* Gallery Section */}
+            <ScrollReveal animation="fade-up" delay={0.2}>
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-heading font-bold text-dark dark:text-gray-100 mb-4">
+                  {t('about.gallery.title') || 'معرض الصور'}
+                </h2>
                 <p className="text-base md:text-lg text-dark-light dark:text-gray-300 mb-6 md:mb-8">
-                  {t('about.gallery.subtitle')}
+                  {t('about.gallery.subtitle') || 'نظرة على بعض أعمالنا وفعالياتنا'}
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {[
                     {
-                      src: '/images/nobel-peace-prize.jpg',
+                      src: '/images-optimized/nobel-peace-prize.jpg',
                       key: 'common.galleryImage1',
                     },
                     {
-                      src: '/images/yemen-researchers-conference.jpg',
+                      src: '/images-optimized/yemen-researchers-conference.jpg',
                       key: 'common.galleryImage2',
                     },
                     {
-                      src: '/images/approach.jpg',
+                      src: '/images-optimized/approach.jpg',
                       key: 'common.galleryImage3',
                     },
                     {
-                      src: '/images/events-hero.jpg',
+                      src: '/images-optimized/events-hero.jpg',
                       key: 'common.galleryImage4',
                     },
                     {
-                      src: '/images/services-hero.jpg',
+                      src: '/images-optimized/services-hero.jpg',
                       key: 'common.galleryImage5',
                     },
                     {
-                      src: '/images/systems/octopus-newsroom.jpg',
+                      src: '/images-optimized/systems/octopus-newsroom.jpg',
                       key: 'common.galleryImage6',
                     },
                   ].map((img, i) => (

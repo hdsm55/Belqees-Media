@@ -231,12 +231,16 @@ export default function HeroBlock({
           >
             {/* WebM first for better compression and quality */}
             <source
-              src={backgroundVideo.replace('/videos/', '/videos-optimized/').replace('.mp4', '-720p.webm')}
+              src={backgroundVideo
+                .replace('/videos/', '/videos-optimized/')
+                .replace('.mp4', '-720p.webm')}
               type="video/webm"
             />
             {/* MP4 fallback */}
             <source
-              src={backgroundVideo.replace('/videos/', '/videos-optimized/').replace('.mp4', '-720p.mp4')}
+              src={backgroundVideo
+                .replace('/videos/', '/videos-optimized/')
+                .replace('.mp4', '-720p.mp4')}
               type="video/mp4"
             />
             <p className="text-white">متصفحك لا يدعم الفيديو.</p>
