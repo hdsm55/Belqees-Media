@@ -11,25 +11,50 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase/client';
 
+interface RecentMessage {
+    id: string;
+    name: string;
+    subject: string;
+    createdAt: string;
+}
+
 export default function AdminDashboard() {
     const [counts, setCounts] = useState({ messages: 0, portfolio: 0, events: 0, services: 0 });
+    const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchCounts = async () => {
-            const [{ count: msgCount }, { count: portCount }, { count: eventCount }, { count: servCount }] = await Promise.all([
-                supabase.from('contact_messages').select('*', { count: 'exact', head: true }),
-                supabase.from('portfolio').select('*', { count: 'exact', head: true }),
-                supabase.from('events').select('*', { count: 'exact', head: true }),
-                supabase.from('services').select('*', { count: 'exact', head: true }),
-            ]);
-            setCounts({
-                messages: msgCount || 0,
-                portfolio: portCount || 0,
-                events: eventCount || 0,
-                services: servCount || 0
-            });
+        const fetchData = async () => {
+            try {
+                const [
+                    { count: msgCount },
+                    { count: portCount },
+                    { count: eventCount },
+                    { count: servCount },
+                    { data: recentMsgs }
+                ] = await Promise.all([
+                    supabase.from('contact_messages').select('*', { count: 'exact', head: true }),
+                    supabase.from('portfolio').select('*', { count: 'exact', head: true }),
+                    supabase.from('events').select('*', { count: 'exact', head: true }),
+                    supabase.from('services').select('*', { count: 'exact', head: true }),
+                    supabase.from('contact_messages').select('id, name, subject, createdAt').order('createdAt', { ascending: false }).limit(3)
+                ]);
+
+                setCounts({
+                    messages: msgCount || 0,
+                    portfolio: portCount || 0,
+                    events: eventCount || 0,
+                    services: servCount || 0
+                });
+
+                setRecentMessages(recentMsgs || []);
+            } catch (err) {
+                console.error('Error fetching dashboard data:', err);
+            } finally {
+                setLoading(false);
+            }
         };
-        fetchCounts();
+        fetchData();
     }, []);
 
     const stats = [
@@ -71,9 +96,30 @@ export default function AdminDashboard() {
                             عرض الكل <ArrowRight size={14} className="rotate-180" />
                         </Link>
                     </div>
-                    <div className="flex-1 flex flex-col items-center justify-center py-10 text-gray-400">
-                        <MessageSquare size={48} strokeWidth={1} className="mb-4 opacity-20" />
-                        <p className="text-sm">لا توجد رسائل جديدة حالياً</p>
+
+                    <div className="flex-1 space-y-4">
+                        {loading ? (
+                            <div className="flex items-center justify-center py-10">
+                                <div className="w-8 h-8 border-4 border-primary-100 border-t-primary-600 rounded-full animate-spin" />
+                            </div>
+                        ) : recentMessages.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+                                <MessageSquare size={48} strokeWidth={1} className="mb-4 opacity-20" />
+                                <p className="text-sm">لا توجد رسائل جديدة حالياً</p>
+                            </div>
+                        ) : (
+                            recentMessages.map((msg) => (
+                                <div key={msg.id} className="p-3 rounded-xl bg-gray-50 border border-gray-100/50 space-y-1">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-xs font-bold text-gray-900">{msg.name}</span>
+                                        <span className="text-[10px] text-gray-400">
+                                            {new Intl.DateTimeFormat('ar-SA', { dateStyle: 'short' }).format(new Date(msg.createdAt))}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-gray-600 line-clamp-1">{msg.subject}</p>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
 

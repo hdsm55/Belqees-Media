@@ -24,7 +24,6 @@ export default function NewServicePage() {
         description: '',
         icon: 'Wrench', // Default icon name
         image: '',
-        order: 0,
         published: false
     });
 
@@ -137,19 +136,6 @@ export default function NewServicePage() {
                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
                         <h3 className="font-bold text-gray-900 border-b border-gray-50 pb-4">الإعدادات</h3>
 
-                        {/* Order */}
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                                <Hash size={16} />
-                                الترتيب
-                            </label>
-                            <input
-                                type="number"
-                                value={formData.order}
-                                onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 outline-none transition-all"
-                            />
-                        </div>
 
                         {/* Icon Name */}
                         <div className="space-y-2">

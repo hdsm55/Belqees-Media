@@ -22,6 +22,7 @@ interface PortfolioItem {
     published: boolean;
     image?: string;
     slug: string;
+    createdAt: string;
 }
 
 export default function AdminPortfolioPage() {
@@ -35,9 +36,12 @@ export default function AdminPortfolioPage() {
             const { data, error } = await supabase
                 .from('portfolio')
                 .select('*')
-                .order('created_at', { ascending: false });
+                .order('createdAt', { ascending: false });
 
-            if (error) throw error;
+            if (error) {
+                console.error('Supabase Error:', error);
+                throw error;
+            }
             setItems(data || []);
         } catch (err) {
             console.error('Error fetching portfolio:', err);

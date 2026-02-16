@@ -19,7 +19,7 @@ interface Service {
     title: string;
     description: string;
     published: boolean;
-    order: number;
+    createdAt: string;
 }
 
 export default function AdminServicesPage() {
@@ -33,9 +33,12 @@ export default function AdminServicesPage() {
             const { data, error } = await supabase
                 .from('services')
                 .select('*')
-                .order('order', { ascending: true });
+                .order('createdAt', { ascending: false });
 
-            if (error) throw error;
+            if (error) {
+                console.error('Supabase Error:', error);
+                throw error;
+            }
             setServices(data || []);
         } catch (err) {
             console.error('Error fetching services:', err);
