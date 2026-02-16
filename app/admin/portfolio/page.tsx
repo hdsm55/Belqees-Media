@@ -13,6 +13,7 @@ import {
     Image as ImageIcon
 } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import Link from 'next/link';
 
 interface PortfolioItem {
     id: string;
@@ -95,10 +96,10 @@ export default function AdminPortfolioPage() {
                     >
                         <RefreshCw size={24} className={refreshing ? "animate-spin" : ""} />
                     </button>
-                    <button className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-xl hover:bg-primary-700 transition-colors shadow-sm">
+                    <Link href="/admin/portfolio/new" className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-xl hover:bg-primary-700 transition-colors shadow-sm">
                         <Plus size={20} />
                         إضافة عمل جديد
-                    </button>
+                    </Link>
                 </div>
             </div>
 

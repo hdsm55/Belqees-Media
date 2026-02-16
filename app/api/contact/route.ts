@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
           email,
           subject: subject || 'No Subject',
           message,
-          created_at: new Date().toISOString()
+          createdAt: new Date().toISOString()
         }
       ]);
 

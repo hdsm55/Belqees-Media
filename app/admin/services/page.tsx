@@ -12,6 +12,7 @@ import {
     Settings2
 } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import Link from 'next/link';
 
 interface Service {
     id: string;
@@ -93,10 +94,10 @@ export default function AdminServicesPage() {
                     >
                         <RefreshCw size={24} className={refreshing ? "animate-spin" : ""} />
                     </button>
-                    <button className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-xl hover:bg-primary-700 transition-colors shadow-sm">
+                    <Link href="/admin/services/new" className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-xl hover:bg-primary-700 transition-colors shadow-sm">
                         <Plus size={20} />
                         إضافة خدمة
-                    </button>
+                    </Link>
                 </div>
             </div>
 
