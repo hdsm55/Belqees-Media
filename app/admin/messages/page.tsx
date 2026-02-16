@@ -17,7 +17,7 @@ interface Message {
     email: string;
     subject: string;
     message: string;
-    created_at: string;
+    createdAt: string;
 }
 
 export default function MessagesPage() {
@@ -31,9 +31,12 @@ export default function MessagesPage() {
             const { data, error } = await supabase
                 .from('contact_messages')
                 .select('*')
-                .order('created_at', { ascending: false });
+                .order('createdAt', { ascending: false });
 
-            if (error) throw error;
+            if (error) {
+                console.error('Supabase Error:', error);
+                throw error;
+            }
             setMessages(data || []);
         } catch (err) {
             console.error('Error fetching messages:', err);
@@ -107,7 +110,7 @@ export default function MessagesPage() {
                                             <Mail size={14} /> {msg.email}
                                         </span>
                                         <span className="flex items-center gap-1.5 text-gray-400">
-                                            <Clock size={14} /> {new Intl.DateTimeFormat('ar-SA', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(msg.created_at))}
+                                            <Clock size={14} /> {new Intl.DateTimeFormat('ar-SA', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(msg.createdAt))}
                                         </span>
                                     </div>
 

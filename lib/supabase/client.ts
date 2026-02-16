@@ -11,12 +11,8 @@ if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_A
 }
 
 // عميل جاهز للاستخدام في أي مكان داخل المتصفح (singleton)
-export const supabase = createSupabaseClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-  },
-});
+// نستخدم createBrowserClient لمزامنة الجلسة مع الكوكيز (اللازمة للـ Middleware)
+export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
 
 /**
  * مُنشئ عميل متصفح جديد (يُستخدم عند الحاجة لإنشاء instance منفصل)

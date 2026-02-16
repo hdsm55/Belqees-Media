@@ -17,7 +17,9 @@ export default function Header() {
 
   // إخفاء الهيدر في لوحة التحكم
   const isDashboard =
-    pathname?.startsWith('/dashboard') || pathname?.startsWith('/(dashboard)');
+    pathname?.startsWith('/dashboard') ||
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/(dashboard)');
 
   useEffect(() => {
     const handleScroll = () => {

@@ -3,10 +3,22 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslation } from '@/hooks/useTranslation';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
   const { t } = useTranslation();
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // إخفاء الفوتر في لوحة التحكم
+  const isDashboard =
+    pathname?.startsWith('/dashboard') ||
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/(dashboard)');
+
+  if (isDashboard) {
+    return null;
+  }
 
   return (
     <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 text-dark dark:text-gray-100 py-12 transition-colors">

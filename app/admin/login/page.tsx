@@ -10,6 +10,7 @@ export default function AdminLoginPage() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
     const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -18,15 +19,18 @@ export default function AdminLoginPage() {
         setError(null);
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
+            const { error: authError } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             });
 
-            if (error) throw error;
+            if (authError) throw authError;
 
-            router.push('/admin');
-            router.refresh();
+            setSuccess(true);
+            // استخدام window.location.href لضمان إعادة تحميل كاملة ومزامنة الكوكيز مع الـ Middleware
+            setTimeout(() => {
+                window.location.href = '/admin';
+            }, 500);
         } catch (err: any) {
             setError(err.message || 'فشل تسجيل الدخول. يرجى التحقق من البيانات.');
         } finally {
@@ -47,12 +51,19 @@ export default function AdminLoginPage() {
                 </div>
 
                 {/* Login Card */}
-                <div className="bg-white p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
+                <div className="bg-white p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100" suppressHydrationWarning>
                     <form onSubmit={handleLogin} className="space-y-6">
                         {error && (
                             <div className="p-4 rounded-xl bg-red-50 text-red-600 text-sm flex items-center gap-3 border border-red-100 animate-shake">
                                 <AlertCircle size={20} className="shrink-0" />
                                 <p>{error}</p>
+                            </div>
+                        )}
+
+                        {success && (
+                            <div className="p-4 rounded-xl bg-green-50 text-green-600 text-sm flex items-center gap-3 border border-green-100">
+                                <Loader2 size={20} className="animate-spin" />
+                                <p>تم تسجيل الدخول بنجاح! جاري التحويل...</p>
                             </div>
                         )}
 
