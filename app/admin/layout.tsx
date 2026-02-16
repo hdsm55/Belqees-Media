@@ -21,9 +21,7 @@ import { useRouter } from 'next/navigation';
 const sidebarItems = [
     { icon: LayoutDashboard, label: 'الرئيسية', href: '/admin' },
     { icon: MessageSquare, label: 'الرسائل', href: '/admin/messages' },
-    { icon: Briefcase, label: 'معرض الأعمال', href: '/admin/portfolio' },
     { icon: Calendar, label: 'الفعاليات', href: '/admin/events' },
-    { icon: Settings2, label: 'الخدمات', href: '/admin/services' },
     { icon: Settings, label: 'الإعدادات', href: '/admin/settings' },
 ];
 
