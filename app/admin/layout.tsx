@@ -5,10 +5,8 @@ import { usePathname } from 'next/navigation';
 import {
     LayoutDashboard,
     MessageSquare,
-    Briefcase,
     Calendar,
     Settings,
-    Settings2,
     LogOut,
     Menu,
     X

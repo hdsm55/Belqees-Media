@@ -13,24 +13,53 @@ import {
   StudioDesignIcon,
 } from '@/components/icons/CustomIcons';
 
-interface Service {
-  id: string;
-  slug: string;
-  title: string;
-  description: string | null;
-  icon: string | null;
-  image: string | null;
-  published: boolean;
-}
-
-interface ServicesPageClientProps {
-  services: Service[];
-}
-
-export default function ServicesPageClient({
-  services,
-}: ServicesPageClientProps) {
+export default function ServicesPageClient() {
   const { t } = useTranslation();
+
+  const services = [
+    {
+      id: 'media-production',
+      slug: 'media-production',
+      title: t('services.mediaProduction') || 'الإنتاج الإعلامي',
+      description: t('services.advertising.description'),
+      image: '/images-optimized/service-production.jpg',
+    },
+    {
+      id: 'live-events',
+      slug: 'live-events',
+      title: t('services.liveEvents.title'),
+      description: t('services.liveEvents.description'),
+      image: '/images-optimized/service-events.jpg',
+    },
+    {
+      id: 'live-streaming',
+      slug: 'live-streaming',
+      title: t('services.liveStreaming.title') || 'البث المباشر',
+      description: t('services.liveStreaming.description') || 'بث مباشر احترافي للفعاليات والمؤتمرات بأحدث التقنيات.',
+      image: '/images-optimized/service-streaming.jpg',
+    },
+    {
+      id: 'training',
+      slug: 'training',
+      title: t('services.training.title'),
+      description: t('services.training.description'),
+      image: '/images-optimized/service-training.jpg',
+    },
+    {
+      id: 'technical-consultancy',
+      slug: 'technical-consultancy',
+      title: t('services.technicalConsultancy.title'),
+      description: t('services.technicalConsultancy.description'),
+      image: '/images-optimized/service-consultancy.jpg',
+    },
+    {
+      id: 'studio-design',
+      slug: 'studio-design',
+      title: t('services.studioDesign.title'),
+      description: t('services.studioDesign.description'),
+      image: '/images-optimized/service-studio.jpg',
+    }
+  ];
 
   // Helper function to get icon component for a service
   const getServiceIcon = (slug: string) => {
@@ -59,19 +88,6 @@ export default function ServicesPageClient({
     }
   };
 
-  if (services.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
-          {t('services.noServices')}
-        </p>
-        <p className="text-sm text-gray-400 dark:text-gray-500">
-          {t('common.tryAgainLater')}
-        </p>
-      </div>
-    );
-  }
-
   return (
     <>
       <ScrollReveal animation="fadeIn" stagger={0.1}>
@@ -84,12 +100,8 @@ export default function ServicesPageClient({
               <ServiceCard
                 title={service.title}
                 description={service.description || ''}
-                icon={
-                  service.slug
-                    ? getServiceIcon(service.slug)
-                    : service.icon || undefined
-                }
-                image={service.image || undefined}
+                icon={getServiceIcon(service.slug)}
+                image={service.image}
                 slug={service.slug}
               />
             </div>

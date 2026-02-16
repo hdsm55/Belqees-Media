@@ -38,17 +38,6 @@ export const metadata: Metadata = {
 };
 
 export default async function PortfolioPage() {
-  // Fetch portfolio data directly from database (Server Component)
-  const itemsPerPage = 12;
-  const { portfolio, total } = await portfolioService.getAllPortfolio({
-    published: true,
-    limit: itemsPerPage,
-    offset: 0,
-  });
-
-  // Fetch categories
-  const categories = await portfolioService.getPublishedCategories();
-
   return (
     <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen">
       {/* Hero Section */}
@@ -61,12 +50,7 @@ export default async function PortfolioPage() {
       />
 
       {/* Portfolio Content */}
-      <PortfolioPageClient
-        initialPortfolio={portfolio}
-        initialCategories={categories}
-        initialTotal={total}
-        itemsPerPage={itemsPerPage}
-      />
+      <PortfolioPageClient />
     </div>
   );
 }

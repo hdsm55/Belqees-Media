@@ -1,135 +1,85 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import ScrollReveal from '@/components/animations/ScrollReveal';
-import LoadingSkeleton, { CardSkeleton } from '@/components/ui/LoadingSkeleton';
 import { useTranslation } from '@/hooks/useTranslation';
 
-import type { PortfolioItem, PortfolioMedia } from '@/lib/api/portfolio';
+export default function PortfolioPageClient() {
+  const { t, locale } = useTranslation();
 
-// Type for portfolio item from service (may have Date instead of string)
-type PortfolioItemFromService = Omit<PortfolioItem, 'createdAt'> & {
-  createdAt: string | Date;
-};
+  const portfolioItems = [
+    {
+      id: '1',
+      slug: 'tech-summit-2024',
+      title: locale === 'ar' ? 'القمة الرقمية العالمية' : (locale === 'tr' ? 'Dijital Dönüşüm Zirvesi' : 'Digital Transformation Summit'),
+      description: locale === 'ar' ? 'تغطية إعلامية شاملة للقمة الرقمية العالمية.' : (locale === 'tr' ? 'Küresel Dijital Zirve için kapsamlı medya kapsamı.' : 'Comprehensive media coverage for the Global Digital Summit.'),
+      category: locale === 'ar' ? 'إنتاج' : (locale === 'tr' ? 'Prodüksiyon' : 'Production'),
+      images: ['/images-optimized/approach.jpg'],
+    },
+    {
+      id: '2',
+      slug: 'live-stream-concert',
+      title: locale === 'ar' ? 'حفل موسيقي عالمي' : (locale === 'tr' ? 'Canlı Harmoni Konseri' : 'Live Harmony Concert'),
+      description: locale === 'ar' ? 'بث مباشر احترافي لحفل موسيقي عالمي.' : (locale === 'tr' ? 'Uluslararası bir موسيقي حفل موسيقي عالمي.' : 'Professional live streaming of an international music concert.'),
+      category: locale === 'ar' ? 'بث مباشر' : (locale === 'tr' ? 'Canlı Yayın' : 'Streaming'),
+      images: ['/images-optimized/events-hero.jpg'],
+    },
+    {
+      id: '3',
+      slug: 'corporate-identity-launch',
+      title: locale === 'ar' ? 'رؤية العلامة التجارية 2030' : (locale === 'tr' ? 'Marka Vizyonu 2030' : 'Brand Vision 2030'),
+      description: locale === 'ar' ? 'إطلاق الهوية المؤسسية الجديدة لشركة تقنية كبرى.' : (locale === 'tr' ? 'Büyük bir teknoloji şirketi için yeni kurumsal kimliğin lansmanı.' : 'Launching the new corporate identity for a major tech company.'),
+      category: locale === 'ar' ? 'هوية' : (locale === 'tr' ? 'Markalaşma' : 'Branding'),
+      images: ['/images-optimized/portfolio-hero.jpg'],
+    }
+  ];
 
-interface PortfolioPageClientProps {
-  initialPortfolio: PortfolioItemFromService[];
-  initialCategories: string[];
-  initialTotal: number;
-  itemsPerPage?: number;
-}
+  const categories = locale === 'ar'
+    ? ['إنتاج', 'بث مباشر', 'هوية']
+    : (locale === 'tr' ? ['Prodüksiyon', 'Canlı Yayın', 'Markalaşma'] : ['Production', 'Streaming', 'Branding']);
 
-export default function PortfolioPageClient({
-  initialPortfolio,
-  initialCategories,
-  initialTotal,
-  itemsPerPage = 12,
-}: PortfolioPageClientProps) {
-  const { t } = useTranslation();
-  const [portfolio, setPortfolio] =
-    useState<PortfolioItemFromService[]>(initialPortfolio);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [categories] = useState<string[]>(initialCategories);
-  const [total, setTotal] = useState(initialTotal);
-  const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    setCurrentPage(1); // Reset to first page when category changes
-  }, [selectedCategory]);
+  const filteredPortfolio = selectedCategory === 'all'
+    ? portfolioItems
+    : portfolioItems.filter(item => item.category === selectedCategory);
 
-  useEffect(() => {
-    // Only fetch if category or page changed (not on initial load)
-    if (selectedCategory !== 'all' || currentPage !== 1) {
-      fetchPortfolio();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategory, currentPage]);
-
-  const fetchPortfolio = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const offset = (currentPage - 1) * itemsPerPage;
-      const url =
-        selectedCategory === 'all'
-          ? `/api/portfolio?published=true&limit=${itemsPerPage}&offset=${offset}`
-          : `/api/portfolio?published=true&category=${selectedCategory}&limit=${itemsPerPage}&offset=${offset}`;
-
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(t('portfolio.fetchError'));
-      }
-
-      const result = await response.json();
-      setPortfolio(result.data || []);
-      setTotal(result.total || 0);
-    } catch (err) {
-      setError(t('portfolio.errorOccurred'));
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Error fetching portfolio:', err);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getImageUrl = (media: PortfolioMedia | null): string | null => {
-    if (!media) return null;
-    if (typeof media === 'string') return media;
-    if (Array.isArray(media) && media.length > 0) {
-      const firstItem = media[0];
-      return typeof firstItem === 'string'
-        ? firstItem
-        : (firstItem as { url: string }).url || null;
-    }
-    if (typeof media === 'object' && 'url' in media) {
-      return media.url;
-    }
-    return null;
+  const getImageUrl = (images: string[]): string | null => {
+    return images && images.length > 0 ? images[0] : null;
   };
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Filters */}
-      {categories.length > 0 && (
-        <section className="py-6 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-16 md:top-20 z-10">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-wrap gap-3 justify-center">
+      <section className="py-6 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-16 md:top-20 z-10 transition-colors">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap gap-3 justify-center">
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === 'all'
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
+            >
+              {t('portfolio.all')}
+            </button>
+            {categories.map(category => (
               <button
-                onClick={() => setSelectedCategory('all')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedCategory === 'all'
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === category
                     ? 'bg-primary-500 text-white'
                     : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                }`}
-                aria-label={t('portfolio.viewAllProjects')}
-              >
-                {t('portfolio.all')}
-              </button>
-              {categories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    selectedCategory === category
-                      ? 'bg-primary-500 text-white'
-                      : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
-                  aria-label={`${t('portfolio.viewProjectDetails')} ${category}`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
+              >
+                {category}
+              </button>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Portfolio Grid */}
       <section
@@ -137,25 +87,7 @@ export default function PortfolioPageClient({
         aria-label={t('portfolio.galleryAriaLabel')}
       >
         <div className="container mx-auto px-4">
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <CardSkeleton key={i} />
-              ))}
-            </div>
-          ) : error ? (
-            <div className="text-center py-12">
-              <p className="text-red-500 dark:text-red-400 text-lg mb-4">
-                {error}
-              </p>
-              <button
-                onClick={fetchPortfolio}
-                className="px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
-              >
-                {t('portfolio.retry')}
-              </button>
-            </div>
-          ) : portfolio.length === 0 ? (
+          {filteredPortfolio.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-dark-light dark:text-gray-400 text-lg">
                 {t('portfolio.noProjects')}
@@ -167,7 +99,7 @@ export default function PortfolioPageClient({
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 role="list"
               >
-                {portfolio.map(item => {
+                {filteredPortfolio.map(item => {
                   const imageUrl = getImageUrl(item.images);
 
                   return (
@@ -235,84 +167,6 @@ export default function PortfolioPageClient({
               </div>
             </ScrollReveal>
           )}
-
-          {/* Pagination */}
-          {!loading &&
-            !error &&
-            portfolio.length > 0 &&
-            total > itemsPerPage && (
-              <div className="flex justify-center items-center gap-2 mt-12">
-                <button
-                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                  disabled={currentPage === 1}
-                  className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  aria-label={t('portfolio.previous')}
-                >
-                  {t('portfolio.previous')}
-                </button>
-
-                <div className="flex gap-1">
-                  {Array.from(
-                    { length: Math.ceil(total / itemsPerPage) },
-                    (_, i) => i + 1
-                  )
-                    .filter(page => {
-                      // Show first page, last page, current page, and pages around current
-                      return (
-                        page === 1 ||
-                        page === Math.ceil(total / itemsPerPage) ||
-                        (page >= currentPage - 1 && page <= currentPage + 1)
-                      );
-                    })
-                    .map((page, index, array) => {
-                      // Add ellipsis
-                      const showEllipsisBefore =
-                        index > 0 && array[index - 1] !== page - 1;
-                      const showEllipsisAfter =
-                        index < array.length - 1 &&
-                        array[index + 1] !== page + 1;
-
-                      return (
-                        <div key={page} className="flex items-center gap-1">
-                          {showEllipsisBefore && (
-                            <span className="px-2">...</span>
-                          )}
-                          <button
-                            onClick={() => setCurrentPage(page)}
-                            className={`px-4 py-2 rounded-lg transition-colors ${
-                              currentPage === page
-                                ? 'bg-primary-500 text-white'
-                                : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                            }`}
-                            aria-label={`${t('portfolio.page')} ${page}`}
-                            aria-current={
-                              currentPage === page ? 'page' : undefined
-                            }
-                          >
-                            {page}
-                          </button>
-                          {showEllipsisAfter && (
-                            <span className="px-2">...</span>
-                          )}
-                        </div>
-                      );
-                    })}
-                </div>
-
-                <button
-                  onClick={() =>
-                    setCurrentPage(prev =>
-                      Math.min(Math.ceil(total / itemsPerPage), prev + 1)
-                    )
-                  }
-                  disabled={currentPage >= Math.ceil(total / itemsPerPage)}
-                  className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  aria-label={t('portfolio.next')}
-                >
-                  {t('portfolio.next')}
-                </button>
-              </div>
-            )}
         </div>
       </section>
     </div>

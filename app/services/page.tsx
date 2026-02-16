@@ -32,15 +32,13 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
-  const servicesData = await serviceService.getPublishedServices();
-
   return (
     <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen">
       {/* Hero Section */}
       <PageHeroSection
         title="خدماتنا"
         titleKey="services.pageTitle"
-        subtitle="نقدم حلولاً إعلامية متكاملة بجودة عالية واحترافية"
+        subtitle="في بلقيس ميديا، نقدم مجموعة شاملة من الخدمات الإعلامية والاستشارات الفنية والتدريب."
         subtitleKey="services.pageDescription"
         backgroundImage="/images-optimized/services-hero.jpg"
       />
@@ -54,7 +52,7 @@ export default async function ServicesPage() {
           <h2 id="services-heading" className="sr-only">
             خدماتنا
           </h2>
-          <ServicesPageClient services={servicesData as any} />
+          <ServicesPageClient />
         </div>
       </section>
     </div>
