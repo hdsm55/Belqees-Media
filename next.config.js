@@ -31,8 +31,13 @@ const nextConfig = {
 
   // Experimental Features for Better Performance
   experimental: {
-    // optimizeCss: true, // Disabled - requires 'critters' package
-    // optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: [
+      'lucide-react',
+      'framer-motion',
+      'gsap',
+      'date-fns',
+      'swiper',
+    ],
   },
 
   // Headers for Security and Performance

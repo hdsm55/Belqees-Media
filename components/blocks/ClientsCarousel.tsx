@@ -41,49 +41,6 @@ export default function ClientsCarousel({
   // Swiper needs enough slides for loop mode
   const duplicatedClients = [...validClients, ...validClients, ...validClients];
 
-  // Continuous animation using requestAnimationFrame
-  useEffect(() => {
-    if (!swiperRef.current || validClients.length === 0) return;
-
-    let animationFrameId: number;
-    const speed = 0.3; // pixels per frame (adjust for speed)
-
-    const animate = () => {
-      if (!swiperRef.current) {
-        animationFrameId = requestAnimationFrame(animate);
-        return;
-      }
-
-      const currentTranslate = swiperRef.current.getTranslate();
-      const newTranslate = currentTranslate - speed;
-
-      // Get the width of one set of slides
-      const slideWidth =
-        swiperRef.current.width / (swiperRef.current.slides.length / 3);
-      const resetPoint = -slideWidth * validClients.length;
-
-      // Reset position when we've scrolled one full set
-      if (newTranslate <= resetPoint) {
-        swiperRef.current.setTranslate(0);
-      } else {
-        swiperRef.current.setTranslate(newTranslate);
-      }
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    // Start animation after a short delay to ensure Swiper is ready
-    const timeoutId = setTimeout(() => {
-      animationFrameId = requestAnimationFrame(animate);
-    }, 500);
-
-    return () => {
-      clearTimeout(timeoutId);
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [validClients.length]);
 
   if (validClients.length === 0) {
     return null;
@@ -158,8 +115,13 @@ export default function ClientsCarousel({
               spaceBetween={24}
               slidesPerView="auto"
               loop={true}
-              allowTouchMove={false}
-              watchSlidesProgress={true}
+              speed={4000} // Speed of transition
+              autoplay={{
+                delay: 0,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              allowTouchMove={true}
               className="clients-swiper"
               breakpoints={{
                 1: {
@@ -184,7 +146,7 @@ export default function ClientsCarousel({
                 },
               }}
             >
-              {duplicatedClients.map((client, index) => (
+              {validClients.map((client, index) => (
                 <SwiperSlide key={`${client.id}-${index}`} className="!w-auto">
                   {renderLogoItem(client)}
                 </SwiperSlide>

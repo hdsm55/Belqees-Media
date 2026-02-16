@@ -71,8 +71,8 @@ export default function HeroBlock({
     if (videoRef.current && backgroundVideo) {
       const video = videoRef.current;
 
-      // Hero is above the fold, so load immediately for faster start
-      video.preload = 'auto';
+      // Hero is above the fold, so load metadata immediately
+      video.preload = 'metadata';
       video.load();
 
       const playPromise = video.play();
@@ -195,7 +195,7 @@ export default function HeroBlock({
             loop={videoLoop}
             muted={videoMuted}
             playsInline
-            preload="auto"
+            preload="metadata"
             className="absolute inset-0 w-full h-full object-cover scale-105"
             style={{ filter: 'brightness(0.75) contrast(1.1)' }}
             onCanPlay={e => {

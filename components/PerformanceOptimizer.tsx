@@ -26,15 +26,14 @@ export default function PerformanceOptimizer() {
 
     // Preload critical resources
     const preloadCriticalResources = () => {
-      // Preload hero video if exists
-      const heroVideo = document.querySelector(
-        'video[src*="hero-video"], video source[src*="hero-video"]'
-      );
-      if (heroVideo) {
-        appendLink('preload', '/videos/hero-video.mp4', 'video', 'video/mp4');
+      // Preload hero video optimized version (WebM is usually smaller)
+      // Only preload if on home page where hero video is critical
+      if (window.location.pathname === '/' || window.location.pathname === '/ar' || window.location.pathname === '/en' || window.location.pathname === '/tr') {
+        // Preload the WebM version as it's the first source in HeroBlock
+        appendLink('preload', '/videos-optimized/hero-video-720p.webm', 'video', 'video/webm');
       }
 
-      // Preload logo
+      // Preload logo - used everywhere
       appendLink('preload', '/images/logo.avif', 'image', 'image/avif');
     };
 
@@ -51,9 +50,8 @@ export default function PerformanceOptimizer() {
     const addDNSPrefetch = () => {
       const domains = [
         'https://www.youtube.com',
-        'https://www.facebook.com',
-        'https://www.instagram.com',
-        'https://www.linkedin.com',
+        'https://fonts.googleapis.com',
+        'https://fonts.gstatic.com',
       ];
 
       domains.forEach(domain => {
@@ -62,13 +60,20 @@ export default function PerformanceOptimizer() {
     };
 
     // Run optimizations after a short delay to not block initial render
-    const timeoutId = setTimeout(() => {
+    // Use requestIdleCallback if available for even less impact
+    const runOptimizations = () => {
       preloadCriticalResources();
       prefetchNextPages();
       addDNSPrefetch();
-    }, 1000);
+    };
 
-    return () => clearTimeout(timeoutId);
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(() => {
+        setTimeout(runOptimizations, 1500);
+      });
+    } else {
+      setTimeout(runOptimizations, 2000);
+    }
   }, []);
 
   return null;

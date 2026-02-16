@@ -46,16 +46,23 @@ export default function ScrollReveal({
     const childElements = Array.from(element.children);
 
     // Simplified animation for all devices - سريع وسلس
-    // Check if mobile
-    const isMobile = window.innerWidth < 768;
+    // Use matchMedia for better performance and accuracy
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
     // Simple fade for mobile - بدون ScrollTrigger لتوفير الأداء
     if (isMobile) {
-      gsap.fromTo(
-        element,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: 'power1.out' }
-      );
+      gsap.to(element, {
+        opacity: 1,
+        y: 0,
+        x: 0,
+        scale: 1,
+        duration: 0.4,
+        ease: 'power2.out',
+        // Immediately set visible to avoid jumping if already in view
+        onStart: () => {
+          element.style.visibility = 'visible';
+        }
+      });
       return;
     }
 
@@ -117,8 +124,8 @@ export default function ScrollReveal({
         // Element not in viewport, use ScrollTrigger
         const trigger = ScrollTrigger.create({
           trigger: element,
-          start: 'top 90%',
-          end: 'bottom 10%',
+          start: 'top 92%', // Slightly lower start
+          end: 'bottom 8%',
           toggleActions: once ? 'play none none none' : 'play none none reverse',
           animation: gsap.fromTo(
             element,
@@ -129,13 +136,22 @@ export default function ScrollReveal({
               x: 0,
               y: 0,
               scale: 1,
-              duration: duration * 0.5, // تقليل المدة أكثر
+              duration: duration * 0.6,
               delay,
-              ease: 'power1.out', // أسرع easing
+              ease: 'power1.out',
+              clearProps: 'all', // Clean up after animation
+              force3D: true, // Use GPU
             }
           ),
           refreshPriority: -1,
           fastScrollEnd: true,
+          // Performance optimization
+          onEnter: () => {
+            if (element) element.style.willChange = 'transform, opacity';
+          },
+          onLeave: () => {
+            if (element) element.style.willChange = 'auto';
+          },
         });
         scrollTriggerRef.current = trigger;
       }
