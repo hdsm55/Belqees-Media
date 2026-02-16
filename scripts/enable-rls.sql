@@ -73,41 +73,44 @@ CREATE POLICY "Authenticated users can manage events"
 -- تفعيل RLS على جدول blog_posts
 ALTER TABLE public.blog_posts ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Anyone can view published blog posts"
-  ON public.blog_posts
-  FOR SELECT
-  USING (published = true);
-
-CREATE POLICY "Authenticated users can manage blog posts"
+CREATE POLICY "Admins can manage blog posts"
   ON public.blog_posts
   FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.users
+      WHERE public.users."supabaseUserId" = auth.uid()::text
+      AND public.users.role = 'ADMIN'
+    )
+  );
 
 -- تفعيل RLS على جدول categories
 ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Anyone can view categories"
-  ON public.categories
-  FOR SELECT
-  USING (true);
-
-CREATE POLICY "Authenticated users can manage categories"
+CREATE POLICY "Admins can manage categories"
   ON public.categories
   FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.users
+      WHERE public.users."supabaseUserId" = auth.uid()::text
+      AND public.users.role = 'ADMIN'
+    )
+  );
 
 -- تفعيل RLS على جدول tags
 ALTER TABLE public.tags ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Anyone can view tags"
-  ON public.tags
-  FOR SELECT
-  USING (true);
-
-CREATE POLICY "Authenticated users can manage tags"
+CREATE POLICY "Admins can manage tags"
   ON public.tags
   FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.users
+      WHERE public.users."supabaseUserId" = auth.uid()::text
+      AND public.users.role = 'ADMIN'
+    )
+  );
 
 -- تفعيل RLS على جدول media
 ALTER TABLE public.media ENABLE ROW LEVEL SECURITY;
