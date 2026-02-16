@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/server';
+import { randomUUID } from 'crypto';
 
 /**
  * Contact route - Stores messages in Supabase for admin viewing.
@@ -24,6 +25,7 @@ export async function POST(request: NextRequest) {
       .from('contact_messages')
       .insert([
         {
+          id: randomUUID(),
           name,
           email,
           subject: subject || 'No Subject',

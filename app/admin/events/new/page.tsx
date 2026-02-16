@@ -55,6 +55,7 @@ export default function NewEventPage() {
             const { error } = await supabase
                 .from('events')
                 .insert([{
+                    id: crypto.randomUUID(),
                     ...formData,
                     date: new Date(formData.date).toISOString(),
                 }]);

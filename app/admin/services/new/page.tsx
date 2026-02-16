@@ -52,7 +52,10 @@ export default function NewServicePage() {
         try {
             const { error } = await supabase
                 .from('services')
-                .insert([formData]);
+                .insert([{
+                    id: crypto.randomUUID(),
+                    ...formData
+                }]);
 
             if (error) throw error;
 

@@ -52,7 +52,10 @@ export default function NewPortfolioPage() {
         try {
             const { error } = await supabase
                 .from('portfolio')
-                .insert([formData]);
+                .insert([{
+                    id: crypto.randomUUID(),
+                    ...formData
+                }]);
 
             if (error) throw error;
 
