@@ -107,6 +107,26 @@ export class ServiceService {
     }
 
     /**
+     * الحصول على خدمة واحدة بالـ ID
+     */
+    async getServiceById(id: string): Promise<any> {
+        const supabase = await createClient();
+
+        const { data, error } = await supabase
+            .from('services')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error || !data) {
+            console.error('Error fetching service:', error);
+            throw new NotFoundError('الخدمة');
+        }
+
+        return data;
+    }
+
+    /**
      * إدارة المحتوى
      */
     async createService(data: CreateServiceData): Promise<any> {
