@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -63,25 +64,27 @@ export default function EventsPageClient({ events }: EventsPageClientProps) {
             className="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-lg transition-shadow border border-gray-100 dark:border-gray-700 overflow-hidden"
             role="listitem"
           >
-            {event.image ? (
-              <div className="relative aspect-video bg-gray-200 dark:bg-gray-700">
-                <Image
-                  src={event.image}
-                  alt={event.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  loading="lazy"
-                  quality={75}
-                />
-              </div>
-            ) : (
-              <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <span className="text-gray-400 dark:text-gray-500">
-                  {t('events.noImage')}
-                </span>
-              </div>
-            )}
+            <Link href={`/events/${event.slug}`} className="block">
+              {event.image ? (
+                <div className="relative aspect-video bg-gray-200 dark:bg-gray-700">
+                  <Image
+                    src={event.image}
+                    alt={event.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    loading="lazy"
+                    quality={75}
+                  />
+                </div>
+              ) : (
+                <div className="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                  <span className="text-gray-400 dark:text-gray-500">
+                    {t('events.noImage')}
+                  </span>
+                </div>
+              )}
+            </Link>
             <div className="p-6">
               <div className="text-sm text-primary-500 dark:text-primary-400 mb-2 font-medium">
                 {formatDate(event.date)}
@@ -111,14 +114,23 @@ export default function EventsPageClient({ events }: EventsPageClientProps) {
                   {event.location}
                 </div>
               )}
-              <h3 className="text-2xl font-bold text-dark dark:text-gray-100 mb-3">
-                {event.title}
-              </h3>
+              <Link href={`/events/${event.slug}`} className="block group">
+                <h3 className="text-2xl font-bold text-dark dark:text-gray-100 mb-3 group-hover:text-primary-500 transition-colors">
+                  {event.title}
+                </h3>
+              </Link>
               {event.description && (
-                <p className="text-dark-light dark:text-gray-300 leading-relaxed">
+                <p className="text-dark-light dark:text-gray-300 leading-relaxed line-clamp-2 mb-4">
                   {event.description}
                 </p>
               )}
+              <Link
+                href={`/events/${event.slug}`}
+                className="inline-flex items-center gap-1 text-sm font-bold text-primary-500 dark:text-primary-400 hover:text-primary-600 transition-colors"
+              >
+                <span>اقرأ المزيد</span>
+                <span className="text-xs">←</span>
+              </Link>
             </div>
           </article>
         ))}
