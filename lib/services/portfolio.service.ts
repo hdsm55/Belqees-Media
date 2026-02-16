@@ -86,6 +86,26 @@ export class PortfolioService {
     }
 
     /**
+     * الحصول على عمل واحد بالـ ID
+     */
+    async getPortfolioById(id: string): Promise<any> {
+        const supabase = await createClient();
+
+        const { data, error } = await supabase
+            .from('portfolio')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error || !data) {
+            console.error('Error fetching portfolio item:', error);
+            throw new NotFoundError('المشروع');
+        }
+
+        return data;
+    }
+
+    /**
      * الحصول على جميع الفئات (Categories) المستخدمة حالياً
      */
     async getPublishedCategories(): Promise<string[]> {
