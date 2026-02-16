@@ -53,6 +53,10 @@
             "title": "Canlı Etkinlik Prodüksiyonu",
             "description": "Çok kameralı sistemler, ses, ışık ve canlı yönetmenlik ile konferanslar, forumlar ve halka açık etkinlikler için tam teknik uygulama"
         },
+        "liveStreaming": {
+            "title": "Canlı Yayın",
+            "description": "Etkinlikler and konferanslar için en son teknolojilerle profesyonel canlı yayın."
+        },
         "studioDesign": {
             "title": "Stüdyo Tasarımı ve Kurulumu",
             "description": "Planlama ve inşaattan teknik entegrasyona ve dekorasyona kadar"

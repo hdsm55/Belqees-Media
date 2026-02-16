@@ -16,7 +16,7 @@ export default function PortfolioPageClient() {
       title: locale === 'ar' ? 'القمة الرقمية العالمية' : (locale === 'tr' ? 'Dijital Dönüşüm Zirvesi' : 'Digital Transformation Summit'),
       description: locale === 'ar' ? 'تغطية إعلامية شاملة للقمة الرقمية العالمية.' : (locale === 'tr' ? 'Küresel Dijital Zirve için kapsamlı medya kapsamı.' : 'Comprehensive media coverage for the Global Digital Summit.'),
       category: locale === 'ar' ? 'إنتاج' : (locale === 'tr' ? 'Prodüksiyon' : 'Production'),
-      images: ['/images-optimized/approach.jpg'],
+      images: ['/images/approach.jpg'],
     },
     {
       id: '2',
@@ -24,7 +24,7 @@ export default function PortfolioPageClient() {
       title: locale === 'ar' ? 'حفل موسيقي عالمي' : (locale === 'tr' ? 'Canlı Harmoni Konseri' : 'Live Harmony Concert'),
       description: locale === 'ar' ? 'بث مباشر احترافي لحفل موسيقي عالمي.' : (locale === 'tr' ? 'Uluslararası bir موسيقي حفل موسيقي عالمي.' : 'Professional live streaming of an international music concert.'),
       category: locale === 'ar' ? 'بث مباشر' : (locale === 'tr' ? 'Canlı Yayın' : 'Streaming'),
-      images: ['/images-optimized/events-hero.jpg'],
+      images: ['/images/events-hero.jpg'],
     },
     {
       id: '3',
@@ -32,7 +32,7 @@ export default function PortfolioPageClient() {
       title: locale === 'ar' ? 'رؤية العلامة التجارية 2030' : (locale === 'tr' ? 'Marka Vizyonu 2030' : 'Brand Vision 2030'),
       description: locale === 'ar' ? 'إطلاق الهوية المؤسسية الجديدة لشركة تقنية كبرى.' : (locale === 'tr' ? 'Büyük bir teknoloji şirketi için yeni kurumsal kimliğin lansmanı.' : 'Launching the new corporate identity for a major tech company.'),
       category: locale === 'ar' ? 'هوية' : (locale === 'tr' ? 'Markalaşma' : 'Branding'),
-      images: ['/images-optimized/portfolio-hero.jpg'],
+      images: ['/images/services-hero.jpg'],
     }
   ];
 
@@ -59,8 +59,8 @@ export default function PortfolioPageClient() {
             <button
               onClick={() => setSelectedCategory('all')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === 'all'
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-primary-500 text-white'
+                : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                 }`}
             >
               {t('portfolio.all')}
@@ -70,8 +70,8 @@ export default function PortfolioPageClient() {
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedCategory === category
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 text-dark dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
               >
                 {category}

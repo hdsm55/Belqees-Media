@@ -4,6 +4,7 @@ import Link from 'next/link';
 import ServiceCard from '@/components/blocks/ServiceCard';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import { useTranslation } from '@/hooks/useTranslation';
+import Button from '@/components/atoms/Button';
 import {
   MediaProductionIcon,
   LiveEventsIcon,
@@ -22,42 +23,42 @@ export default function ServicesPageClient() {
       slug: 'media-production',
       title: t('services.mediaProduction') || 'الإنتاج الإعلامي',
       description: t('services.advertising.description'),
-      image: '/images-optimized/service-production.jpg',
+      image: '/images/approach.jpg',
     },
     {
       id: 'live-events',
       slug: 'live-events',
       title: t('services.liveEvents.title'),
       description: t('services.liveEvents.description'),
-      image: '/images-optimized/service-events.jpg',
+      image: '/images/events-hero.jpg',
     },
     {
       id: 'live-streaming',
       slug: 'live-streaming',
-      title: t('services.liveStreaming.title') || 'البث المباشر',
-      description: t('services.liveStreaming.description') || 'بث مباشر احترافي للفعاليات والمؤتمرات بأحدث التقنيات.',
-      image: '/images-optimized/service-streaming.jpg',
+      title: t('services.liveStreaming.title'),
+      description: t('services.liveStreaming.description'),
+      image: '/images/services-hero.jpg',
     },
     {
       id: 'training',
       slug: 'training',
       title: t('services.training.title'),
       description: t('services.training.description'),
-      image: '/images-optimized/service-training.jpg',
+      image: '/images/yemen-researchers-conference.jpg',
     },
     {
       id: 'technical-consultancy',
       slug: 'technical-consultancy',
       title: t('services.technicalConsultancy.title'),
       description: t('services.technicalConsultancy.description'),
-      image: '/images-optimized/service-consultancy.jpg',
+      image: '/images/approach.jpg',
     },
     {
       id: 'studio-design',
       slug: 'studio-design',
       title: t('services.studioDesign.title'),
       description: t('services.studioDesign.description'),
-      image: '/images-optimized/service-studio.jpg',
+      image: '/images/services-hero.jpg',
     }
   ];
 
@@ -110,19 +111,26 @@ export default function ServicesPageClient() {
       </ScrollReveal>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors mt-16">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 transition-colors mt-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-dark dark:text-gray-100 mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-dark dark:text-gray-100 mb-4">
             {t('services.cta.title')}
           </h2>
-          <p className="text-lg text-dark-light dark:text-gray-300 mb-8">
+          <p className="text-lg text-dark-light dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             {t('services.cta.description')}
           </p>
-          <Link href="/contact">
-            <button className="px-8 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 dark:hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-              {t('services.cta.button')}
-            </button>
-          </Link>
+          <div className="flex justify-center">
+            <Link href="/contact">
+              <Button
+                variant="simple"
+                size="lg"
+                showRecordingDot={true}
+                showBrackets={true}
+              >
+                {t('services.cta.button')}
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </>

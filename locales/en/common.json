@@ -53,6 +53,10 @@
             "title": "Live Events Production",
             "description": "Full technical execution for conferences, forums, and public events with multi-camera systems, sound, lighting, and live directing"
         },
+        "liveStreaming": {
+            "title": "Live Streaming",
+            "description": "Professional live streaming for events and conferences with the latest technologies."
+        },
         "studioDesign": {
             "title": "Studio Design & Setup",
             "description": "From planning and construction to technical integration and decoration"
