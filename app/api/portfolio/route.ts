@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { portfolioService } from '@/lib/services/portfolio.service';
 import { withErrorHandler } from '@/lib/errors';
 import { withCache } from '@/lib/cache/middleware';
+import { createAdminClient } from '@/lib/supabase/server';
 
 export const GET = withCache(
     withErrorHandler(async (request: NextRequest) => {
@@ -37,8 +38,18 @@ export const GET = withCache(
 );
 
 export const POST = withErrorHandler(async (request: NextRequest) => {
+    const body = await request.json();
+    const supabase = createAdminClient();
+
+    const { data, error } = await supabase
+        .from('portfolio')
+        .insert([body])
+        .select();
+
+    if (error) throw error;
+
     return NextResponse.json({
-        success: false,
-        message: 'Management features are disabled in static mode',
-    }, { status: 403 });
+        success: true,
+        data: data[0],
+    });
 });

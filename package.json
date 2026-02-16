@@ -27,6 +27,7 @@
     "@upstash/ratelimit": "^1.0.0",
     "@upstash/redis": "^1.25.0",
     "clsx": "^2.0.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "framer-motion": "^10.16.16",
     "gsap": "^3.12.2",

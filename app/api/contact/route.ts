@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createAdminClient } from '@/lib/supabase/server';
 
 /**
- * Simplified contact route for a presentation-only website.
- * Removes database storage and complex middleware dependencies.
+ * Contact route - Stores messages in Supabase for admin viewing.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -17,14 +17,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // In a real production scenario, you would use a service like Resend or SendGrid here:
-    // await resend.emails.send({ ... });
+    // Initialize Supabase Admin client to bypass RLS for creation (or use public RLS if enabled)
+    const supabase = createAdminClient();
 
-    console.log('--- New Contact Form Submission ---');
-    console.log('From:', name, `(${email})`);
-    console.log('Subject:', subject || 'No Subject');
-    console.log('Message:', message);
-    console.log('-----------------------------------');
+    const { error } = await supabase
+      .from('contact_messages')
+      .insert([
+        {
+          name,
+          email,
+          subject: subject || 'No Subject',
+          message,
+          created_at: new Date().toISOString()
+        }
+      ]);
+
+    if (error) {
+      console.error('Supabase Contact Storage Error:', error);
+      // Fallback: log to console if DB fails but return success to user for better UX
+      // Or return error if we want them to retry
+      throw error;
+    }
 
     return NextResponse.json(
       {
@@ -42,7 +55,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Redirect GET requests as they are no longer needed for public display
 export async function GET() {
   return NextResponse.json(
     { success: false, message: 'Method Not Allowed' },
