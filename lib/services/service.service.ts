@@ -1,9 +1,9 @@
 /**
- * Service Service (Static Version)
- * طبقة الخدمات للتعامل مع الخدمات - نسخة ثابتة
+ * Service Service (Dynamic Supabase Version)
+ * طبقة الخدمات للتعامل مع الخدمات عبر Supabase
  */
 
-import { services } from '@/data/services';
+import { createClient } from '@/lib/supabase/server';
 import { NotFoundError } from '@/lib/errors';
 
 export interface ServiceFilters {
@@ -29,13 +29,26 @@ export class ServiceService {
      * الحصول على الخدمات المنشورة
      */
     async getPublishedServices(limit?: number): Promise<any[]> {
-        let items = services.map(s => ({ ...s, published: true }));
+        const supabase = await createClient();
+
+        let query = supabase
+            .from('services')
+            .select('*')
+            .eq('published', true)
+            .order('createdAt', { ascending: false });
 
         if (limit) {
-            items = items.slice(0, limit);
+            query = query.limit(limit);
         }
 
-        return items;
+        const { data, error } = await query;
+
+        if (error) {
+            console.error('Error fetching published services:', error);
+            return [];
+        }
+
+        return data || [];
     }
 
     /**
@@ -45,40 +58,91 @@ export class ServiceService {
         services: any[];
         total: number;
     }> {
-        let items = services.map(s => ({ ...s, published: true }));
+        const supabase = await createClient();
 
-        const total = items.length;
+        let query = supabase
+            .from('services')
+            .select('*', { count: 'exact' });
+
+        if (filters?.published !== undefined) {
+            query = query.eq('published', filters.published);
+        }
+
         const offset = filters?.offset || 0;
         const limit = filters?.limit || 10;
 
-        return {
-            services: items.slice(offset, offset + limit),
-            total
-        };
-    }
+        const { data, count, error } = await query
+            .order('createdAt', { ascending: false })
+            .range(offset, offset + limit - 1);
 
-    /**
-     * الحصول على خدمة واحدة بالـ ID
-     */
-    async getServiceById(id: string): Promise<any> {
-        const item = services.find(s => s.id === id);
-        if (!item) throw new NotFoundError('الخدمة');
-        return item;
+        if (error) {
+            console.error('Error fetching services:', error);
+            return { services: [], total: 0 };
+        }
+
+        return {
+            services: data || [],
+            total: count || 0
+        };
     }
 
     /**
      * الحصول على خدمة واحدة بالـ Slug
      */
     async getServiceBySlug(slug: string): Promise<any> {
-        const item = services.find(s => s.id === slug); // Using ID as slug for static data
-        if (!item) throw new NotFoundError('الخدمة');
-        return item;
+        const supabase = await createClient();
+
+        const { data, error } = await supabase
+            .from('services')
+            .select('*')
+            .eq('slug', slug)
+            .single();
+
+        if (error || !data) {
+            console.error('Error fetching service:', error);
+            throw new NotFoundError('الخدمة');
+        }
+
+        return data;
     }
 
-    // Placeholder methods for management
-    async createService(data: CreateServiceData): Promise<any> { return null; }
-    async updateService(id: string, data: UpdateServiceData): Promise<any> { return null; }
-    async deleteService(id: string): Promise<void> { }
+    /**
+     * إدارة المحتوى
+     */
+    async createService(data: CreateServiceData): Promise<any> {
+        const supabase = await createClient();
+        const { data: newItem, error } = await supabase
+            .from('services')
+            .insert([{ ...data, id: crypto.randomUUID(), updatedAt: new Date().toISOString() }])
+            .select()
+            .single();
+
+        if (error) throw error;
+        return newItem;
+    }
+
+    async updateService(id: string, data: UpdateServiceData): Promise<any> {
+        const supabase = await createClient();
+        const { data: updatedItem, error } = await supabase
+            .from('services')
+            .update({ ...data, updatedAt: new Date().toISOString() })
+            .eq('id', id)
+            .select()
+            .single();
+
+        if (error) throw error;
+        return updatedItem;
+    }
+
+    async deleteService(id: string): Promise<void> {
+        const supabase = await createClient();
+        const { error } = await supabase
+            .from('services')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+    }
 }
 
 // Export singleton instance

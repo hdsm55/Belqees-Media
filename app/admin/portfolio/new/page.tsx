@@ -10,10 +10,12 @@ import {
     Image as ImageIcon,
     Loader2,
     Video,
-    Tag
+    Tag,
+    Trash2
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 export default function NewPortfolioPage() {
     const router = useRouter();
@@ -50,14 +52,18 @@ export default function NewPortfolioPage() {
         setLoading(true);
 
         try {
-            const { error } = await supabase
+            const { error: insertError } = await supabase
                 .from('portfolio')
                 .insert([{
                     id: crypto.randomUUID(),
-                    ...formData
+                    ...formData,
+                    updatedAt: new Date().toISOString()
                 }]);
 
-            if (error) throw error;
+            if (insertError) {
+                console.error('Supabase Insert Error:', insertError);
+                throw insertError;
+            }
 
             router.push('/admin/portfolio');
             router.refresh();
@@ -134,17 +140,43 @@ export default function NewPortfolioPage() {
                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
                         <h3 className="font-bold text-gray-900 border-b border-gray-50 pb-4">الروابط والوسائط</h3>
                         <div className="space-y-4">
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                                    <ImageIcon size={16} />
-                                    روابط الصور (مفصولة بفاصلة)
-                                </label>
-                                <textarea
-                                    value={formData.images.join(', ')}
-                                    onChange={(e) => setFormData({ ...formData, images: e.target.value.split(',').map(s => s.trim()).filter(s => s !== '') })}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 outline-none transition-all font-mono text-xs"
-                                    placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg"
+                            <div className="space-y-4">
+                                <ImageUpload
+                                    value=""
+                                    onChange={(url) => {
+                                        if (url) setFormData(prev => ({ ...prev, images: [...prev.images, url] }));
+                                    }}
+                                    label="تحميل صورة للمشروع"
                                 />
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                                        <ImageIcon size={16} />
+                                        روابط الصور (مفصولة بفاصلة)
+                                    </label>
+                                    <textarea
+                                        value={formData.images.join(', ')}
+                                        onChange={(e) => setFormData({ ...formData, images: e.target.value.split(',').map(s => s.trim()).filter(s => s !== '') })}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 outline-none transition-all font-mono text-xs"
+                                        placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg"
+                                    />
+                                    {formData.images.length > 0 && (
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            {formData.images.map((img, i) => (
+                                                <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-100 group">
+                                                    <img src={img} className="w-full h-full object-cover" />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setFormData(prev => ({ ...prev, images: prev.images.filter((_, idx) => idx !== i) }))}
+                                                        className="absolute inset-0 bg-red-500/80 text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-1"
+                                                    >
+                                                        <Trash2 size={12} />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-gray-700 flex items-center gap-2">

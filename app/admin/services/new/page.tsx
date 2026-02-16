@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 export default function NewServicePage() {
     const router = useRouter();
@@ -49,14 +50,18 @@ export default function NewServicePage() {
         setLoading(true);
 
         try {
-            const { error } = await supabase
+            const { error: insertError } = await supabase
                 .from('services')
                 .insert([{
                     id: crypto.randomUUID(),
-                    ...formData
+                    ...formData,
+                    updatedAt: new Date().toISOString()
                 }]);
 
-            if (error) throw error;
+            if (insertError) {
+                console.error('Supabase Insert Error:', insertError);
+                throw insertError;
+            }
 
             router.push('/admin/services');
             router.refresh();
@@ -152,20 +157,12 @@ export default function NewServicePage() {
                             />
                         </div>
 
-                        {/* Image URL */}
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                                <ImageIcon size={16} />
-                                رابط الصورة المعبرة
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.image}
-                                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 outline-none transition-all"
-                                placeholder="https://example.com/service.jpg"
-                            />
-                        </div>
+                        {/* Image Upload */}
+                        <ImageUpload
+                            value={formData.image}
+                            onChange={(url) => setFormData({ ...formData, image: url })}
+                            label="أيقونة أو صورة الخدمة"
+                        />
 
                         {/* Published Toggle */}
                         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">

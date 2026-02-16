@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { events } from '@/data/events';
+import { createClient } from '@/lib/supabase/server';
 import PageHeroSection from '@/components/blocks/PageHeroSection';
 import EventsPageClient from './EventsPageClient';
 
@@ -25,8 +25,15 @@ export const metadata: Metadata = {
 };
 
 export default async function EventsPage() {
-  // Using static events data
-  const eventsData = events;
+  const supabase = await createClient();
+
+  const { data: eventsData } = await supabase
+    .from('events')
+    .select('*')
+    .eq('published', true)
+    .order('date', { ascending: false });
+
+  const finalEvents = eventsData || [];
 
   return (
     <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen">
@@ -48,7 +55,7 @@ export default async function EventsPage() {
           <h2 id="events-heading" className="sr-only">
             الفعاليات
           </h2>
-          <EventsPageClient events={eventsData as any} />
+          <EventsPageClient events={finalEvents as any} />
         </div>
       </section>
     </div>

@@ -1,9 +1,9 @@
 /**
- * Portfolio Service (Static Version)
- * طبقة الخدمات للتعامل مع الأعمال - نسخة ثابتة
+ * Portfolio Service (Dynamic Supabase Version)
+ * طبقة الخدمات للتعامل مع معرض الأعمال عبر Supabase
  */
 
-import { portfolioItems, portfolioCategories } from '@/data/portfolio';
+import { createClient } from '@/lib/supabase/server';
 import { NotFoundError } from '@/lib/errors';
 
 export interface PortfolioFilters {
@@ -27,78 +27,125 @@ export interface UpdatePortfolioData extends Partial<CreatePortfolioData> { }
 
 export class PortfolioService {
     /**
-     * الحصول على الأعمال المنشورة
-     */
-    async getPublishedPortfolio(limit?: number, category?: string): Promise<any[]> {
-        let items = portfolioItems.filter(item => item.published);
-
-        if (category) {
-            items = items.filter(item => item.category === category);
-        }
-
-        if (limit) {
-            items = items.slice(0, limit);
-        }
-
-        return items;
-    }
-
-    /**
      * الحصول على جميع الأعمال (مع pagination)
      */
     async getAllPortfolio(filters?: PortfolioFilters): Promise<{
         portfolio: any[];
         total: number;
     }> {
-        let items = [...portfolioItems];
+        const supabase = await createClient();
+
+        let query = supabase
+            .from('portfolio')
+            .select('*', { count: 'exact' });
 
         if (filters?.published !== undefined) {
-            items = items.filter(item => item.published === filters.published);
+            query = query.eq('published', filters.published);
         }
 
         if (filters?.category) {
-            items = items.filter(item => item.category === filters.category);
+            query = query.eq('category', filters.category);
         }
 
-        const total = items.length;
         const offset = filters?.offset || 0;
         const limit = filters?.limit || 12;
 
-        return {
-            portfolio: items.slice(offset, offset + limit),
-            total
-        };
-    }
+        const { data, count, error } = await query
+            .order('createdAt', { ascending: false })
+            .range(offset, offset + limit - 1);
 
-    /**
-     * الحصول على عمل واحد بالـ ID
-     */
-    async getPortfolioById(id: string): Promise<any> {
-        const item = portfolioItems.find(i => i.id === id);
-        if (!item) throw new NotFoundError('العمل');
-        return item;
+        if (error) {
+            console.error('Error fetching portfolio:', error);
+            return { portfolio: [], total: 0 };
+        }
+
+        return {
+            portfolio: data || [],
+            total: count || 0
+        };
     }
 
     /**
      * الحصول على عمل واحد بالـ Slug
      */
     async getPortfolioBySlug(slug: string): Promise<any> {
-        const item = portfolioItems.find(i => i.slug === slug);
-        if (!item) throw new NotFoundError('العمل');
-        return item;
+        const supabase = await createClient();
+
+        const { data, error } = await supabase
+            .from('portfolio')
+            .select('*')
+            .eq('slug', slug)
+            .single();
+
+        if (error || !data) {
+            console.error('Error fetching portfolio item:', error);
+            throw new NotFoundError('المشروع');
+        }
+
+        return data;
     }
 
     /**
-     * الحصول على جميع الفئات (Categories) للأعمال المنشورة
+     * الحصول على جميع الفئات (Categories) المستخدمة حالياً
      */
     async getPublishedCategories(): Promise<string[]> {
-        return portfolioCategories;
+        const supabase = await createClient();
+
+        const { data, error } = await supabase
+            .from('portfolio')
+            .select('category')
+            .eq('published', true);
+
+        if (error) {
+            console.error('Error fetching categories:', error);
+            return [];
+        }
+
+        // Return unique non-null categories
+        const categories = data
+            .map(item => item.category)
+            .filter((cat, index, self) => cat && self.indexOf(cat) === index) as string[];
+
+        return categories;
     }
 
-    // Placeholder methods for management (not used in static version)
-    async createPortfolio(data: CreatePortfolioData): Promise<any> { return null; }
-    async updatePortfolio(id: string, data: UpdatePortfolioData): Promise<any> { return null; }
-    async deletePortfolio(id: string): Promise<void> { }
+    /**
+     * إدارة المحتوى (للاستخدام في الـ API Routes إذا لزم الأمر)
+     */
+    async createPortfolio(data: CreatePortfolioData): Promise<any> {
+        const supabase = await createClient();
+        const { data: newItem, error } = await supabase
+            .from('portfolio')
+            .insert([{ ...data, id: crypto.randomUUID(), updatedAt: new Date().toISOString() }])
+            .select()
+            .single();
+
+        if (error) throw error;
+        return newItem;
+    }
+
+    async updatePortfolio(id: string, data: UpdatePortfolioData): Promise<any> {
+        const supabase = await createClient();
+        const { data: updatedItem, error } = await supabase
+            .from('portfolio')
+            .update({ ...data, updatedAt: new Date().toISOString() })
+            .eq('id', id)
+            .select()
+            .single();
+
+        if (error) throw error;
+        return updatedItem;
+    }
+
+    async deletePortfolio(id: string): Promise<void> {
+        const supabase = await createClient();
+        const { error } = await supabase
+            .from('portfolio')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+    }
 }
 
 // Export singleton instance

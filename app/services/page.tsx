@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { services as staticServices } from '@/data/services';
+import { serviceService } from '@/lib/services';
 import PageHeroSection from '@/components/blocks/PageHeroSection';
 import ServicesPageClient from './ServicesPageClient';
 
@@ -32,8 +32,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
-  // Using static data instead of database service
-  const servicesData = staticServices;
+  const servicesData = await serviceService.getPublishedServices();
 
   return (
     <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen">

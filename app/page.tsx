@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { StructuredData } from '@/components/StructuredData';
-import { events } from '@/data/events';
+import { eventService } from '@/lib/services';
 import HomePageContentClient from '@/components/pages/HomePageContentClient';
 
-
 export const metadata: Metadata = {
+    // ...
     title: 'Belqees Media - شركة إنتاج إعلامي متكاملة الخدمات',
     description: 'Belqees Media هي شركة إنتاج إعلامي متكاملة الخدمات تأسست عام 2015، مكرسة لتقديم حلول عالية الجودة للقنوات التلفزيونية والمنصات الرقمية والفعاليات المباشرة.',
     keywords: ['Belqees Media', 'إنتاج إعلامي', 'بث مباشر', 'فعاليات', 'استوديوهات', 'إعلام', 'إنتاج تلفزيوني', 'إنتاج فيديو', 'إنتاج محتوى'],
@@ -89,8 +89,8 @@ export default async function HomePage() {
         foundingDate: '2015',
     };
 
-    // Fetch events from static data
-    const eventsData = events.slice(0, 4);
+    // Fetch latest 4 published events
+    const eventsData = await eventService.getPublishedEvents(4);
 
     return (
         <>

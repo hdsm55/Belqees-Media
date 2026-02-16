@@ -1,9 +1,9 @@
 /**
- * Event Service (Static Version)
- * طبقة الخدمات للتعامل مع الفعاليات - نسخة ثابتة
+ * Event Service (Dynamic Supabase Version)
+ * طبقة الخدمات للتعامل مع الفعاليات عبر Supabase
  */
 
-import { events } from '@/data/events';
+import { createClient } from '@/lib/supabase/server';
 import { NotFoundError } from '@/lib/errors';
 
 export interface EventFilters {
@@ -31,13 +31,26 @@ export class EventService {
      * الحصول على الفعاليات المنشورة
      */
     async getPublishedEvents(limit?: number): Promise<any[]> {
-        let items = events.map(e => ({ ...e, published: true })); // Static data is all published
+        const supabase = await createClient();
+
+        let query = supabase
+            .from('events')
+            .select('*')
+            .eq('published', true)
+            .order('date', { ascending: false });
 
         if (limit) {
-            items = items.slice(0, limit);
+            query = query.limit(limit);
         }
 
-        return items;
+        const { data, error } = await query;
+
+        if (error) {
+            console.error('Error fetching events:', error);
+            return [];
+        }
+
+        return data || [];
     }
 
     /**
@@ -47,41 +60,91 @@ export class EventService {
         events: any[];
         total: number;
     }> {
-        let items = events.map(e => ({ ...e, published: true }));
+        const supabase = await createClient();
 
-        const total = items.length;
+        let query = supabase
+            .from('events')
+            .select('*', { count: 'exact' });
+
+        if (filters?.published !== undefined) {
+            query = query.eq('published', filters.published);
+        }
+
         const offset = filters?.offset || 0;
         const limit = filters?.limit || 10;
 
-        return {
-            events: items.slice(offset, offset + limit),
-            total
-        };
-    }
+        const { data, count, error } = await query
+            .order('date', { ascending: false })
+            .range(offset, offset + limit - 1);
 
-    /**
-     * الحصول على فعالية واحدة بالـ ID
-     */
-    async getEventById(id: string): Promise<any> {
-        const item = events.find(e => e.id === id);
-        if (!item) throw new NotFoundError('الفعالية');
-        return item;
+        if (error) {
+            console.error('Error fetching events:', error);
+            return { events: [], total: 0 };
+        }
+
+        return {
+            events: data || [],
+            total: count || 0
+        };
     }
 
     /**
      * الحصول على فعالية واحدة بالـ Slug
      */
     async getEventBySlug(slug: string): Promise<any> {
-        // Since static data doesn't have slugs, we'll try to find by ID or name
-        const item = events.find(e => e.id === slug);
-        if (!item) throw new NotFoundError('الفعالية');
-        return item;
+        const supabase = await createClient();
+
+        const { data, error } = await supabase
+            .from('events')
+            .select('*')
+            .eq('slug', slug)
+            .single();
+
+        if (error || !data) {
+            console.error('Error fetching event:', error);
+            throw new NotFoundError('الفعالية');
+        }
+
+        return data;
     }
 
-    // Placeholder methods for management
-    async createEvent(data: CreateEventData): Promise<any> { return null; }
-    async updateEvent(id: string, data: UpdateEventData): Promise<any> { return null; }
-    async deleteEvent(id: string): Promise<void> { }
+    /**
+     * إدارة المحتوى
+     */
+    async createEvent(data: CreateEventData): Promise<any> {
+        const supabase = await createClient();
+        const { data: newItem, error } = await supabase
+            .from('events')
+            .insert([{ ...data, id: crypto.randomUUID(), updatedAt: new Date().toISOString() }])
+            .select()
+            .single();
+
+        if (error) throw error;
+        return newItem;
+    }
+
+    async updateEvent(id: string, data: UpdateEventData): Promise<any> {
+        const supabase = await createClient();
+        const { data: updatedItem, error } = await supabase
+            .from('events')
+            .update({ ...data, updatedAt: new Date().toISOString() })
+            .eq('id', id)
+            .select()
+            .single();
+
+        if (error) throw error;
+        return updatedItem;
+    }
+
+    async deleteEvent(id: string): Promise<void> {
+        const supabase = await createClient();
+        const { error } = await supabase
+            .from('events')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+    }
 }
 
 // Export singleton instance

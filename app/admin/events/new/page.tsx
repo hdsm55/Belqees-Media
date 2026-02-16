@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 export default function NewEventPage() {
     const router = useRouter();
@@ -52,15 +53,19 @@ export default function NewEventPage() {
         setLoading(true);
 
         try {
-            const { error } = await supabase
+            const { error: insertError } = await supabase
                 .from('events')
                 .insert([{
                     id: crypto.randomUUID(),
                     ...formData,
                     date: new Date(formData.date).toISOString(),
+                    updatedAt: new Date().toISOString()
                 }]);
 
-            if (error) throw error;
+            if (insertError) {
+                console.error('Supabase Insert Error:', insertError);
+                throw insertError;
+            }
 
             router.push('/admin/events');
             router.refresh();
@@ -185,20 +190,12 @@ export default function NewEventPage() {
                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
                         <h3 className="font-bold text-gray-900 border-b border-gray-50 pb-4">الصورة والحالة</h3>
 
-                        {/* Image URL */}
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                                <ImageIcon size={16} />
-                                رابط الصورة
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.image}
-                                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 outline-none transition-all"
-                                placeholder="https://example.com/image.jpg"
-                            />
-                        </div>
+                        {/* Image Upload */}
+                        <ImageUpload
+                            value={formData.image}
+                            onChange={(url) => setFormData({ ...formData, image: url })}
+                            label="صورة الفعالية"
+                        />
 
                         {/* Published Toggle */}
                         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
