@@ -109,6 +109,26 @@ export class EventService {
     }
 
     /**
+     * الحصول على فعالية واحدة بالـ ID
+     */
+    async getEventById(id: string): Promise<any> {
+        const supabase = await createClient();
+
+        const { data, error } = await supabase
+            .from('events')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error || !data) {
+            console.error('Error fetching event:', error);
+            throw new NotFoundError('الفعالية');
+        }
+
+        return data;
+    }
+
+    /**
      * إدارة المحتوى
      */
     async createEvent(data: CreateEventData): Promise<any> {
