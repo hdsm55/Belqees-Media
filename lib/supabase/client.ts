@@ -1,11 +1,13 @@
 import { createBrowserClient } from '@supabase/ssr';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  // لا توقف بناء التطبيق بسبب غياب متغيرات البيئة، فقط حذر المستخدم
+  // سيتم استخدام قيم وهمية للسماح لعملية البناء (prerendering) بالاكتمال
+  console.warn('⚠️ Warning: Supabase environment variables are missing! Using placeholders for build.');
 }
 
 // عميل جاهز للاستخدام في أي مكان داخل المتصفح (singleton)
