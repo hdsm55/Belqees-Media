@@ -119,7 +119,15 @@
         "eventImage": "Event Image",
         "fetchError": "Failed to fetch data",
         "retry": "Retry",
-        "noImage": "No Image"
+        "noImage": "No Image",
+        "backToEvents": "Back to Events",
+        "aboutEvent": "About the Event",
+        "infoTitle": "Time and Location Details",
+        "date": "Date",
+        "time": "Time",
+        "location": "Location",
+        "noDescription": "No description available for this event at the moment.",
+        "contactInquiry": "For inquiries"
     },
     "contact": {
         "pageTitle": "Contact Us",

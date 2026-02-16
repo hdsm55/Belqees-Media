@@ -119,7 +119,15 @@
         "eventImage": "Etkinlik Görseli",
         "fetchError": "Veri alınamadı",
         "retry": "Tekrar Dene",
-        "noImage": "Resim Yok"
+        "noImage": "Resim Yok",
+        "backToEvents": "Etkinliklere Geri Dön",
+        "aboutEvent": "Etkinlik Hakkında",
+        "infoTitle": "Zaman ve Mekan Detayları",
+        "date": "Tarih",
+        "time": "Saat",
+        "location": "Konum",
+        "noDescription": "Bu etkinlik için şu anda açıklama bulunmamaktadır.",
+        "contactInquiry": "Bilgi almak için"
     },
     "contact": {
         "pageTitle": "İletişim",

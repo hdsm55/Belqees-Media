@@ -119,7 +119,15 @@
         "eventImage": "صورة الفعالية",
         "fetchError": "فشل في جلب البيانات",
         "retry": "إعادة المحاولة",
-        "noImage": "بدون صورة"
+        "noImage": "بدون صورة",
+        "backToEvents": "العودة للفعاليات",
+        "aboutEvent": "حول الفعالية",
+        "infoTitle": "تفاصيل الموقع والوقت",
+        "date": "التاريخ",
+        "time": "الوقت",
+        "location": "الموقع",
+        "noDescription": "لا يوجد وصف متاح لهذه الفعالية حالياً.",
+        "contactInquiry": "للاستفسار"
     },
     "contact": {
         "pageTitle": "اتصل بنا",
