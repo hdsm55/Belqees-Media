@@ -45,8 +45,8 @@ export default function Header() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-[99999] transition-all duration-300 w-full',
-        isScrolled
-          ? 'backdrop-blur-md shadow-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-800'
+        isScrolled || isMenuOpen
+          ? 'backdrop-blur-md shadow-lg bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-800'
           : 'bg-transparent border-transparent'
       )}
       style={{
@@ -80,14 +80,14 @@ export default function Header() {
               priority
               className={cn(
                 'h-10 md:h-12 w-auto transition-all duration-300 group-hover:scale-105 border-0 outline-none',
-                isScrolled
+                isScrolled || isMenuOpen
                   ? 'brightness-0 dark:brightness-100'
                   : 'brightness-0 invert'
               )}
               sizes="120px"
               quality={80}
               style={{
-                filter: isScrolled ? undefined : 'brightness(0) invert(1)',
+                filter: isScrolled || isMenuOpen ? undefined : 'brightness(0) invert(1)',
               }}
             />
           </Link>
@@ -128,46 +128,40 @@ export default function Header() {
 
           {/* Mobile Menu Button & Theme Toggle */}
           <div className="md:hidden flex items-center gap-3">
-            <LanguageSwitcher isScrolled={isScrolled} />
-            <ThemeToggle isScrolled={isScrolled} />
+            <LanguageSwitcher isScrolled={isScrolled || isMenuOpen} />
+            <ThemeToggle isScrolled={isScrolled || isMenuOpen} />
             <button
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className={cn(
+                'p-2 rounded-lg transition-colors',
+                isScrolled || isMenuOpen
+                  ? 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                  : 'hover:bg-white/10'
+              )}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-menu"
             >
-              {isMenuOpen ? (
-                <svg
-                  className={cn(
-                    'w-6 h-6 transition-colors',
-                    isScrolled ? 'text-dark dark:text-gray-300' : 'text-white'
-                  )}
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+              <svg
+                className={cn(
+                  'w-6 h-6 transition-colors',
+                  isScrolled || isMenuOpen
+                    ? 'text-dark dark:text-gray-100'
+                    : 'text-white'
+                )}
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                {isMenuOpen ? (
                   <path d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg
-                  className={cn(
-                    'w-6 h-6 transition-colors',
-                    isScrolled ? 'text-dark dark:text-gray-300' : 'text-white'
-                  )}
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+                ) : (
                   <path d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
+                )}
+              </svg>
             </button>
           </div>
         </div>
@@ -176,8 +170,8 @@ export default function Header() {
         <nav
           id="mobile-menu"
           className={cn(
-            'md:hidden overflow-hidden transition-all duration-300 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800',
-            isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            'md:hidden overflow-hidden transition-all duration-300 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-inner',
+            isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 invisible'
           )}
           aria-label={t('nav.mainMenu')}
           role="navigation"
@@ -187,7 +181,12 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="block px-4 py-3 text-base text-dark-light dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-800 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium"
+                className={cn(
+                  'block px-6 py-4 text-base transition-all font-medium border-r-4 border-transparent',
+                  pathname === item.href
+                    ? 'text-primary-600 dark:text-primary-400 bg-primary-50/50 dark:bg-gray-800 border-primary-500'
+                    : 'text-dark dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-primary-500 hover:border-primary-500/50'
+                )}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}

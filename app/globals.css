@@ -35,10 +35,12 @@ html.lenis {
 
   /* Recording Dot Pulse Animation - لمعة بدون توهج (مثل ضوء التسجيل في الكاميرات) */
   @keyframes recordingDotPulse {
+
     0%,
     100% {
       opacity: 1;
     }
+
     50% {
       opacity: 0.3;
     }
@@ -46,10 +48,12 @@ html.lenis {
 
   /* Recording Dot Pulse Animation for SVG elements */
   @keyframes recordingDotPulseSvg {
+
     0%,
     100% {
       opacity: 1;
     }
+
     50% {
       opacity: 0.3;
     }
@@ -98,7 +102,6 @@ html.lenis {
     left: 0 !important;
     right: 0 !important;
     z-index: 99999 !important;
-    background-color: transparent !important;
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -134,9 +137,6 @@ html.lenis {
     margin-top: 0 !important;
   }
 
-  .dark header {
-    background-color: transparent !important;
-  }
 
   /* Ensure no other element covers the header */
   body>div>header,
@@ -148,19 +148,12 @@ html.lenis {
     left: 0 !important;
     right: 0 !important;
     z-index: 99999 !important;
-    background-color: transparent !important;
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
   }
 
-  .dark body>div>header,
-  .dark body>div>div>header,
-  .dark #main-content header,
-  .dark #main-content>div>header {
-    background-color: transparent !important;
-  }
 
   /* Prevent any section from covering the header */
   section {
