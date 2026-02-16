@@ -33,10 +33,20 @@ export async function POST(request: NextRequest) {
       ]);
 
     if (error) {
-      console.error('Supabase Contact Storage Error:', error);
-      // Fallback: log to console if DB fails but return success to user for better UX
-      // Or return error if we want them to retry
-      throw error;
+      console.error('Supabase Contact Storage Error Detailed:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: `خطأ في قاعدة البيانات: ${error.message}`,
+          debug: error.details
+        },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(
@@ -46,10 +56,14 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
-    console.error('Contact Form Error:', error);
+  } catch (error: any) {
+    console.error('Contact Form General Error:', error);
     return NextResponse.json(
-      { success: false, message: 'حدث خطأ أثناء إرسال الرسالة، يرجى المحاولة لاحقاً' },
+      {
+        success: false,
+        message: 'حدث خطأ غير متوقع',
+        error: error.message
+      },
       { status: 500 }
     );
   }
