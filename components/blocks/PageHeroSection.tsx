@@ -164,7 +164,7 @@ export default function PageHeroSection({
 
         {/* Subtitle */}
         {resolvedSubtitle && (
-          <ScrollReveal animation="fadeInUp" delay={200} once={true}>
+          <ScrollReveal animation="fadeInUp" delay={0.2} once={true}>
             <p
               className="text-base md:text-lg lg:text-xl text-white text-opacity-90 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed"
               style={{
@@ -178,7 +178,7 @@ export default function PageHeroSection({
 
         {/* Description */}
         {resolvedDescription && (
-          <ScrollReveal animation="fadeInUp" delay={300} once={true}>
+          <ScrollReveal animation="fadeInUp" delay={0.3} once={true}>
             <p
               className="text-base md:text-lg text-white text-opacity-90 max-w-2xl mx-auto leading-relaxed"
               style={{
@@ -192,7 +192,7 @@ export default function PageHeroSection({
 
         {/* Button */}
         {resolvedButtonText && buttonLink && (
-          <ScrollReveal animation="fadeInUp" delay={400} once={true}>
+          <ScrollReveal animation="fadeInUp" delay={0.4} once={true}>
             <div className="pt-4 flex justify-center">
               <Link href={buttonLink} className="inline-block">
                 <Button

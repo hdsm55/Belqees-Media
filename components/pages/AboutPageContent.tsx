@@ -62,7 +62,7 @@ export default function AboutPageContent() {
             </div>
           </ScrollReveal>
 
-          <ScrollReveal animation="fadeInUp" delay={200}>
+          <ScrollReveal animation="fadeInUp" delay={0.2}>
             <p className="text-base md:text-lg lg:text-xl text-white text-opacity-90 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
               {t('about.pageSubtitle')}
             </p>
@@ -267,7 +267,7 @@ export default function AboutPageContent() {
             </ScrollReveal>
 
             {/* Gallery Section */}
-            <ScrollReveal animation="fade-up" delay={0.2}>
+            <ScrollReveal animation="fadeInUp" delay={0.2}>
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-heading font-bold text-dark dark:text-gray-100 mb-4">
                   {t('about.gallery.title') || 'معرض الصور'}
