@@ -31,21 +31,28 @@ export default function NewEventPage() {
         published: false
     });
 
+    const [isSlugCustom, setIsSlugCustom] = useState(false);
+
     const generateSlug = (text: string) => {
         return text
+            .trim()
             .toLowerCase()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/[\s_-]+/g, '-')
-            .replace(/^-+|-+$/g, '');
+            .replace(/\s+/g, '-')
+            .replace(/[^\u0600-\u06FF\w-]+/g, '') // Allow Arabic characters
+            .replace(/--+/g, '-')
+            .replace(/^-+/, '')
+            .replace(/-+$/, '');
     };
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const title = e.target.value;
-        setFormData(prev => ({
-            ...prev,
-            title,
-            slug: prev.slug || generateSlug(title)
-        }));
+        setFormData(prev => {
+            const newFormData = { ...prev, title };
+            if (!isSlugCustom) {
+                newFormData.slug = generateSlug(title);
+            }
+            return newFormData;
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -113,17 +120,36 @@ export default function NewEventPage() {
                             />
                         </div>
 
-                        {/* Slug */}
                         <div className="space-y-2">
-                            <label className="text-sm font-bold text-gray-700">الرابط الدائم (Slug)</label>
+                            <div className="flex items-center justify-between">
+                                <label className="text-sm font-bold text-gray-700">الرابط الدائم (Slug)</label>
+                                {isSlugCustom && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setIsSlugCustom(false);
+                                            setFormData(prev => ({ ...prev, slug: generateSlug(prev.title) }));
+                                        }}
+                                        className="text-xs text-primary-600 hover:underline"
+                                    >
+                                        إعادة ضبط تلقائي
+                                    </button>
+                                )}
+                            </div>
                             <input
                                 required
                                 type="text"
                                 value={formData.slug}
-                                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                                onChange={(e) => {
+                                    setIsSlugCustom(true);
+                                    setFormData({ ...formData, slug: e.target.value });
+                                }}
                                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all font-mono text-sm"
                                 placeholder="digital-media-forum-2024"
                             />
+                            <p className="text-xs text-gray-400 mr-1">
+                                سيظهر هذا الرابط كـ: <span className="text-gray-600 font-mono">/events/{formData.slug || '...'}</span>
+                            </p>
                         </div>
 
                         {/* Description */}

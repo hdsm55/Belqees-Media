@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { supabase } from '@/lib/supabase/client';
 import { Upload, X, Loader2, Image as ImageIcon } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
@@ -27,30 +26,24 @@ export default function ImageUpload({ value, onChange, label = 'الصورة' }:
         try {
             setUploading(true);
 
-            // 1. Create a unique file name
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
-            const filePath = `uploads/${fileName}`;
+            // Upload via our secure API route (bypasses RLS)
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('bucket', 'media');
 
-            // 2. Upload to Supabase Storage (Bucket: 'media')
-            const { error: uploadError, data } = await supabase.storage
-                .from('media')
-                .upload(filePath, file);
+            const response = await fetch('/api/admin/upload', {
+                method: 'POST',
+                body: formData
+            });
 
-            if (uploadError) {
-                if (uploadError.message.includes('bucket not found')) {
-                    throw new Error('لم يتم العثور على مساحة تخزين (Bucket) باسم media. يرجى إنشاؤها في Supabase.');
-                }
-                throw uploadError;
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'فشل الرفع');
             }
 
-            // 3. Get Public URL
-            const { data: { publicUrl } } = supabase.storage
-                .from('media')
-                .getPublicUrl(filePath);
-
-            onChange(publicUrl);
-            setPreview(publicUrl);
+            onChange(result.url);
+            setPreview(result.url);
         } catch (error: any) {
             console.error('Upload error:', error);
             alert(`فشل رفع الصورة: ${error.message}`);
