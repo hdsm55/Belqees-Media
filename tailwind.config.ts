@@ -25,38 +25,50 @@ const config: Config = {
         },
         dark: {
           DEFAULT: '#000000',
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
+          800: '#1F2937',
+          900: '#111827',
+          950: '#030712',
           light: '#666666',
-          lighter: '#999999',
         },
       },
       fontFamily: {
-        // Cinematic Display Font for Headings
-        display: ['var(--font-playfair)', 'Playfair Display', 'serif'],
-        // Modern Sans-serif for Body
-        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
-        // Cinematic Modern Font
-        cinematic: ['var(--font-space-grotesk)', 'Space Grotesk', 'sans-serif'],
-        // Arabic Font
-        arabic: ['var(--font-cairo)', 'Cairo', 'Tajawal', 'sans-serif'],
-      },
-      fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.025em' }],
-        'sm': ['0.875rem', { lineHeight: '1.5', letterSpacing: '0.025em' }],
-        'base': ['1rem', { lineHeight: '1.6', letterSpacing: '0.01em' }],
-        'lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '0.01em' }],
-        'xl': ['1.25rem', { lineHeight: '1.6', letterSpacing: '0' }],
-        '2xl': ['1.5rem', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
-        '3xl': ['1.875rem', { lineHeight: '1.4', letterSpacing: '-0.02em' }],
-        '4xl': ['2.25rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
-        '5xl': ['3rem', { lineHeight: '1.2', letterSpacing: '-0.03em' }],
-        '6xl': ['3.75rem', { lineHeight: '1.1', letterSpacing: '-0.03em' }],
-        '7xl': ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.04em' }],
-        '8xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.04em' }],
+        heading: ['var(--font-ibm-plex)', 'IBM Plex Sans Arabic', 'sans-serif'],
+        sans: ['var(--font-tajawal)', 'Tajawal', 'sans-serif'],
+        arabic: ['var(--font-tajawal)', 'Tajawal', 'sans-serif'],
       },
       spacing: {
         '18': '4.5rem',
+        '22': '5.5rem',
+        '26': '6.5rem',
+        '30': '7.5rem',
         '88': '22rem',
         '128': '32rem',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
     },
   },

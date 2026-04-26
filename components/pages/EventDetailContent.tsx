@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, MapPin, Clock, ArrowRight } from 'lucide-react';
-import ScrollReveal from '@/components/animations/ScrollReveal';
+import { Calendar, MapPin, Clock } from 'lucide-react';
+import Section from '@/components/atoms/Section';
+import CornerBrackets from '@/components/atoms/CornerBrackets';
 import Button from '@/components/atoms/Button';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -33,7 +34,7 @@ export default function EventDetailContent({ event }: EventDetailContentProps) {
                 en: 'en-US',
                 tr: 'tr-TR',
             };
-            return new Intl.DateTimeFormat(localeMap[locale] || 'ar-SA', {
+            return new Intl.DateTimeFormat(localeMap[locale as keyof typeof localeMap] || 'ar-SA', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
@@ -44,131 +45,138 @@ export default function EventDetailContent({ event }: EventDetailContentProps) {
     };
 
     return (
-        <div className="min-h-screen bg-white dark:bg-gray-900 pt-20 md:pt-24 pb-16">
-            <div className="container mx-auto px-4">
+        <div className="min-h-screen bg-white dark:bg-dark-900 transition-colors pt-20">
+            {/* Header Section */}
+            <Section id="event-detail-header" spacing="md" className="bg-dark-50 dark:bg-dark-950 border-b border-dark-100 dark:border-dark-800">
                 <div className="max-w-4xl mx-auto">
-                    {/* Breadcrumbs / Back Link */}
-                    <div className="mb-8">
-                        <Link
-                            href="/events"
-                            className="inline-flex items-center gap-2 text-primary-500 hover:text-primary-600 transition-colors group"
-                        >
-                            <ArrowRight size={18} className="rotate-180 group-hover:-translate-x-1 transition-transform" />
-                            <span>{t('events.backToEvents')}</span>
-                        </Link>
-                    </div>
+                    <Link
+                        href="/events"
+                        className="inline-flex items-center gap-2 text-primary-500 font-heading font-bold mb-8 group"
+                    >
+                        <span className="transform group-hover:-translate-x-1 rtl:group-hover:translate-x-1 transition-transform">
+                            {locale === 'ar' ? '→' : '←'}
+                        </span>
+                        <span>{t('events.backToEvents') || 'العودة للفعاليات'}</span>
+                    </Link>
 
-                    <ScrollReveal animation="fadeIn">
-                        {/* Hero Header */}
-                        <div className="space-y-6 mb-12">
-                            <div className="space-y-4">
-                                <div className="flex flex-wrap gap-4 text-sm font-medium text-primary-500 dark:text-primary-400">
-                                    <div className="flex items-center gap-1.5">
-                                        <Calendar size={16} />
-                                        {formatDate(event.date)}
-                                    </div>
-                                    {event.time && (
-                                        <div className="flex items-center gap-1.5">
-                                            <Clock size={16} />
-                                            {event.time}
-                                        </div>
-                                    )}
-                                    {event.location && (
-                                        <div className="flex items-center gap-1.5">
-                                            <MapPin size={16} />
-                                            {event.location}
-                                        </div>
-                                    )}
-                                </div>
-                                <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-dark dark:text-gray-100 leading-tight">
-                                    {event.title}
-                                </h1>
+                    <div className="space-y-6">
+                        <div className="flex flex-wrap items-center gap-4 text-sm font-sans text-dark-500 dark:text-dark-400">
+                            <div className="flex items-center gap-2 px-3 py-1 bg-white dark:bg-dark-800 border border-dark-200 dark:border-dark-700 rounded-full">
+                                <Calendar size={14} className="text-primary-500" />
+                                <span>{formatDate(event.date)}</span>
                             </div>
+                            {event.time && (
+                                <div className="flex items-center gap-2 px-3 py-1 bg-white dark:bg-dark-800 border border-dark-200 dark:border-dark-700 rounded-full">
+                                    <Clock size={14} className="text-primary-500" />
+                                    <span>{event.time}</span>
+                                </div>
+                            )}
+                            {event.location && (
+                                <div className="flex items-center gap-2 px-3 py-1 bg-white dark:bg-dark-800 border border-dark-200 dark:border-dark-700 rounded-full">
+                                    <MapPin size={14} className="text-primary-500" />
+                                    <span>{event.location}</span>
+                                </div>
+                            )}
+                        </div>
+                        <h1 className="text-4xl md:text-6xl font-heading font-bold text-dark-900 dark:text-white leading-tight tracking-tight">
+                            {event.title}
+                        </h1>
+                    </div>
+                </div>
+            </Section>
 
+            {/* Content Section */}
+            <Section id="event-detail-content" spacing="md">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                        {/* Main Content */}
+                        <div className="lg:col-span-8 space-y-12">
                             {/* Main Image */}
                             {event.image && (
-                                <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-800">
+                                <div className="relative aspect-video bg-dark-100 dark:bg-dark-800 shadow-2xl overflow-hidden group">
                                     <Image
                                         src={event.image}
                                         alt={event.title}
                                         fill
-                                        className="object-cover"
+                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                                         priority
-                                        sizes="100vw"
                                     />
+                                    <CornerBrackets showOnHover={false} className="border-white" />
                                 </div>
                             )}
-                        </div>
 
-                        {/* Event Content */}
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                             {/* Description */}
-                            <div className="lg:col-span-2 space-y-8">
-                                <section>
-                                    <h2 className="text-2xl font-bold text-dark dark:text-gray-100 mb-6 font-heading">{t('events.aboutEvent')}</h2>
-                                    <div className="prose prose-lg dark:prose-invert max-w-none text-dark-light dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
-                                        {event.description || t('events.noDescription')}
-                                    </div>
-                                </section>
-                            </div>
-
-                            {/* Sidebar / Info Card */}
                             <div className="space-y-6">
-                                <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-2xl border border-gray-100 dark:border-gray-700/50 sticky top-28">
-                                    <h3 className="font-bold text-dark dark:text-gray-100 mb-6 text-lg">{t('events.infoTitle')}</h3>
-
-                                    <ul className="space-y-4">
-                                        <li className="flex gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-primary-500 shadow-sm flex-shrink-0">
-                                                <Calendar size={18} />
-                                            </div>
-                                            <div>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400">{t('events.date')}</p>
-                                                <p className="text-sm font-bold text-dark dark:text-gray-100">{formatDate(event.date)}</p>
-                                            </div>
-                                        </li>
-                                        {event.time && (
-                                            <li className="flex gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-primary-500 shadow-sm flex-shrink-0">
-                                                    <Clock size={18} />
-                                                </div>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('events.time')}</p>
-                                                    <p className="text-sm font-bold text-dark dark:text-gray-100">{event.time}</p>
-                                                </div>
-                                            </li>
-                                        )}
-                                        {event.location && (
-                                            <li className="flex gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-primary-500 shadow-sm flex-shrink-0">
-                                                    <MapPin size={18} />
-                                                </div>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('events.location')}</p>
-                                                    <p className="text-sm font-bold text-dark dark:text-gray-100">{event.location}</p>
-                                                </div>
-                                            </li>
-                                        )}
-                                    </ul>
-
-                                    <div className="mt-8">
-                                        <Link href="/contact" className="w-full">
-                                            <Button
-                                                variant="simple"
-                                                className="w-full justify-center"
-                                                showRecordingDot={true}
-                                                showBrackets={true}
-                                            >
-                                                {t('nav.contact')} {t('events.contactInquiry')}
-                                            </Button>
-                                        </Link>
-                                    </div>
+                                <h2 className="text-3xl font-heading font-bold text-dark-900 dark:text-white">
+                                    {t('events.aboutEvent') || 'عن الفعالية'}
+                                </h2>
+                                <div className="prose prose-lg dark:prose-invert max-w-none text-dark-600 dark:text-dark-300 font-sans leading-relaxed whitespace-pre-wrap">
+                                    {event.description || t('events.noDescription')}
                                 </div>
                             </div>
                         </div>
-                    </ScrollReveal>
+
+                        {/* Sidebar */}
+                        <div className="lg:col-span-4">
+                            <div className="sticky top-28 bg-white dark:bg-dark-800 p-8 border border-dark-200 dark:border-dark-700 shadow-xl group">
+                                <CornerBrackets showOnHover={true} />
+                                <h3 className="text-xl font-heading font-bold text-dark-900 dark:text-white mb-8">
+                                    {t('events.infoTitle') || 'تفاصيل الفعالية'}
+                                </h3>
+
+                                <div className="space-y-6 font-sans">
+                                    <div className="flex gap-4">
+                                        <div className="w-12 h-12 bg-dark-50 dark:bg-dark-900 rounded-xl flex items-center justify-center text-primary-500 shadow-inner flex-shrink-0">
+                                            <Calendar size={20} />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-dark-400 uppercase tracking-widest mb-1">{t('events.date') || 'التاريخ'}</p>
+                                            <p className="text-base font-bold text-dark-900 dark:text-white">{formatDate(event.date)}</p>
+                                        </div>
+                                    </div>
+
+                                    {event.time && (
+                                        <div className="flex gap-4">
+                                            <div className="w-12 h-12 bg-dark-50 dark:bg-dark-900 rounded-xl flex items-center justify-center text-primary-500 shadow-inner flex-shrink-0">
+                                                <Clock size={20} />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs text-dark-400 uppercase tracking-widest mb-1">{t('events.time') || 'الوقت'}</p>
+                                                <p className="text-base font-bold text-dark-900 dark:text-white">{event.time}</p>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {event.location && (
+                                        <div className="flex gap-4">
+                                            <div className="w-12 h-12 bg-dark-50 dark:bg-dark-900 rounded-xl flex items-center justify-center text-primary-500 shadow-inner flex-shrink-0">
+                                                <MapPin size={20} />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs text-dark-400 uppercase tracking-widest mb-1">{t('events.location') || 'الموقع'}</p>
+                                                <p className="text-base font-bold text-dark-900 dark:text-white">{event.location}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="mt-10">
+                                    <Link href="/contact" className="w-full block">
+                                        <Button
+                                            variant="recording"
+                                            className="w-full justify-center"
+                                            showRecordingDot={true}
+                                            showBrackets={true}
+                                        >
+                                            {t('nav.contact') || 'تواصل معنا'}
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </Section>
         </div>
     );
 }

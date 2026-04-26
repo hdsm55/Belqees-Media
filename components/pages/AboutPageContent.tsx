@@ -3,332 +3,182 @@
 import { useTranslation } from '@/hooks/useTranslation';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import CornerBrackets from '@/components/atoms/CornerBrackets';
+import Section from '@/components/atoms/Section';
 import Image from 'next/image';
 import {
   InnovativeEfficiencyIcon,
   BuildingConnectionsIcon,
   ForwardVisionIcon,
 } from '@/components/icons/CustomIcons';
+import { systems, galleryImages } from '@/data/about';
 
 export default function AboutPageContent() {
   const { t } = useTranslation();
 
   return (
     <>
-      {/* Hero Section - Compact with static image background */}
-      <section className="relative py-20 md:py-32 flex items-center justify-center overflow-hidden">
-        {/* Static Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/images-optimized/about-hero.jpg"
-            alt={t('about.heroAlt')}
-            fill
-            className="object-cover"
-            priority
-            quality={80}
-            sizes="100vw"
-          />
-          {/* Overlay for better text readability */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(217, 0, 0, 0.3), rgba(0, 0, 0, 0.8))',
-            }}
-          ></div>
-        </div>
-
-        {/* Corner Brackets - White borders */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="opacity-30">
-            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-white"></div>
-            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-white"></div>
-            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-white"></div>
-            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-white"></div>
-          </div>
-        </div>
-
-        {/* Main Content */}
+      {/* Hero Section */}
+      <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="/images-optimized/about-hero.jpg"
+          alt={t('about.heroAlt')}
+          fill
+          className="object-cover"
+          priority
+          quality={90}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-dark-950/90 via-primary-900/20 to-dark-950/90" />
+        
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <ScrollReveal animation="fadeInUp">
-            <div className="relative inline-block">
-              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-white opacity-50"></div>
-              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-white opacity-50"></div>
-              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-white opacity-50"></div>
-              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-white opacity-50"></div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 px-6 py-3">
+            <div className="inline-block relative px-8 py-4 mb-4">
+              <CornerBrackets showOnHover={false} className="border-white" />
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-white tracking-tight">
                 {t('about.pageTitle')}
               </h1>
             </div>
-          </ScrollReveal>
-
-          <ScrollReveal animation="fadeInUp" delay={0.2}>
-            <p className="text-base md:text-lg lg:text-xl text-white text-opacity-90 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-white/80 font-sans max-w-2xl mx-auto leading-relaxed">
               {t('about.pageSubtitle')}
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-16 md:py-20 bg-white dark:bg-gray-900 transition-colors">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto space-y-12 md:space-y-16">
-            {/* Introduction */}
-            <ScrollReveal animation="fadeInUp">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-heading font-bold text-dark dark:text-gray-100 mb-4 md:mb-6">
-                  {t('about.intro.title')}
-                </h2>
-                <p className="text-base md:text-lg text-dark-light dark:text-gray-300 leading-relaxed mb-4">
-                  {t('about.intro.description')}
-                </p>
-                <p className="text-base md:text-lg text-dark-light dark:text-gray-300 leading-relaxed">
-                  {t('about.intro.services')}
-                </p>
-              </div>
-            </ScrollReveal>
-
-            {/* Belqees Channel */}
-            <ScrollReveal animation="fadeInUp">
-              <div className="relative bg-white dark:bg-gray-800 p-6 md:p-8 border border-gray-200 dark:border-gray-700 group">
-                <CornerBrackets showOnHover={true} />
-                <h2 className="text-2xl md:text-3xl font-heading font-bold text-dark dark:text-gray-100 mb-4 md:mb-6">
-                  {t('about.channel.title')}
-                </h2>
-                <p className="text-base md:text-lg text-dark-light dark:text-gray-300 leading-relaxed">
-                  {t('about.channel.description')}
-                </p>
-              </div>
-            </ScrollReveal>
-
-            {/* Our Values */}
-            <ScrollReveal animation="fadeInUp">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-dark dark:text-gray-100 mb-2 md:mb-3">
-                  {t('about.values.title')}
-                </h2>
-                <p className="text-base md:text-lg text-dark-light dark:text-gray-300 mb-6 md:mb-8">
-                  {t('about.values.subtitle')}
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                  {/* Innovative Efficiency */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group">
-                    <CornerBrackets showOnHover={true} />
-                    <div className="mb-4 flex items-center justify-center">
-                      <InnovativeEfficiencyIcon
-                        className="w-16 h-16 md:w-20 md:h-20"
-                        stroke="currentColor"
-                        redDotColor="#FC473C"
-                      />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3 text-center">
-                      {t('about.values.innovativeEfficiency.title')}
-                    </h3>
-                    <p className="text-sm md:text-base text-dark-light dark:text-gray-300 leading-relaxed text-center">
-                      {t('about.values.innovativeEfficiency.description')}
-                    </p>
-                  </div>
-
-                  {/* Building Connections */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group">
-                    <CornerBrackets showOnHover={true} />
-                    <div className="mb-4 flex items-center justify-center">
-                      <BuildingConnectionsIcon
-                        className="w-16 h-16 md:w-20 md:h-20"
-                        stroke="currentColor"
-                        redDotColor="#FC473C"
-                      />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3 text-center">
-                      {t('about.values.buildingConnections.title')}
-                    </h3>
-                    <p className="text-sm md:text-base text-dark-light dark:text-gray-300 leading-relaxed text-center">
-                      {t('about.values.buildingConnections.description')}
-                    </p>
-                  </div>
-
-                  {/* Forward Vision */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group">
-                    <CornerBrackets showOnHover={true} />
-                    <div className="mb-4 flex items-center justify-center">
-                      <ForwardVisionIcon
-                        className="w-16 h-16 md:w-20 md:h-20"
-                        stroke="currentColor"
-                        redDotColor="#FC473C"
-                      />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3 text-center">
-                      {t('about.values.forwardVision.title')}
-                    </h3>
-                    <p className="text-sm md:text-base text-dark-light dark:text-gray-300 leading-relaxed text-center">
-                      {t('about.values.forwardVision.description')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            {/* Broadcast & Media Systems */}
-            <ScrollReveal animation="fadeInUp">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-heading font-bold text-dark dark:text-gray-100 mb-4 md:mb-6">
-                  {t('about.systems.title')}
-                </h2>
-                <p className="text-base md:text-lg text-dark-light dark:text-gray-300 leading-relaxed mb-6 md:mb-8">
-                  {t('about.systems.description')}
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Octopus Newsroom */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group overflow-hidden">
-                    <CornerBrackets showOnHover={true} />
-                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
-                      <Image
-                        src="/images-optimized/systems/octopus-newsroom.jpg"
-                        alt={t('about.systems.octopus.title')}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        quality={80}
-                      />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
-                      {t('about.systems.octopus.title')}
-                    </h3>
-                    <p className="text-sm md:text-base text-dark-light dark:text-gray-300 leading-relaxed">
-                      {t('about.systems.octopus.description')}
-                    </p>
-                  </div>
-
-                  {/* Metus MAM */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group overflow-hidden">
-                    <CornerBrackets showOnHover={true} />
-                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
-                      <Image
-                        src="/images-optimized/systems/metus-mam.jpg"
-                        alt={t('about.systems.metus.title')}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        quality={80}
-                      />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
-                      {t('about.systems.metus.title')}
-                    </h3>
-                    <p className="text-sm md:text-base text-dark-light dark:text-gray-300 leading-relaxed">
-                      {t('about.systems.metus.description')}
-                    </p>
-                  </div>
-
-                  {/* Brainstorm 3D */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group overflow-hidden">
-                    <CornerBrackets showOnHover={true} />
-                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
-                      <Image
-                        src="/images-optimized/systems/brainstorm-3d.jpg"
-                        alt={t('about.systems.brainstorm.title')}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        quality={80}
-                      />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
-                      {t('about.systems.brainstorm.title')}
-                    </h3>
-                    <p className="text-sm md:text-base text-dark-light dark:text-gray-300 leading-relaxed">
-                      {t('about.systems.brainstorm.description')}
-                    </p>
-                  </div>
-
-                  {/* Adobe Creative Cloud */}
-                  <div className="relative bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 group overflow-hidden">
-                    <CornerBrackets showOnHover={true} />
-                    <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
-                      <Image
-                        src="/images-optimized/systems/adobe-creative-cloud.jpg"
-                        alt={t('about.systems.adobe.title')}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        quality={80}
-                      />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-heading font-bold text-dark dark:text-gray-100 mb-3">
-                      {t('about.systems.adobe.title')}
-                    </h3>
-                    <p className="text-sm md:text-base text-dark-light dark:text-gray-300 leading-relaxed">
-                      {t('about.systems.adobe.description')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            {/* Gallery Section */}
-            <ScrollReveal animation="fadeInUp" delay={0.2}>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-heading font-bold text-dark dark:text-gray-100 mb-4">
-                  {t('about.gallery.title') || 'معرض الصور'}
-                </h2>
-                <p className="text-base md:text-lg text-dark-light dark:text-gray-300 mb-6 md:mb-8">
-                  {t('about.gallery.subtitle') ||
-                    'نظرة على بعض أعمالنا وفعالياتنا'}
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {[
-                    {
-                      src: '/images-optimized/nobel-peace-prize.jpg',
-                      key: 'common.galleryImage1',
-                    },
-                    {
-                      src: '/images-optimized/yemen-researchers-conference.jpg',
-                      key: 'common.galleryImage2',
-                    },
-                    {
-                      src: '/images-optimized/approach.jpg',
-                      key: 'common.galleryImage3',
-                    },
-                    {
-                      src: '/images-optimized/events-hero.jpg',
-                      key: 'common.galleryImage4',
-                    },
-                    {
-                      src: '/images-optimized/services-hero.jpg',
-                      key: 'common.galleryImage5',
-                    },
-                    {
-                      src: '/images-optimized/systems/octopus-newsroom.jpg',
-                      key: 'common.galleryImage6',
-                    },
-                  ].map((img, i) => (
-                    <div
-                      key={i}
-                      className="relative aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden group cursor-pointer"
-                    >
-                      <Image
-                        src={img.src}
-                        alt={t(img.key)}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                        sizes="(max-width: 768px) 50vw, 33vw"
-                        loading="lazy"
-                        quality={80}
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                        <span className="text-white text-xs font-medium border border-white/40 px-3 py-1 scale-90 group-hover:scale-100 transition-transform duration-300">
-                          {t('common.viewDetail') || 'عرض التفاصيل'}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </ScrollReveal>
+      {/* Intro Section */}
+      <Section id="intro" spacing="md" className="bg-white dark:bg-dark-900">
+        <div className="max-w-4xl mx-auto">
+          <div className="space-y-8">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-dark-900 dark:text-white">
+              {t('about.intro.title')}
+            </h2>
+            <div className="space-y-6 text-lg text-dark-600 dark:text-dark-300 leading-relaxed font-sans">
+              <p>{t('about.intro.description')}</p>
+              <p>{t('about.intro.services')}</p>
+            </div>
           </div>
         </div>
-      </section>
+      </Section>
+
+      {/* Belqees Channel Section */}
+      <Section id="channel" spacing="md" className="bg-dark-50 dark:bg-dark-950">
+        <div className="max-w-4xl mx-auto">
+          <div className="relative bg-white dark:bg-dark-800 p-8 md:p-12 border border-dark-200 dark:border-dark-700 shadow-xl group">
+            <CornerBrackets showOnHover={false} />
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-dark-900 dark:text-white mb-6">
+              {t('about.channel.title')}
+            </h2>
+            <p className="text-lg text-dark-600 dark:text-dark-300 leading-relaxed font-sans">
+              {t('about.channel.description')}
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      {/* Values Section */}
+      <Section
+        id="values"
+        title={t('about.values.title')}
+        subtitle={t('about.values.subtitle')}
+        centered
+        spacing="md"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          {[
+            {
+              icon: InnovativeEfficiencyIcon,
+              title: t('about.values.innovativeEfficiency.title'),
+              desc: t('about.values.innovativeEfficiency.description'),
+            },
+            {
+              icon: BuildingConnectionsIcon,
+              title: t('about.values.buildingConnections.title'),
+              desc: t('about.values.buildingConnections.description'),
+            },
+            {
+              icon: ForwardVisionIcon,
+              title: t('about.values.forwardVision.title'),
+              desc: t('about.values.forwardVision.description'),
+            },
+          ].map((value, idx) => (
+            <div key={idx} className="relative bg-white dark:bg-dark-800 p-8 border border-dark-200 dark:border-dark-700 group hover:border-primary-500 transition-colors h-full flex flex-col items-center text-center">
+              <CornerBrackets showOnHover={true} />
+              <div className="mb-6 text-primary-500">
+                <value.icon className="w-20 h-20" stroke="currentColor" redDotColor="var(--color-primary)" />
+              </div>
+              <h3 className="text-2xl font-heading font-bold text-dark-900 dark:text-white mb-4">
+                {value.title}
+              </h3>
+              <p className="text-dark-600 dark:text-dark-300 leading-relaxed font-sans">
+                {value.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Systems Section */}
+      <Section
+        id="systems"
+        title={t('about.systems.title')}
+        subtitle={t('about.systems.description')}
+        spacing="md"
+        className="bg-dark-50 dark:bg-dark-950"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {systems(t).map((system) => (
+            <div key={system.id} className="group relative bg-white dark:bg-dark-800 border border-dark-200 dark:border-dark-700 overflow-hidden shadow-lg hover:border-primary-500 transition-colors">
+              <div className="relative h-64 overflow-hidden">
+                <Image
+                  src={system.image}
+                  alt={system.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-dark-950/20 group-hover:bg-dark-950/0 transition-colors duration-500" />
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-heading font-bold text-dark-900 dark:text-white mb-4 group-hover:text-primary-500 transition-colors">
+                  {system.title}
+                </h3>
+                <p className="text-dark-600 dark:text-dark-300 leading-relaxed font-sans">
+                  {system.description}
+                </p>
+              </div>
+              <CornerBrackets showOnHover={true} />
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Gallery Section */}
+      <Section
+        id="gallery"
+        title={t('about.gallery.title') || 'معرض الصور'}
+        subtitle={t('about.gallery.subtitle') || 'نظرة على بعض أعمالنا وفعالياتنا'}
+        centered
+        spacing="md"
+      >
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {galleryImages.map((img, i) => (
+            <div key={i} className="group relative aspect-video bg-dark-100 dark:bg-dark-800 overflow-hidden cursor-pointer shadow-lg">
+              <Image
+                src={img.src}
+                alt={t(img.key)}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-dark-950/0 group-hover:bg-dark-950/60 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <div className="relative p-6">
+                  <CornerBrackets showOnHover={false} className="border-white" />
+                  <span className="text-white text-sm font-heading font-bold tracking-widest uppercase">
+                    {t('common.viewDetail') || 'عرض التفاصيل'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
     </>
   );
 }

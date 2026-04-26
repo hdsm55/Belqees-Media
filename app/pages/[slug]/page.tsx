@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { pages as staticPages } from '@/data/pages';
 import { Metadata } from 'next';
 import { sanitizeHtml } from '@/lib/utils/sanitize';
+import PageHeroSection from '@/components/blocks/PageHeroSection';
+import Section from '@/components/atoms/Section';
 
 export async function generateMetadata({
   params,
@@ -18,7 +20,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: page.title,
+    title: `${page.title} - Belqees Media`,
     description: typeof page.content === 'string'
       ? page.content.substring(0, 160)
       : 'صفحة من موقع بلقيس ميديا',
@@ -40,40 +42,53 @@ export default async function DynamicPage({
   // Render content
   const renderContent = () => {
     if (!page.content) {
-      return <p className="text-gray-600">لا يوجد محتوى لهذه الصفحة</p>;
+      return (
+        <div className="py-20 text-center bg-dark-50 dark:bg-dark-800/50 rounded-4xl border-2 border-dashed border-dark-200 dark:border-dark-700">
+           <p className="text-dark-500 dark:text-dark-400 text-xl font-sans">
+             {slug === 'terms' ? 'لا يوجد محتوى لهذه الصفحة حالياً.' : 'محتوى هذه الصفحة غير متوفر.'}
+           </p>
+        </div>
+      );
     }
 
     if (typeof page.content === 'string') {
       const sanitizedContent = sanitizeHtml(page.content);
       return (
         <div
-          className="prose prose-lg max-w-none"
+          className="prose prose-lg dark:prose-invert max-w-none text-dark-600 dark:text-dark-300 font-sans leading-relaxed"
           dangerouslySetInnerHTML={{ __html: sanitizedContent }}
         />
       );
     }
 
-    return <p className="text-gray-600">لا يمكن عرض محتوى هذه الصفحة</p>;
+    return (
+      <div className="py-20 text-center bg-dark-50 dark:bg-dark-800/50 rounded-4xl border-2 border-dashed border-dark-200 dark:border-dark-700">
+         <p className="text-dark-500 dark:text-dark-400 text-xl font-sans">لا يمكن عرض محتوى هذه الصفحة.</p>
+      </div>
+    );
   };
 
+  const lastUpdated = new Date(page.updatedAt).toLocaleDateString('ar-SA', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-dark-900 transition-colors">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{page.title}</h1>
-          <p className="text-primary-100 text-sm">
-            آخر تحديث: {new Date(page.updatedAt).toLocaleDateString('ar-SA')}
-          </p>
-        </div>
-      </div>
+      <PageHeroSection
+        title={page.title}
+        subtitle={`آخر تحديث: ${lastUpdated}`}
+        backgroundImage="/images-optimized/about-hero.jpg"
+      />
 
       {/* Content Section */}
-      <div className="container mx-auto px-4 py-12">
+      <Section id="page-content" spacing="md">
         <div className="max-w-4xl mx-auto">
           {renderContent()}
         </div>
-      </div>
+      </Section>
     </div>
   );
 }

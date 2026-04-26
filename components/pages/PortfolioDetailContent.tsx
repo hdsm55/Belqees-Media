@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import ScrollReveal from '@/components/animations/ScrollReveal';
+import Section from '@/components/atoms/Section';
+import CornerBrackets from '@/components/atoms/CornerBrackets';
 import Button from '@/components/atoms/Button';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -14,7 +15,7 @@ interface PortfolioDetailContentProps {
 }
 
 export default function PortfolioDetailContent({ item }: PortfolioDetailContentProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const getMediaUrls = (media: PortfolioMedia | null): string[] => {
@@ -38,131 +39,133 @@ export default function PortfolioDetailContent({ item }: PortfolioDetailContentP
   const videos = getVideos();
   const displayImage = images[selectedImageIndex] || images[0];
 
+  const getLocalizedValue = (item: any, field: string) => {
+    const localizedField = `${field}_${locale}`;
+    return item[localizedField] || item[field];
+  };
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 pt-20 md:pt-24">
-      {/* Hero Section */}
-      <section className="py-12 md:py-16 bg-gray-50 dark:bg-gray-800 transition-colors">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <Link
-              href="/portfolio"
-              className="inline-flex items-center gap-2 text-primary-500 dark:text-primary-400 hover:text-primary-600 dark:hover:text-primary-300 mb-6 transition-colors"
-            >
-              <span>←</span>
-              <span>{t('portfolio.backToPortfolio')}</span>
-            </Link>
+    <div className="min-h-screen bg-white dark:bg-dark-900 transition-colors pt-20">
+      {/* Header Section */}
+      <Section id="portfolio-detail-header" spacing="md" className="bg-dark-50 dark:bg-dark-950 border-b border-dark-100 dark:border-dark-800">
+        <div className="max-w-4xl mx-auto">
+          <Link
+            href="/portfolio"
+            className="inline-flex items-center gap-2 text-primary-500 font-heading font-bold mb-8 group"
+          >
+            <span className="transform group-hover:-translate-x-1 rtl:group-hover:translate-x-1 transition-transform">
+              {locale === 'ar' ? '→' : '←'}
+            </span>
+            <span>{t('portfolio.backToPortfolio') || 'العودة للمشاريع'}</span>
+          </Link>
 
+          <div className="space-y-6">
             {item.category && (
-              <div className="inline-block px-4 py-2 bg-primary-500/10 text-primary-500 dark:text-primary-400 rounded-lg mb-4 text-sm font-medium">
-                {item.category}
-              </div>
+              <span className="inline-block px-4 py-1 bg-primary-500 text-white text-xs font-bold uppercase tracking-widest rounded-sm">
+                {t(`portfolio.categories.${item.category.toLowerCase()}`) || item.category}
+              </span>
             )}
-
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-dark dark:text-gray-100 mb-4 md:mb-6 tracking-tight">
-              {item.title}
+            <h1 className="text-4xl md:text-6xl font-heading font-bold text-dark-900 dark:text-white leading-tight tracking-tight">
+              {getLocalizedValue(item, 'title')}
             </h1>
-
             {item.description && (
-              <p className="text-base sm:text-lg md:text-xl text-dark-light dark:text-gray-300 leading-relaxed">
-                {item.description}
+              <p className="text-xl text-dark-600 dark:text-dark-300 font-sans leading-relaxed">
+                {getLocalizedValue(item, 'description')}
               </p>
             )}
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* Main Content */}
-      <section className="py-12 md:py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Main Image/Video */}
+      {/* Media Section */}
+      <Section id="portfolio-detail-media" spacing="md">
+        <div className="max-w-6xl mx-auto space-y-12">
+          {/* Main Media Display */}
+          <div className="relative aspect-video bg-dark-100 dark:bg-dark-800 shadow-2xl overflow-hidden group">
             {displayImage && (
-              <div className="mb-8 rounded-lg overflow-hidden">
-                <div className="relative aspect-video bg-gray-100 dark:bg-gray-800">
-                  <Image
-                    src={displayImage}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    priority
-                    sizes="100vw"
-                  />
-                </div>
-              </div>
+              <Image
+                src={displayImage}
+                alt={getLocalizedValue(item, 'title')}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                priority
+              />
             )}
+            <CornerBrackets showOnHover={false} className="border-white" />
+          </div>
 
-            {videos.length > 0 && (
-              <div className="mb-8 space-y-4">
-                {videos.map((video, index) => (
-                  <div key={index} className="rounded-lg overflow-hidden">
-                    <div className="relative aspect-video bg-gray-100 dark:bg-gray-800">
-                      <video
-                        src={video}
-                        controls
-                        className="w-full h-full"
-                        preload="metadata"
-                      >
-                        {t('portfolio.videoNotSupported')}
-                      </video>
-                    </div>
-                  </div>
+          {/* Video Players */}
+          {videos.length > 0 && (
+            <div className="grid grid-cols-1 gap-8">
+              {videos.map((video, index) => (
+                <div key={index} className="relative aspect-video bg-dark-900 shadow-xl overflow-hidden">
+                   <video
+                    src={video}
+                    controls
+                    className="w-full h-full object-contain"
+                    preload="metadata"
+                  />
+                  <CornerBrackets showOnHover={true} />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Thumbnail Gallery */}
+          {images.length > 1 && (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-heading font-bold text-dark-900 dark:text-white">
+                {t('portfolio.gallery') || 'معرض الصور'}
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {images.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={`relative aspect-video overflow-hidden transition-all duration-300 border-2 ${
+                      selectedImageIndex === index
+                        ? 'border-primary-500 scale-95 shadow-lg shadow-primary-500/20'
+                        : 'border-transparent opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${item.title} - ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </button>
                 ))}
               </div>
-            )}
-
-            {/* Image Gallery */}
-            {images.length > 1 && (
-              <div className="mb-12">
-                <h2 className="text-2xl font-bold text-dark dark:text-gray-100 mb-6">
-                  {t('portfolio.gallery')}
-                </h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {images.map((image, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedImageIndex(index)}
-                      className={`relative aspect-square rounded-lg overflow-hidden transition-all ${
-                        selectedImageIndex === index
-                          ? 'ring-4 ring-primary-500'
-                          : 'hover:opacity-80'
-                      }`}
-                      aria-label={`${t('portfolio.viewImage')} ${index + 1}`}
-                    >
-                      <Image
-                        src={image}
-                        alt={`${item.title} - صورة ${index + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* CTA Section */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8 md:p-12 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold text-dark dark:text-gray-100 mb-4">
-                {t('portfolio.similarProject')}
-              </h2>
-              <p className="text-dark-light dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-                {t('portfolio.similarProjectDescription')}
-              </p>
-              <Link href="/contact">
-                <Button
-                  variant="simple"
-                  size="lg"
-                  showRecordingDot={true}
-                  showBrackets={true}
-                >
-                  {t('nav.contact')}
-                </Button>
-              </Link>
             </div>
+          )}
+        </div>
+      </Section>
+
+      {/* CTA Section */}
+      <Section id="portfolio-cta" spacing="md" className="bg-dark-50 dark:bg-dark-950 border-t border-dark-100 dark:border-dark-800">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-dark-900 dark:text-white">
+            {t('portfolio.similarProject') || 'هل تبحث عن مشروع مشابه؟'}
+          </h2>
+          <p className="text-lg text-dark-600 dark:text-dark-300 font-sans max-w-2xl mx-auto leading-relaxed">
+            {t('portfolio.similarProjectDescription') || 'نحن هنا لمساعدتك في تحويل رؤيتك إلى واقع ملموس بجودة عالمية.'}
+          </p>
+          <div className="flex justify-center">
+            <Link href="/contact">
+              <Button
+                variant="recording"
+                size="lg"
+                showRecordingDot={true}
+                showBrackets={true}
+                className="px-12"
+              >
+                {t('nav.contact') || 'تواصل معنا'}
+              </Button>
+            </Link>
           </div>
         </div>
-      </section>
+      </Section>
     </div>
   );
 }
