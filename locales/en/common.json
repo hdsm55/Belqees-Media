@@ -82,7 +82,9 @@
         "feature2": "Latest equipment and global technologies",
         "feature3": "Specialized and creative team",
         "requestService": "Request Service Now",
-        "backToServices": "Back to all Services"
+        "backToServices": "Back to all Services",
+        "otherServices": "Services You Might Need",
+        "otherServicesDesc": "Explore our wide range of professional media services provided to our partners."
     },
     "clients": {
         "title": "Companies That Trusted Us",
@@ -119,7 +121,9 @@
         "videoNotSupported": "Your browser does not support video",
         "similarProject": "Want a similar project?",
         "similarProjectDescription": "Contact us to find out how we can help you achieve your project",
-        "galleryAriaLabel": "Projects Gallery"
+        "galleryAriaLabel": "Projects Gallery",
+        "haveProject": "Have a Vision in Mind?",
+        "ctaDescription": "Let's collaborate to create something extraordinary that stands out and leaves a lasting impact."
     },
     "events": {
         "pageTitle": "Events",
@@ -139,6 +143,9 @@
         "time": "Time",
         "location": "Location",
         "noDescription": "No description available for this event at the moment.",
+        "upcomingEvent": "Upcoming Event",
+        "otherEvents": "Other Events You Might Like",
+        "otherEventsDesc": "Don't miss the opportunity to attend and participate in our upcoming media events.",
         "contactInquiry": "For inquiries"
     },
     "contact": {
