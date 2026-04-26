@@ -74,7 +74,15 @@
             "title": "Want to learn more?",
             "description": "Contact us to learn how we can help you",
             "button": "Contact Us"
-        }
+        },
+        "serviceDetail": "Service Details",
+        "aboutService": "About this Service",
+        "whyChooseUs": "Why Choose Belqees Media?",
+        "feature1": "Extensive experience in media production",
+        "feature2": "Latest equipment and global technologies",
+        "feature3": "Specialized and creative team",
+        "requestService": "Request Service Now",
+        "backToServices": "Back to all Services"
     },
     "clients": {
         "title": "Companies That Trusted Us",
@@ -161,7 +169,10 @@
             "subject": "Subject",
             "message": "Message",
             "submit": "Send",
-            "sending": "Sending..."
+            "sending": "Sending...",
+            "namePlaceholder": "Enter your full name",
+            "subjectPlaceholder": "What is your message about?",
+            "messagePlaceholder": "Write your message here in detail..."
         },
         "successMessage": "Message sent successfully! We will contact you soon.",
         "errorMessage": "An error occurred while sending the message. Please try again.",
@@ -239,6 +250,7 @@
         "allRightsReserved": "All rights reserved"
     },
     "common": {
+        "viewServices": "Our Services",
         "learnMore": "Learn More",
         "companyStats": "Company Stats",
         "visitWebsite": "Visit Website",

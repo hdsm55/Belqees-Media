@@ -74,7 +74,15 @@
             "title": "Daha fazlasını öğrenmek ister misiniz?",
             "description": "Size nasıl yardımcı olabileceğimizi öğrenmek için bizimle iletişime geçin",
             "button": "İletişime Geçin"
-        }
+        },
+        "serviceDetail": "Hizmet Detayları",
+        "aboutService": "Hizmet Hakkında",
+        "whyChooseUs": "Neden Belqees Media?",
+        "feature1": "Medya prodüksiyonunda kapsamlı deneyim",
+        "feature2": "En son ekipman ve küresel teknolojiler",
+        "feature3": "Uzman ve yaratıcı ekip",
+        "requestService": "Hizmet Talebi Oluştur",
+        "backToServices": "Tüm Hizmetlere Dön"
     },
     "clients": {
         "title": "Bize Güvenen Şirketler",
@@ -161,7 +169,10 @@
             "subject": "Konu",
             "message": "Mesaj",
             "submit": "Gönder",
-            "sending": "Gönderiliyor..."
+            "sending": "Gönderiliyor...",
+            "namePlaceholder": "Tam adınızı giriniz",
+            "subjectPlaceholder": "Mesajınız ne hakkında?",
+            "messagePlaceholder": "Mesajınızı buraya detaylıca yazınız..."
         },
         "successMessage": "Mesaj başarıyla gönderildi! Yakında sizinle iletişime geçeceğiz.",
         "errorMessage": "Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.",
@@ -239,6 +250,7 @@
         "allRightsReserved": "Tüm hakları saklıdır"
     },
     "common": {
+        "viewServices": "Hizmetlerimiz",
         "learnMore": "Daha Fazla Bilgi",
         "companyStats": "Şirket İstatistikleri",
         "visitWebsite": "Web Sitesini Ziyaret Et",
