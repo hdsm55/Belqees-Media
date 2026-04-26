@@ -45,16 +45,11 @@ async function checkConnection() {
       }
     }
 
-    console.log('\n📊 ملخص:');
-    console.log(`   - الجداول المتصلة: ${Object.keys(results).length}`);
-    console.log(`   - إجمالي السجلات: ${Object.values(results).reduce((a, b) => a + b, 0)}`);
 
     // 3. معلومات قاعدة البيانات
     console.log('\n3️⃣ معلومات قاعدة البيانات...');
     const dbInfo = await prisma.$queryRaw`SELECT version() as version`;
-    console.log('   ✅ قاعدة البيانات متصلة');
 
-    console.log('\n✅ فحص قاعدة البيانات اكتمل بنجاح!');
 
   } catch (error: any) {
     console.error('\n❌ خطأ في الاتصال بقاعدة البيانات:');

@@ -65,14 +65,16 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Protect /admin routes
-  if (request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/admin/login')) {
+  const isAuthPath = request.nextUrl.pathname.startsWith('/admin/login') || request.nextUrl.pathname.startsWith('/admin/register');
+  
+  if (request.nextUrl.pathname.startsWith('/admin') && !isAuthPath) {
     if (!user) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
   }
 
   // Redirect if already logged in
-  if (request.nextUrl.pathname.startsWith('/admin/login') && user) {
+  if (isAuthPath && user) {
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 

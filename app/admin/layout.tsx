@@ -33,13 +33,25 @@ export default function AdminLayout({
     const router = useRouter();
 
     const handleLogout = async () => {
-        await supabase.auth.signOut();
-        router.push('/admin/login');
-        router.refresh();
+        try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            window.location.href = '/admin/login';
+        } catch (error) {
+            console.error('Logout error:', error);
+            // Fallback
+            await supabase.auth.signOut();
+            window.location.href = '/admin/login';
+        }
     };
 
+    const isAuthPage = pathname?.includes('/login') || pathname?.includes('/register');
+
+    if (isAuthPage) {
+        return <>{children}</>;
+    }
+
     return (
-        <div className="min-h-screen bg-gray-50 flex">
+        <div className="min-h-screen bg-gray-50 flex" dir="rtl">
             {/* Mobile Sidebar Toggle */}
             <button
                 className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-primary-600 text-white rounded-lg shadow-lg"
