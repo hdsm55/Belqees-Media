@@ -185,8 +185,10 @@ export default function HomePageContentClient({
                 </Link>
                 <Link href="/services">
                   <Button
-                    variant="outline"
+                    variant="recording"
                     size="lg"
+                    showRecordingDot={false}
+                    showBrackets={true}
                   >
                     {t('common.viewServices') || 'خدماتنا'}
                   </Button>
