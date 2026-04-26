@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, FreeMode } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -11,6 +11,7 @@ import CornerBrackets from '@/components/atoms/CornerBrackets';
 
 // Import Swiper styles
 import 'swiper/css';
+import 'swiper/css/free-mode';
 
 interface ClientLogo {
   id: string;
@@ -39,7 +40,7 @@ export default function ClientsCarousel({
 
   // Duplicate clients multiple times to ensure loop works properly
   // Swiper needs enough slides for loop mode
-  const duplicatedClients = [...validClients, ...validClients, ...validClients];
+  const duplicatedClients = [...validClients, ...validClients, ...validClients, ...validClients];
 
 
   if (validClients.length === 0) {
@@ -50,23 +51,19 @@ export default function ClientsCarousel({
   const renderLogoItem = (client: ClientLogo) => {
     const content = (
       <div
-        className="logo-wrapper relative border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 md:p-8 flex items-center justify-center h-40 md:h-52 w-full group"
+        className="logo-wrapper relative border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 md:p-8 flex items-center justify-center h-32 md:h-40 w-56 md:w-64 group"
         role="listitem"
       >
         <CornerBrackets showOnHover={false} />
         <Image
           src={client.logo}
           alt={`${t('common.clientLogo')} ${client.name}`}
-          width={280}
-          height={140}
-          style={{ width: 'auto', height: 'auto' }}
-          className="partner-logo max-w-[240px] md:max-w-[300px] max-h-[120px] md:max-h-[140px] object-contain transition-all duration-500"
+          width={200}
+          height={100}
+          className="partner-logo max-w-[160px] md:max-w-[200px] max-h-[80px] md:max-h-[100px] object-contain transition-all duration-500 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
           loading="lazy"
-          sizes="(max-width: 768px) 240px, 300px"
+          sizes="(max-width: 768px) 160px, 200px"
           quality={80}
-          onError={e => {
-            console.error(`Failed to load image: ${client.logo}`);
-          }}
         />
       </div>
     );
@@ -90,18 +87,19 @@ export default function ClientsCarousel({
 
   return (
     <section
-      className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors overflow-hidden"
+      className="py-20 bg-white dark:bg-dark-900 transition-colors overflow-hidden"
       aria-labelledby="clients-heading"
     >
       <div className="container mx-auto px-4">
         {displayTitle && (
-          <div className="text-center mb-10 md:mb-12">
+          <div className="text-center mb-16">
             <h2
               id="clients-heading"
-              className="text-2xl sm:text-3xl font-bold text-dark dark:text-gray-100 mb-3 md:mb-4"
+              className="text-3xl md:text-5xl font-heading font-bold text-dark-900 dark:text-white mb-4"
             >
               {displayTitle}
             </h2>
+            <div className="w-24 h-1 bg-primary-500 mx-auto rounded-full"></div>
           </div>
         )}
 
@@ -111,47 +109,38 @@ export default function ClientsCarousel({
               onSwiper={swiper => {
                 swiperRef.current = swiper;
               }}
-              modules={[Autoplay]}
-              spaceBetween={24}
+              modules={[Autoplay, FreeMode]}
+              spaceBetween={30}
               slidesPerView="auto"
               loop={true}
-              speed={4000} // Speed of transition
+              speed={5000}
+              freeMode={true}
               autoplay={{
                 delay: 0,
                 disableOnInteraction: false,
-                pauseOnMouseEnter: true,
+                pauseOnMouseEnter: false,
               }}
               allowTouchMove={true}
-              className="clients-swiper"
+              className="clients-swiper !overflow-visible"
               breakpoints={{
                 1: {
-                  slidesPerView: 2,
-                  spaceBetween: 16,
-                },
-                640: {
-                  slidesPerView: 3,
                   spaceBetween: 20,
                 },
                 768: {
-                  slidesPerView: 4,
-                  spaceBetween: 24,
-                },
-                1024: {
-                  slidesPerView: 5,
-                  spaceBetween: 24,
-                },
-                1280: {
-                  slidesPerView: 6,
-                  spaceBetween: 24,
+                  spaceBetween: 30,
                 },
               }}
             >
-              {validClients.map((client, index) => (
+              {duplicatedClients.map((client, index) => (
                 <SwiperSlide key={`${client.id}-${index}`} className="!w-auto">
                   {renderLogoItem(client)}
                 </SwiperSlide>
               ))}
             </Swiper>
+            
+            {/* Gradient Overlays for smooth edges */}
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white dark:from-dark-900 to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white dark:from-dark-900 to-transparent z-10 pointer-events-none"></div>
           </div>
         </ScrollReveal>
       </div>
