@@ -14,7 +14,7 @@ interface SectionProps {
   centered?: boolean;
   dark?: boolean;
   animate?: boolean;
-  spacing?: 'sm' | 'md' | 'lg' | 'none';
+  spacing?: 'sm' | 'md' | 'lg' | 'xl' | 'none';
 }
 
 export default function Section({
@@ -33,6 +33,7 @@ export default function Section({
     sm: 'py-12 md:py-16',
     md: 'py-16 md:py-24',
     lg: 'py-24 md:py-32',
+    xl: 'py-32 md:py-48',
     none: 'py-0',
   };
 

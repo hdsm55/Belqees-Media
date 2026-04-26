@@ -5,7 +5,7 @@ import { cn } from '@/utils/cn';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'video' | 'recording' | 'simple';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   children: ReactNode;
   showRecordingDot?: boolean; // إظهار دائرة التسجيل الحمراء
   showBrackets?: boolean; // إظهار إطار L-shaped brackets
@@ -80,6 +80,7 @@ export default function Button({
     sm: variant === 'video' || variant === 'recording' ? 'px-4 py-2 text-sm' : variant === 'simple' ? 'px-4 py-2 text-sm' : 'px-3 py-1.5 text-sm',
     md: variant === 'video' || variant === 'recording' ? 'px-6 py-3 text-base' : variant === 'simple' ? 'px-6 py-3 text-base' : 'px-4 py-2 text-base',
     lg: variant === 'video' || variant === 'recording' ? 'px-8 py-4 text-lg' : variant === 'simple' ? 'px-8 py-4 text-lg' : 'px-6 py-3 text-lg',
+    xl: variant === 'video' || variant === 'recording' ? 'px-10 py-5 text-xl' : variant === 'simple' ? 'px-10 py-5 text-xl' : 'px-8 py-4 text-xl',
   };
 
   // إذا كان التصميم هو simple، نعرض التصميم البسيط مع الأقواس
