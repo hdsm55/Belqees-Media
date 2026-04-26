@@ -7,20 +7,35 @@ import Section from '@/components/atoms/Section';
 import CornerBrackets from '@/components/atoms/CornerBrackets';
 import PageHeroSection from '@/components/blocks/PageHeroSection';
 import { useTranslation } from '@/hooks/useTranslation';
-import { portfolioItems, portfolioCategories } from '@/data/portfolio';
+import { portfolioItems as staticItems, portfolioCategories as staticCategories } from '@/data/portfolio';
 
-export default function PortfolioPageClient() {
+interface PortfolioPageClientProps {
+  initialItems?: any[];
+  categories?: string[];
+}
+
+export default function PortfolioPageClient({ initialItems, categories }: PortfolioPageClientProps) {
   const { t, locale } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
+  const items = initialItems || staticItems;
+  const allCategories = categories?.length ? categories : staticCategories;
+
   const filteredPortfolio = useMemo(() => {
-    if (selectedCategory === 'all') return portfolioItems;
-    return portfolioItems.filter(item => item.category === selectedCategory);
-  }, [selectedCategory]);
+    if (selectedCategory === 'all') return items;
+    return items.filter(item => item.category === selectedCategory);
+  }, [selectedCategory, items]);
 
   const getLocalizedValue = (item: any, field: string) => {
     const localizedField = `${field}_${locale}`;
     return item[localizedField] || item[field];
+  };
+
+  const getFirstImage = (item: any) => {
+    if (!item.images) return '/images/placeholder.jpg';
+    if (Array.isArray(item.images)) return item.images[0] || '/images/placeholder.jpg';
+    if (typeof item.images === 'string') return item.images;
+    return '/images/placeholder.jpg';
   };
 
   return (
@@ -46,7 +61,7 @@ export default function PortfolioPageClient() {
             >
               {t('portfolio.all') || 'الكل'}
             </button>
-            {portfolioCategories.map(category => (
+            {allCategories.map(category => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
@@ -80,7 +95,7 @@ export default function PortfolioPageClient() {
                 className="group relative aspect-[4/3] bg-dark-100 dark:bg-dark-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 rounded-lg"
               >
                 <Image
-                  src={item.images[0]}
+                  src={getFirstImage(item)}
                   alt={getLocalizedValue(item, 'title')}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"

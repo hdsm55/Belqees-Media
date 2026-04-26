@@ -13,18 +13,11 @@ interface PortfolioItem {
   createdAt: string;
 }
 
+import { portfolioService } from '@/lib/services/portfolio.service';
+
 async function getPortfolioItem(slug: string): Promise<PortfolioItem | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/portfolio/${slug}`, {
-      cache: 'no-store',
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    return await response.json();
+    return await portfolioService.getPortfolioBySlug(slug);
   } catch (error) {
     console.error('Error fetching portfolio item:', error);
     return null;

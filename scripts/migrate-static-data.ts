@@ -50,7 +50,7 @@ async function migrate() {
     // 2. Migrate Services
     console.log('\n🛠️ Migrating Services...');
     for (const service of services) {
-        const { title, description, icon } = service;
+        const { title, description, icon, image } = service;
         const slug = generateSlug(title);
 
         const { error } = await supabase
@@ -61,6 +61,7 @@ async function migrate() {
                 title,
                 description,
                 icon,
+                image,
                 published: true,
                 updatedAt: new Date().toISOString()
             }, { onConflict: 'slug' });

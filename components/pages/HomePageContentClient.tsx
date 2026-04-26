@@ -31,12 +31,36 @@ interface EventItem {
 
 interface HomePageContentClientProps {
   events: EventItem[];
+  services?: any[];
 }
 
 export default function HomePageContentClient({
   events,
+  services,
 }: HomePageContentClientProps) {
   const { t } = useTranslation();
+
+  const getServiceIcon = (slug: string) => {
+    const iconProps = {
+      className: 'w-full h-full',
+      stroke: 'currentColor' as const,
+      redDotColor: 'var(--color-primary)',
+      'aria-hidden': true as const,
+    };
+
+    switch (slug) {
+      case 'media-production':
+        return <AdvertisingIcon {...iconProps} />;
+      case 'live-events':
+        return <CorporateContentIcon {...iconProps} fill="currentColor" />;
+      case 'live-streaming':
+        return <DocumentariesIcon {...iconProps} />;
+      case 'training':
+        return <MicroproductionsIcon {...iconProps} />;
+      default:
+        return <AdvertisingIcon {...iconProps} />;
+    }
+  };
 
   return (
     <>
@@ -63,54 +87,44 @@ export default function HomePageContentClient({
         spacing="md"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          <ServiceCard
-            title={t('services.advertising.title')}
-            description={t('services.advertising.description')}
-            icon={
-              <AdvertisingIcon
-                className="w-full h-full"
-                stroke="currentColor"
-                redDotColor="var(--color-primary)"
-                aria-hidden="true"
+          {services && services.length > 0 ? (
+            services.map((service) => (
+              <ServiceCard
+                key={service.id}
+                title={service.title}
+                description={service.description || ''}
+                icon={getServiceIcon(service.slug)}
+                slug={service.slug}
               />
-            }
-          />
-          <ServiceCard
-            title={t('services.corporate.title')}
-            description={t('services.corporate.description')}
-            icon={
-              <CorporateContentIcon
-                className="w-full h-full"
-                fill="currentColor"
-                redDotColor="var(--color-primary)"
-                aria-hidden="true"
+            ))
+          ) : (
+            <>
+              <ServiceCard
+                title={t('services.advertising.title')}
+                description={t('services.advertising.description')}
+                icon={getServiceIcon('media-production')}
+                slug="media-production"
               />
-            }
-          />
-          <ServiceCard
-            title={t('services.documentaries.title')}
-            description={t('services.documentaries.description')}
-            icon={
-              <DocumentariesIcon
-                className="w-full h-full"
-                stroke="currentColor"
-                redDotColor="var(--color-primary)"
-                aria-hidden="true"
+              <ServiceCard
+                title={t('services.corporate.title')}
+                description={t('services.corporate.description')}
+                icon={getServiceIcon('live-events')}
+                slug="live-events"
               />
-            }
-          />
-          <ServiceCard
-            title={t('services.microproductions.title')}
-            description={t('services.microproductions.description')}
-            icon={
-              <MicroproductionsIcon
-                className="w-full h-full"
-                stroke="currentColor"
-                redDotColor="var(--color-primary)"
-                aria-hidden="true"
+              <ServiceCard
+                title={t('services.documentaries.title')}
+                description={t('services.documentaries.description')}
+                icon={getServiceIcon('live-streaming')}
+                slug="live-streaming"
               />
-            }
-          />
+              <ServiceCard
+                title={t('services.microproductions.title')}
+                description={t('services.microproductions.description')}
+                icon={getServiceIcon('training')}
+                slug="training"
+              />
+            </>
+          )}
         </div>
       </Section>
 

@@ -42,3 +42,54 @@ export const servicesData = (t: any) => [
     image: '/images-optimized/services-hero.jpg',
   }
 ];
+
+export const services = [
+  {
+    id: 'media-production',
+    slug: 'media-production',
+    title: 'Media Production',
+    description: 'Professional video production and advertising services.',
+    image: '/images-optimized/approach.jpg',
+    icon: 'video'
+  },
+  {
+    id: 'live-events',
+    slug: 'live-events',
+    title: 'Live Events',
+    description: 'Coverage and management of live events.',
+    image: '/images-optimized/events-hero.jpg',
+    icon: 'calendar'
+  },
+  {
+    id: 'live-streaming',
+    slug: 'live-streaming',
+    title: 'Live Streaming',
+    description: 'High-quality live broadcasting solutions.',
+    image: '/images-optimized/services-hero.jpg',
+    icon: 'radio'
+  },
+  {
+    id: 'training',
+    slug: 'training',
+    title: 'Training',
+    description: 'Professional training in media and technology.',
+    image: '/images-optimized/yemen-researchers-conference.jpg',
+    icon: 'graduation-cap'
+  },
+  {
+    id: 'technical-consultancy',
+    slug: 'technical-consultancy',
+    title: 'Technical Consultancy',
+    description: 'Expert advice on media technology and infrastructure.',
+    image: '/images-optimized/approach.jpg',
+    icon: 'lightbulb'
+  },
+  {
+    id: 'studio-design',
+    slug: 'studio-design',
+    title: 'Studio Design',
+    description: 'Comprehensive studio design and implementation.',
+    image: '/images-optimized/services-hero.jpg',
+    icon: 'layout'
+  }
+];

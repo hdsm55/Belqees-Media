@@ -49,7 +49,7 @@ async function migrate() {
     console.log('\n🛠️ Migrating Services...');
     const { services } = require('../data/services');
     for (const service of services) {
-        const { title, description, icon } = service;
+        const { title, description, icon, image } = service;
         const slug = generateSlug(title);
 
         const { error } = await supabase
@@ -60,6 +60,7 @@ async function migrate() {
                 title,
                 description,
                 icon,
+                image,
                 published: true,
                 updatedAt: new Date().toISOString()
             }, { onConflict: 'slug' });

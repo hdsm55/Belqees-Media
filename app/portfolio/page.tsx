@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { portfolioService } from '@/lib/services';
+import { portfolioService } from '@/lib/services/portfolio.service';
 import PageHeroSection from '@/components/blocks/PageHeroSection';
 import PortfolioPageClient from './PortfolioPageClient';
 
@@ -38,6 +38,9 @@ export const metadata: Metadata = {
 };
 
 export default async function PortfolioPage() {
+  const { portfolio } = await portfolioService.getAllPortfolio({ published: true });
+  const categories = await portfolioService.getPublishedCategories();
+
   return (
     <div className="bg-white dark:bg-gray-900 transition-colors min-h-screen">
       {/* Hero Section */}
@@ -50,7 +53,7 @@ export default async function PortfolioPage() {
       />
 
       {/* Portfolio Content */}
-      <PortfolioPageClient />
+      <PortfolioPageClient initialItems={portfolio} categories={categories} />
     </div>
   );
 }

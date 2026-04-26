@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import { StructuredData } from '@/components/StructuredData';
-import { eventService } from '@/lib/services';
+import { eventService, serviceService } from '@/lib/services';
 import HomePageContentClient from '@/components/pages/HomePageContentClient';
 
 export const metadata: Metadata = {
-    // ...
     title: 'Belqees Media - شركة إنتاج إعلامي متكاملة الخدمات',
     description: 'Belqees Media هي شركة إنتاج إعلامي متكاملة الخدمات تأسست عام 2015، مكرسة لتقديم حلول عالية الجودة للقنوات التلفزيونية والمنصات الرقمية والفعاليات المباشرة.',
     keywords: ['Belqees Media', 'إنتاج إعلامي', 'بث مباشر', 'فعاليات', 'استوديوهات', 'إعلام', 'إنتاج تلفزيوني', 'إنتاج فيديو', 'إنتاج محتوى'],
@@ -58,11 +57,6 @@ export const metadata: Metadata = {
             'max-snippet': -1,
         },
     },
-    verification: {
-        // Add your verification codes here when available
-        // google: 'your-google-verification-code',
-        // yandex: 'your-yandex-verification-code',
-    },
 };
 
 export default async function HomePage() {
@@ -89,15 +83,19 @@ export default async function HomePage() {
         foundingDate: '2015',
     };
 
-    // Fetch latest 4 published events
+    // Fetch latest 4 published events and services
     const eventsData = await eventService.getPublishedEvents(4);
+    const servicesData = await serviceService.getPublishedServices(4);
 
     return (
         <>
             <StructuredData data={organizationSchema} />
 
             {/* Page Content with Translations */}
-            <HomePageContentClient events={eventsData as any} />
+            <HomePageContentClient 
+                events={eventsData as any} 
+                services={servicesData as any} 
+            />
         </>
     );
 }
